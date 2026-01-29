@@ -17,19 +17,21 @@
 
 1.  **Framework** : React
 2.  **Language** : Typescript
-3.  **Styling** : Tailwind CSS
+3.  **Styling** : Tailwind CSS + lucide-react (Icon library)
 4.  **Http Client** : Axios
-5.  **useState+useEffect / TanStack Query** :
+5.  **useState+useEffect / TanStack Query** : [TanStack Query](https://www.npmjs.com/package/@tanstack/react-query)
     - Caching
     - Auto Re-fetching
     - Deduplication
     - Pagination / Infinite Scroll
+    - Self-managed data, error, fetchNextPage, hasNextPage, isLoading...etc
 
 6.  **Routing** : React Router:
     - Data mode
     - Declarative Routing
     - Nested Routes
     - Client-side routing
+
 7.  **Naming**:
     | Type | Style | Example |
     | ---- | ----- | ------- |

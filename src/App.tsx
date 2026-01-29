@@ -1,19 +1,20 @@
 import './App.css';
-
 import { Outlet } from 'react-router';
-import Header from './components/Header';
-import Footer from './components/Footer';
+import Header from './components/header/Header';
+import Footer from './components/footer/Footer';
 
 function App() {
   return (
-    <div className="app">
+    <div className="min-h-screen bg-black text-white">
       <Header />
 
-      <main>
-        <Outlet />
-      </main>
+      <main className="flex flex-col justify-between min-h-screen w-full">
+        <div className="w-full h-full">
+          <Outlet />
+        </div>
 
-      <Footer />
+        <Footer />
+      </main>
     </div>
   );
 }
