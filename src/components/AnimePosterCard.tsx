@@ -1,10 +1,11 @@
 import type { Anime } from '../types/anime';
+import MotionImage from './ui/Image';
 
 const AnimePosterCard = ({ anime }: { anime: Anime }) => {
   return (
     <div className="relative w-64 min-w-[16rem] h-96 rounded-2xl overflow-hidden shadow-lg group cursor-pointer bg-gray-900">
       {/* Background Image */}
-      <img
+      <MotionImage
         src={anime.images.webp.image_url}
         alt={anime.title}
         className="absolute inset-0 w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"

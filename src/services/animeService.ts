@@ -1,8 +1,13 @@
 import type { Anime } from '../types/anime';
+import {
+  type AnimeSearchQueryType,
+  type AnimeSearchQueryStatus,
+  type AnimeSearchQueryRating,
+  type AnimeSearchQueryOrderBy,
+  ANIME_MAXIMUM_LIMIT,
+} from '../types/anime.request';
 import type { ApiListResponse } from '../types/api.response';
 import apiClient from './apiClient';
-
-const ANIME_MAXIMUM_LIMIT = 25;
 
 export const getAnime = async (
   req: GetAnimeSearchRequest = {
@@ -16,11 +21,7 @@ export const getAnime = async (
   }
 
   const response = await apiClient.get<ApiListResponse<Anime>>('/anime', {
-    params: {
-      limit: req.limit,
-      page: req.page,
-      q: req.q,
-    },
+    params: { ...req },
   });
 
   return response.data;
@@ -88,33 +89,3 @@ export interface GetAnimeSearchRequest {
    */
   end_date?: string;
 }
-
-// --- Supporting Types ---
-
-export type AnimeSearchQueryType =
-  | 'tv'
-  | 'movie'
-  | 'ova'
-  | 'special'
-  | 'ona'
-  | 'music'
-  | 'cm'
-  | 'pv'
-  | 'tv_special';
-
-export type AnimeSearchQueryStatus = 'airing' | 'complete' | 'upcoming';
-
-export type AnimeSearchQueryRating = 'g' | 'pg' | 'pg13' | 'r17' | 'r' | 'rx';
-
-export type AnimeSearchQueryOrderBy =
-  | 'mal_id'
-  | 'title'
-  | 'start_date'
-  | 'end_date'
-  | 'episodes'
-  | 'score'
-  | 'scored_by'
-  | 'rank'
-  | 'popularity'
-  | 'members'
-  | 'favorites';

@@ -1,11 +1,13 @@
 import { useQuery } from '@tanstack/react-query';
 import { getAnime } from '../../services/animeService';
-import { useEffect, useRef, useState } from 'react';
+import { useRef } from 'react';
 import { motion } from 'framer-motion';
 import AnimeCardSkeleton from '../../components/AnimePosterCardSkeleton';
 import AnimePosterCard from '../../components/AnimePosterCard';
+import { useMaxScroll } from '../../hooks/useMaxScroll';
 
 const SpecialForYouCard = () => {
+  const carouselRef = useRef<HTMLDivElement>(null);
   const { data, isLoading, error } = useQuery({
     queryKey: ['anime-special'],
     queryFn: async () => {
@@ -13,9 +15,6 @@ const SpecialForYouCard = () => {
       return data;
     },
   });
-
-  const carouselRef = useRef<HTMLDivElement>(null);
-  const [width, setWidth] = useState(0);
 
   const skeletonNodes = [...Array(6)].map((_, i) => (
     <AnimeCardSkeleton key={i} />
@@ -25,13 +24,7 @@ const SpecialForYouCard = () => {
     <AnimePosterCard key={anime.mal_id} anime={anime} />
   ));
 
-  useEffect(() => {
-    if (carouselRef.current) {
-      setWidth(
-        carouselRef.current.scrollWidth - carouselRef.current.offsetWidth,
-      );
-    }
-  }, [data, isLoading]);
+  const maxScroll = useMaxScroll(carouselRef, data);
 
   return (
     <div className="relative z-20 text-white -translate-y-40  overflow-hidden">
@@ -46,7 +39,7 @@ const SpecialForYouCard = () => {
             className="cursor-grab active:cursor-grabbing">
             <motion.div
               drag="x"
-              dragConstraints={{ right: 0, left: -width }}
+              dragConstraints={{ right: 0, left: -maxScroll }}
               className="flex gap-6  px-8 md:px-16">
               {isLoading ? skeletonNodes : posterCardNodes}
               <div className="min-w-10 h-1" />
