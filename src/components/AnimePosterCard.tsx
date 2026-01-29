@@ -1,5 +1,5 @@
 import type { Anime } from '../types/anime';
-import MotionImage from './ui/Image';
+import MotionImage from './ui/MotionImage';
 
 const AnimePosterCard = ({ anime }: { anime: Anime }) => {
   return (
