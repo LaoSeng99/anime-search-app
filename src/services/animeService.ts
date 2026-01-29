@@ -5,21 +5,116 @@ import apiClient from './apiClient';
 const ANIME_MAXIMUM_LIMIT = 25;
 
 export const getAnime = async (
-  limit: number = 10,
-  page: number = 1,
-  query: string = '',
+  req: GetAnimeSearchRequest = {
+    limit: 10,
+    page: 1,
+    q: '',
+  },
 ) => {
-  if (limit > ANIME_MAXIMUM_LIMIT) {
+  if (req.limit! > ANIME_MAXIMUM_LIMIT) {
     throw new Error('Limit cannot exceed 25');
   }
 
   const response = await apiClient.get<ApiListResponse<Anime>>('/anime', {
     params: {
-      limit: limit,
-      page: page,
-      q: query,
+      limit: req.limit,
+      page: req.page,
+      q: req.q,
     },
   });
 
   return response.data;
 };
+
+export interface GetAnimeSearchRequest {
+  /** Current page number for pagination. */
+  page?: number;
+
+  /** Number of results per page. */
+  limit?: number;
+
+  /** Search query string. */
+  q?: string;
+
+  /** Filter by anime type. */
+  type?: AnimeSearchQueryType;
+
+  /** Filter by specific score. */
+  score?: number;
+
+  /** Filter by minimum score. */
+  min_score?: number;
+
+  /** Filter by maximum score. */
+  max_score?: number;
+
+  /** Filter by airing status. */
+  status?: AnimeSearchQueryStatus;
+
+  /** Filter by audience rating. */
+  rating?: AnimeSearchQueryRating;
+
+  /** * Filter by genre IDs.
+   * Can pass multiple IDs separated by a comma (e.g., "1,2,3").
+   */
+  genres?: string;
+
+  /** * Exclude specific genre IDs.
+   * Can pass multiple IDs separated by a comma.
+   */
+  genres_exclude?: string;
+
+  /** Property to order the results by. */
+  order_by?: AnimeSearchQueryOrderBy;
+
+  /** Sort direction (Ascending or Descending). */
+  sort?: 'desc' | 'asc';
+
+  /** Return entries starting with the given letter. */
+  letter?: string;
+
+  /** * Filter by producer IDs.
+   * Can pass multiple IDs separated by a comma.
+   */
+  producers?: string;
+
+  /** * Filter by starting date.
+   * Format: YYYY-MM-DD (e.g., "2022", "2005-01-01").
+   */
+  start_date?: string;
+
+  /** * Filter by ending date.
+   * Format: YYYY-MM-DD.
+   */
+  end_date?: string;
+}
+
+// --- Supporting Types ---
+
+export type AnimeSearchQueryType =
+  | 'tv'
+  | 'movie'
+  | 'ova'
+  | 'special'
+  | 'ona'
+  | 'music'
+  | 'cm'
+  | 'pv'
+  | 'tv_special';
+
+export type AnimeSearchQueryStatus = 'airing' | 'complete' | 'upcoming';
+
+export type AnimeSearchQueryRating = 'g' | 'pg' | 'pg13' | 'r17' | 'r' | 'rx';
+
+export type AnimeSearchQueryOrderBy =
+  | 'mal_id'
+  | 'title'
+  | 'start_date'
+  | 'end_date'
+  | 'episodes'
+  | 'score'
+  | 'scored_by'
+  | 'rank'
+  | 'popularity'
+  | 'members'
+  | 'favorites';
