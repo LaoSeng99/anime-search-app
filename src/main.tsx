@@ -5,7 +5,7 @@ import { createBrowserRouter, redirect, RouterProvider } from 'react-router';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import AnimeListPage from './pages/AnimeListPage.tsx';
 import AnimeDetailPage from './pages/AnimeDetailPage.tsx';
-import HomePage from './pages/HomePage.tsx';
+import HomePage from './pages/home/HomePage.tsx';
 import FavouritePage from './pages/FavouritePage.tsx';
 
 const router = createBrowserRouter([

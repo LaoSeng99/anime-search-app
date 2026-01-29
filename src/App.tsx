@@ -9,9 +9,7 @@ function App() {
       <Header />
 
       <main className="flex flex-col justify-between min-h-screen w-full">
-        <div className="w-full h-full">
-          <Outlet />
-        </div>
+        <Outlet />
 
         <Footer />
       </main>

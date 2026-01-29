@@ -4,34 +4,17 @@ import { getAnime } from '../services/animeService';
 import type { Anime } from '../types/anime';
 import type { ApiListResponse } from '../types/api.response';
 import { useInView } from 'react-intersection-observer';
+import { useAnimeSearch } from '../hooks/useAnimeSearch';
 
 const AnimeListPage = () => {
-  const [pageLimit, setPageLimit] = useState(10);
-  const [searchQuery, setSearchQuery] = useState('');
-
-  const { data, error, fetchNextPage, hasNextPage, isLoading } =
-    useInfiniteQuery<
-      ApiListResponse<Anime>,
-      Error,
-      InfiniteData<ApiListResponse<Anime>>,
-      [string, string],
-      number
-    >({
-      queryKey: ['anime', searchQuery],
-      queryFn: async ({ pageParam }) => {
-        const data = await getAnime(pageLimit, pageParam, searchQuery);
-
-        return data;
-      },
-      initialPageParam: 1,
-      getNextPageParam: (lastPage) => {
-        const pagination = lastPage.pagination;
-        if (pagination.has_next_page) {
-          return pagination.current_page + 1;
-        }
-        return undefined;
-      },
-    });
+  const {
+    data,
+    fetchNextPage,
+    hasNextPage,
+    isLoading,
+    searchQuery,
+    setSearchQuery,
+  } = useAnimeSearch(10);
 
   const { ref, inView } = useInView();
 

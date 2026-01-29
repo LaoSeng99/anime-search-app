@@ -17,7 +17,7 @@
 
 1.  **Framework** : React
 2.  **Language** : Typescript
-3.  **Styling** : Tailwind CSS + lucide-react (Icon library)
+3.  **Styling** : Tailwind CSS , lucide-react (Icon library), framer-motion
 4.  **Http Client** : Axios
 5.  **useState+useEffect / TanStack Query** : [TanStack Query](https://www.npmjs.com/package/@tanstack/react-query)
     - Caching
