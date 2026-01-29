@@ -17,7 +17,7 @@ export const useAnimeSearch = (limit: number = 10) => {
   >({
     queryKey: ['anime', searchQuery],
     queryFn: async ({ pageParam }) => {
-      const data = await getAnime(limit, pageParam, searchQuery);
+      const data = await getAnime({ limit, page: pageParam, q: searchQuery });
       return data;
     },
     initialPageParam: 1,

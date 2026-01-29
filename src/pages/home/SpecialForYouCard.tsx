@@ -9,7 +9,7 @@ const SpecialForYouCard = () => {
   const { data, isLoading, error } = useQuery({
     queryKey: ['anime-special'],
     queryFn: async () => {
-      const data = await getAnime(10, 1);
+      const data = await getAnime({ limit: 10, page: 1 });
       return data;
     },
   });
