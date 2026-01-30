@@ -17,7 +17,7 @@ export const router = createBrowserRouter([
       },
       { path: '/home', Component: HomePage },
       { path: '/anime', Component: AnimeListPage },
-      { path: '/favorites', Component: FavouritePage },
+      { path: '/favourites', Component: FavouritePage },
       {
         path: '/anime/:id',
         Component: AnimeDetailPage,

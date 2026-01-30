@@ -10,7 +10,7 @@ const Header = () => {
   const navItems: NavItem[] = [
     { name: 'Home', href: '/' },
     { name: 'Catalog', href: '/anime' },
-    { name: 'Favorites', href: '/favorites' },
+    { name: 'Favourites', href: '/favourites' },
   ];
 
   const navigate = useNavigate();

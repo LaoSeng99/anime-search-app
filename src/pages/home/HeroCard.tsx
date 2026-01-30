@@ -1,4 +1,4 @@
-import { Heart, Loader2 } from 'lucide-react';
+import { Loader2 } from 'lucide-react';
 import Button from '../../components/ui/Button';
 import TrailerVideo from './TrailerVideo';
 import { useQuery } from '@tanstack/react-query';
@@ -6,6 +6,7 @@ import { getSeasonNow } from '../../services/seasonService';
 import MotionImage from '../../components/ui/MotionImage';
 import { useNavigate } from 'react-router';
 import ErrorState from '../../components/ui/ErrorState';
+import FavouriteButton from '../../components/ui/FavouriteButton';
 
 const HeroCard = () => {
   const { data, isLoading, isError, refetch } = useQuery({
@@ -24,9 +25,6 @@ const HeroCard = () => {
   });
 
   const navigate = useNavigate();
-  const handleNavigate = (id: number) => {
-    navigate(`/anime/${id}`);
-  };
 
   if (isLoading) {
     return (
@@ -95,13 +93,12 @@ const HeroCard = () => {
             variant="primary"
             className="hover:scale-105 transition-transform"
             onClick={() => {
-              handleNavigate(data.mal_id);
+              navigate(`/anime/${data.mal_id}`);
             }}>
             Learn More
           </Button>
-          <Button size={'lg'} leftIcon={<Heart />}>
-            To Favourite
-          </Button>
+
+          <FavouriteButton anime={data}></FavouriteButton>
         </div>
       </section>
 

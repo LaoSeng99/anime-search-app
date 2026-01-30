@@ -29,17 +29,22 @@
     - Pagination / Infinite Scroll
     - Self-managed data, error, fetchNextPage, hasNextPage, isLoading...etc
 
-6.  **Routing** : React Router:
+6.  **State management + Persist** : zustand + IDB-keyval
+    - zustand for manage state
+    - idb-keyval for persist state
+    - use for local favourites
+
+7.  **Routing** : React Router:
     - Data mode
     - Declarative Routing
     - Nested Routes
     - Client-side routing
 
-7.  **Caching** : local/persist caching
+8.  **Caching** : local/persist caching
     - Prevent tanstack query request too many time reach Jikan Rate limit
     - TanStack session/memory level cache -> persist (indexDb local storage)
 
-8.  **Naming**:
+9.  **Naming**:
     | Type | Style | Example |
     | ---- | ----- | ------- |
     |**Components** |PascalCase | `AnimeCard.tsx` |

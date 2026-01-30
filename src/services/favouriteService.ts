@@ -1,0 +1,35 @@
+import { get, set } from 'idb-keyval';
+import type { Anime } from '../types/anime';
+
+const STORAGE_KEY = 'favourite-storage';
+
+//Depend on AnimePosterCard
+const simplifyAnime = (anime: Anime) => ({
+  mal_id: anime.mal_id,
+  title: anime.title,
+  images: {
+    webp: {
+      image_url: anime.images.webp.image_url,
+    },
+  },
+  score: anime.score,
+  year: anime.year,
+  genres: anime.genres.map((genre) => genre?.name),
+  synopsis: anime.synopsis,
+  type: anime.type,
+});
+
+export const getFavourites = async (): Promise<Anime[]> => {
+  try {
+    const data = await get<Anime[]>(STORAGE_KEY);
+    return data || [];
+  } catch (error) {
+    console.error('Storage Error:', error);
+    return [];
+  }
+};
+
+export const saveFavourites = async (animeList: Anime[]): Promise<void> => {
+  const data = animeList.map(simplifyAnime);
+  await set(STORAGE_KEY, data);
+};
