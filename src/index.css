@@ -9,3 +9,12 @@
     scrollbar-width: none;
   }
 }
+
+html,
+body {
+  overflow-x: hidden;
+}
+
+.framer-motion-container-fix::-webkit-scrollbar {
+  display: none;
+}

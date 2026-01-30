@@ -9,9 +9,9 @@ interface TrailerVideoProps {
 const TrailerVideo = ({ embedUrl, backdropUrl }: TrailerVideoProps) => {
   const [hasError, setHasError] = useState(false);
 
-  const youtubeId = getYoutubeIdFromUrl(embedUrl);
   const noCookieUrl = 'https://www.youtube-nocookie.com/embed/';
-
+  const youtubeId = getYoutubeIdFromUrl(embedUrl);
+  const finalVideoUrl = `${noCookieUrl}${youtubeId}?enablejsapi=1&origin=${window.location.origin}`;
   const renderContent = () => {
     if (hasError) {
       return (
@@ -40,7 +40,7 @@ const TrailerVideo = ({ embedUrl, backdropUrl }: TrailerVideoProps) => {
           controls={false}
           loop={true}
           onError={() => setHasError(true)}
-          src={noCookieUrl + youtubeId}
+          src={finalVideoUrl}
         />
 
         <div className="absolute inset-0 bg-linear-to-r from-black/70 via-black/20 to-transparent z-10"></div>

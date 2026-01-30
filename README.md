@@ -18,10 +18,9 @@
 
 1.  **Framework** : React
 2.  **Language** : Typescript
-3.  **Styling** : Tailwind CSS , [lucide-react](https://www.npmjs.com/package/lucide-react), [framer-motion](https://www.npmjs.com/package/framer-motion)
+3.  **Styling/Animation** : Tailwind CSS , [lucide-react](https://www.npmjs.com/package/lucide-react), [framer-motion](https://www.npmjs.com/package/framer-motion)
     - Lucide react : Icon library
-    - Framer motion: Animation library
-    -
+    - Framer motion: Animation library, Navigate animation
 4.  **Http Client** : Axios
 5.  **useState+useEffect / TanStack Query** : [TanStack Query](https://www.npmjs.com/package/@tanstack/react-query)
     - Caching
