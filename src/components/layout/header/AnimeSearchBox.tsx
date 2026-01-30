@@ -1,29 +1,29 @@
 import { useRef, useState } from 'react';
-import SearchBox from '../../ui/SearchBox';
-import { getAnime } from '../../../services/animeService';
+import SearchBox, { type SearchBoxHandle } from '../../ui/SearchBox';
+import { getAnime, getTopAnime } from '../../../services/animeService';
 import { useQuery } from '@tanstack/react-query';
 import { useClickOutside } from '../../../hooks/useClickOutside';
 import SearchDropdown from './SearchDropdown';
-import { useNavigate } from 'react-router';
 
 const AnimeSearchBox = () => {
   const [searchQuery, setSearchQuery] = useState('');
   const [isResultsVisible, setIsResultsVisible] = useState(false);
+  const [hasInteracted, setHasInteracted] = useState(false); // lazy load for search
+
   const containerRef = useRef<HTMLDivElement>(null);
+  const searchBoxRef = useRef<SearchBoxHandle>(null);
 
   const { data, isLoading, isFetching } = useQuery({
     queryKey: ['search-anime', searchQuery],
     queryFn: async () => {
       if (searchQuery.trim() === '') {
-        return await getAnime;
+        return await getTopAnime({ limit: 5, filter: 'airing' });
       }
       return await getAnime({ limit: 7, q: searchQuery });
     },
-    enabled: searchQuery.length > 0, // Don't fetch if query is empty
+    enabled: hasInteracted,
     staleTime: 1000 * 60 * 5,
   });
-
-  const navigate = useNavigate();
 
   useClickOutside(containerRef, () => {
     setIsResultsVisible(false);
@@ -31,10 +31,14 @@ const AnimeSearchBox = () => {
 
   const handleSeeMore = () => {
     if (searchQuery.trim() !== '') {
-      navigate(`/anime?q=${encodeURIComponent(searchQuery)}`);
       setIsResultsVisible(false);
       setSearchQuery('');
+      searchBoxRef.current?.clear();
     }
+  };
+
+  const handleClear = () => {
+    setIsResultsVisible(false);
   };
 
   return (
@@ -46,8 +50,12 @@ const AnimeSearchBox = () => {
         onFocus={() => setIsResultsVisible(true)} // Re-show when focused
       >
         <SearchBox
+          ref={searchBoxRef}
+          onFocus={() => {
+            if (!hasInteracted) setHasInteracted(true);
+          }}
           onSearch={setSearchQuery}
-          onClear={() => setIsResultsVisible(false)}
+          onClear={() => handleClear}
           isLoading={isLoading || isFetching}
           initialValue={searchQuery}
         />
@@ -57,7 +65,8 @@ const AnimeSearchBox = () => {
         animeList={data?.data}
         isLoading={isLoading}
         isVisible={isResultsVisible}
-        onSeeMore={handleSeeMore}></SearchDropdown>
+        onSeeMore={handleSeeMore}
+        searchQuery={searchQuery}></SearchDropdown>
     </div>
   );
 };
