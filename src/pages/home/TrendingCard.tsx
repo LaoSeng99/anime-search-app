@@ -4,7 +4,6 @@ import AnimePosterCard from '../../components/AnimePosterCard';
 import AnimeCardSkeleton from '../../components/AnimePosterCardSkeleton';
 import { getSeasonNow } from '../../services/seasonService';
 import LazyLoadSection from '../../components/ui/LazyLoadSection';
-import { USE_QUERY_STALE } from '../../types/app.constant';
 import { HorizontalCarousel } from '../../components/ui/HorizontalCarousel';
 
 const TrendingCard = () => {
@@ -23,7 +22,6 @@ const TrendingContent = ({ isVisible }: { isVisible: boolean }) => {
       return data;
     },
     enabled: isVisible,
-    staleTime: USE_QUERY_STALE,
   });
 
   const allAnime = useMemo(() => {

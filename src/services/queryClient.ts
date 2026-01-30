@@ -9,7 +9,9 @@ export const queryClient = new QueryClient({
       // gcTime = how long will keep in memory/index db
       gcTime: LOCAL_CACHE_TIME,
       staleTime: USE_QUERY_STALE, // after how long to retrieve data
-      retry: 1,
+      retry: 3,
+      retryDelay: (attemptIndex) => Math.min(1000 * 2 ** attemptIndex, 10000),
+      refetchOnWindowFocus: false,
     },
   },
 });

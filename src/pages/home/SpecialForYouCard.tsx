@@ -5,7 +5,6 @@ import AnimeCardSkeleton from '../../components/AnimePosterCardSkeleton';
 import AnimePosterCard from '../../components/AnimePosterCard';
 
 import LazyLoadSection from '../../components/ui/LazyLoadSection';
-import { USE_QUERY_STALE } from '../../types/app.constant';
 import { HorizontalCarousel } from '../../components/ui/HorizontalCarousel';
 
 const SpecialForYouCard = () => {
@@ -23,7 +22,6 @@ const SpecialForYouContent = ({ isVisible }: { isVisible: boolean }) => {
       const data = await getAnime({ limit: 10, page: 1 });
       return data;
     },
-    staleTime: USE_QUERY_STALE,
   });
 
   const allAnime = useMemo(() => {

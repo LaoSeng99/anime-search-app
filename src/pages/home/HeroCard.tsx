@@ -21,7 +21,6 @@ const HeroCard = () => {
       return targetList[index];
     },
     staleTime: Infinity,
-    retry: 2,
   });
 
   const navigate = useNavigate();
