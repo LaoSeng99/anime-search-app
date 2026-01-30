@@ -1,7 +1,7 @@
 import { useEffect } from 'react';
 import { useLocation } from 'react-router';
 import Header from './header/Header';
-import { PageTransition } from '../PageTransition';
+import { PageTransition } from './PageTransition';
 
 const MainLayout = () => {
   const { pathname } = useLocation();

@@ -1,6 +1,6 @@
 import { motion, AnimatePresence, type Variants } from 'framer-motion';
 import { useLocation, useOutlet } from 'react-router';
-import Footer from './layout/footer/Footer';
+import Footer from './footer/Footer';
 
 const pageVariants: Variants = {
   initial: (direction: string) => ({
