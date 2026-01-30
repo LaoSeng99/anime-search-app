@@ -27,7 +27,7 @@ const SpecialForYouContent = ({ isVisible }: { isVisible: boolean }) => {
     },
     staleTime: USE_QUERY_STALE,
   });
-  const maxScroll = useMaxScroll(carouselRef, data);
+  const maxScroll = useMaxScroll(carouselRef, [isLoading]);
 
   const skeletonNodes = [...Array(6)].map((_, i) => (
     <AnimeCardSkeleton key={i} />
@@ -38,7 +38,7 @@ const SpecialForYouContent = ({ isVisible }: { isVisible: boolean }) => {
   ));
 
   return (
-    <div className="relative z-20 text-white -translate-y-40  overflow-hidden">
+    <div className="relative z-20 text-white lg:-translate-y-40 md:-translate-y-20   overflow-hidden">
       <h2 className="text-2xl font-medium text-white  px-8 md:px-16 pb-4">
         Special for you
       </h2>

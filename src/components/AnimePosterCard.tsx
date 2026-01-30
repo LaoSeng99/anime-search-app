@@ -36,8 +36,12 @@ const AnimePosterCard = ({ anime }: { anime: Anime }) => {
             </span>
           </div>
 
-          {/* More Information - show on hover*/}
-          <div className="grid grid-rows-[0fr] opacity-0 transition-all duration-300 ease-in-out group-hover:grid-rows-[1fr] group-hover:opacity-100 group-hover:mt-3">
+          {/* More Information - show on hover or mobile view*/}
+          <div
+            className="grid grid-rows-[1fr] opacity-100 mt-3 transition-all duration-300 ease-in-out 
+          group-hover:grid-rows-[1fr] group-hover:opacity-100 group-hover:mt-0
+          lg:grid-rows-[0fr] lg:opacity-0 lg:mt-0
+          ">
             <div className="overflow-hidden">
               <p className="text-gray-300/90 text-xs line-clamp-3 leading-relaxed border-l-2 border-blue-500/50 pl-2">
                 {anime.synopsis?.replace(/\[Written by MAL Rewrite\]/g, '') ??
