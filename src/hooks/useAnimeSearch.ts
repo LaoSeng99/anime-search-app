@@ -3,6 +3,7 @@ import { getAnime } from '../services/animeService';
 import type { Anime } from '../types/anime';
 import type { ApiListResponse } from '../types/api.response';
 import { useState } from 'react';
+import { USE_INFINITY_STALE } from '../types/app.constant';
 
 export const useAnimeSearch = (limit: number = 10) => {
   const [pageLimit, setPageLimit] = useState(limit);
@@ -28,6 +29,7 @@ export const useAnimeSearch = (limit: number = 10) => {
       }
       return undefined;
     },
+    staleTime: USE_INFINITY_STALE,
   });
 
   return {

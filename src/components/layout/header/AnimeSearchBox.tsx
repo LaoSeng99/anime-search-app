@@ -4,6 +4,7 @@ import { getAnime, getTopAnime } from '../../../services/animeService';
 import { useQuery } from '@tanstack/react-query';
 import { useClickOutside } from '../../../hooks/useClickOutside';
 import SearchDropdown from './SearchDropdown';
+import { USE_QUERY_STALE } from '../../../types/app.constant';
 
 const AnimeSearchBox = () => {
   const [searchQuery, setSearchQuery] = useState('');
@@ -22,7 +23,7 @@ const AnimeSearchBox = () => {
       return await getAnime({ limit: 7, q: searchQuery });
     },
     enabled: hasInteracted,
-    staleTime: 1000 * 60 * 5,
+    staleTime: USE_QUERY_STALE,
   });
 
   useClickOutside(containerRef, () => {

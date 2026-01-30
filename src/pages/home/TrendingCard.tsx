@@ -1,32 +1,34 @@
 import { useQuery } from '@tanstack/react-query';
-import { getAnime } from '../../services/animeService';
-import { useRef } from 'react';
 import { motion } from 'framer-motion';
-import AnimeCardSkeleton from '../../components/AnimePosterCardSkeleton';
+import { useRef } from 'react';
 import AnimePosterCard from '../../components/AnimePosterCard';
+import AnimeCardSkeleton from '../../components/AnimePosterCardSkeleton';
 import { useMaxScroll } from '../../hooks/useMaxScroll';
-import ErrorState from '../../components/ui/ErrorState';
+import { getSeasonNow } from '../../services/seasonService';
 import LazyLoadSection from '../../components/ui/LazyLoadSection';
+import ErrorState from '../../components/ui/ErrorState';
 import { USE_QUERY_STALE } from '../../types/app.constant';
 
-const SpecialForYouCard = () => {
+const TrendingCard = () => {
   return (
     <LazyLoadSection rootMargin="0px">
-      {(inView) => <SpecialForYouContent isVisible={inView} />}
+      {(inView) => <TrendingContent isVisible={inView} />}
     </LazyLoadSection>
   );
 };
 
-const SpecialForYouContent = ({ isVisible }: { isVisible: boolean }) => {
+const TrendingContent = ({ isVisible }: { isVisible: boolean }) => {
   const carouselRef = useRef<HTMLDivElement>(null);
   const { data, isLoading, error, refetch } = useQuery({
-    queryKey: ['anime-special'],
+    queryKey: ['anime-season'],
     queryFn: async () => {
-      const data = await getAnime({ limit: 10, page: 1 });
+      const data = await getSeasonNow({ limit: 10, page: 1 });
       return data;
     },
+    enabled: isVisible,
     staleTime: USE_QUERY_STALE,
   });
+
   const maxScroll = useMaxScroll(carouselRef, data);
 
   const skeletonNodes = [...Array(6)].map((_, i) => (
@@ -40,7 +42,7 @@ const SpecialForYouContent = ({ isVisible }: { isVisible: boolean }) => {
   return (
     <div className="relative z-20 text-white -translate-y-40  overflow-hidden">
       <h2 className="text-2xl font-medium text-white  px-8 md:px-16 pb-4">
-        Special for you
+        Trending Now
       </h2>
       <div className="flex flex-row overflow-x-auto snap-x">
         <div className="overflow-hidden w-full">
@@ -51,7 +53,7 @@ const SpecialForYouContent = ({ isVisible }: { isVisible: boolean }) => {
             {error && (
               <div className="absolute inset-0 z-30 flex items-center justify-center bg-black/70 backdrop-blur-[2px] rounded-lg ">
                 <ErrorState
-                  title="Unable to load special show"
+                  title="Unable to load trending show"
                   onRetry={refetch}
                 />
               </div>
@@ -72,4 +74,5 @@ const SpecialForYouContent = ({ isVisible }: { isVisible: boolean }) => {
     </div>
   );
 };
-export default SpecialForYouCard;
+
+export default TrendingCard;
