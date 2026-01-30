@@ -1,14 +1,15 @@
-import { AlertCircle, Heart, Loader2 } from 'lucide-react';
+import { Heart, Loader2 } from 'lucide-react';
 import Button from '../../components/ui/Button';
 import TrailerVideo from './TrailerVideo';
 import { useQuery } from '@tanstack/react-query';
 import { getSeasonNow } from '../../services/seasonService';
 import MotionImage from '../../components/ui/MotionImage';
 import { useNavigate } from 'react-router';
+import ErrorState from '../../components/ui/ErrorState';
 
 const HeroCard = () => {
   const { data, isLoading, isError, refetch } = useQuery({
-    queryKey: ['hero-random'],
+    queryKey: ['anime-random'],
     queryFn: async () => {
       const res = await getSeasonNow({ page: 1, limit: 25, filter: 'tv' });
 
@@ -37,23 +38,20 @@ const HeroCard = () => {
 
   if (isError || !data) {
     return (
-      <div className="relative w-full aspect-video rounded-xl flex flex-col items-center justify-center bg-gray-900 border border-gray-800 text-center px-4">
-        <AlertCircle className="w-12 h-12 text-gray-500 mb-4" />
-        <h3 className="text-white font-medium">Unable to load spotlight</h3>
-        <p className="text-gray-400 text-sm mt-2 mb-6">
-          Something went wrong while fetching the latest anime.
-        </p>
-        <Button onClick={() => refetch()} outline={true} size="sm">
-          Try Again
-        </Button>
-      </div>
+      <ErrorState
+        title="Unable to load spotlight"
+        onRetry={refetch}
+        className={
+          'relative w-full aspect-video rounded-xl flex flex-col items-center justify-center bg-gray-900 border border-gray-800 text-center px-4'
+        }
+      />
     );
   }
 
   return (
     <div className="group relative w-full aspect-video rounded-xl overflow-hidden shadow-2xl bg-black">
       <TrailerVideo
-        embedUrl={data.trailer.embed_url!}
+        embedUrl={data.trailer?.embed_url ?? ''}
         backdropUrl={data.images.webp.large_image_url}></TrailerVideo>
       <div
         className="absolute inset-0 z-0 scale-110 blur-2xl opacity-50 transition-transform duration-700 group-hover:scale-100"

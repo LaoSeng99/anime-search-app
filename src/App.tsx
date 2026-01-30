@@ -1,5 +1,5 @@
 import './App.css';
-import { Outlet, useLocation, useOutlet } from 'react-router';
+import { useLocation, useOutlet } from 'react-router';
 import Header from './components/layout/header/Header';
 import Footer from './components/layout/footer/Footer';
 import { AnimatePresence, motion, type Variants } from 'framer-motion';
