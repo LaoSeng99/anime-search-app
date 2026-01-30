@@ -1,5 +1,5 @@
 import { QueryClient } from '@tanstack/react-query';
-import { USE_QUERY_STALE } from '../types/app.constant';
+import { LOCAL_CACHE_TIME, USE_QUERY_STALE } from '../types/app.constant';
 import { persistQueryClient } from '@tanstack/react-query-persist-client';
 import { del, get, set } from 'idb-keyval';
 
@@ -7,7 +7,7 @@ export const queryClient = new QueryClient({
   defaultOptions: {
     queries: {
       // gcTime = how long will keep in memory/index db
-      gcTime: 1000 * 60 * 60 * 24,
+      gcTime: LOCAL_CACHE_TIME,
       staleTime: USE_QUERY_STALE, // after how long to retrieve data
       retry: 1,
     },
@@ -34,5 +34,5 @@ persistQueryClient({
   persister: indexedDBPersister,
   // The maximum time (in ms) until persisted data is considered invalid.
   // If the data in IndexedDB is older than 24h, it will be discarded during restoration.
-  maxAge: 1000 * 60 * 60 * 24,
+  maxAge: LOCAL_CACHE_TIME,
 });
