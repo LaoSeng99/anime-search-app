@@ -1,13 +1,11 @@
 import { useQuery } from '@tanstack/react-query';
-import { motion } from 'framer-motion';
-import { useRef } from 'react';
+import { useMemo } from 'react';
 import AnimePosterCard from '../../components/AnimePosterCard';
 import AnimeCardSkeleton from '../../components/AnimePosterCardSkeleton';
-import { useMaxScroll } from '../../hooks/useMaxScroll';
 import { getSeasonNow } from '../../services/seasonService';
 import LazyLoadSection from '../../components/ui/LazyLoadSection';
-import ErrorState from '../../components/ui/ErrorState';
 import { USE_QUERY_STALE } from '../../types/app.constant';
+import { HorizontalCarousel } from '../../components/ui/HorizontalCarousel';
 
 const TrendingCard = () => {
   return (
@@ -18,7 +16,6 @@ const TrendingCard = () => {
 };
 
 const TrendingContent = ({ isVisible }: { isVisible: boolean }) => {
-  const carouselRef = useRef<HTMLDivElement>(null);
   const { data, isLoading, error, refetch } = useQuery({
     queryKey: ['anime-season'],
     queryFn: async () => {
@@ -29,14 +26,22 @@ const TrendingContent = ({ isVisible }: { isVisible: boolean }) => {
     staleTime: USE_QUERY_STALE,
   });
 
-  const maxScroll = useMaxScroll(carouselRef, [isLoading]);
+  const allAnime = useMemo(() => {
+    if (!data) return [];
+    const flattened = data?.data.map((anime) => anime);
+
+    const uniqueMap = new Map();
+    flattened.forEach((item) => uniqueMap.set(item.mal_id, item));
+
+    return Array.from(uniqueMap.values());
+  }, [data]);
 
   const skeletonNodes = [...Array(6)].map((_, i) => (
     <AnimeCardSkeleton key={i} />
   ));
 
-  const posterCardNodes = data?.data.map((anime) => (
-    <AnimePosterCard key={anime.mal_id} anime={anime} />
+  const posterCardNodes = allAnime.map((anime) => (
+    <AnimePosterCard key={anime.mal_id} anime={anime} className="min-w-65" />
   ));
 
   return (
@@ -47,33 +52,10 @@ const TrendingContent = ({ isVisible }: { isVisible: boolean }) => {
       <h2 className="text-2xl font-medium text-white  px-8 md:px-16 pb-4">
         Trending Now
       </h2>
-      <div className="flex flex-row overflow-x-auto snap-x">
-        <div className="overflow-hidden w-full">
-          {/* horizontal carousel */}
-          <motion.div
-            ref={carouselRef}
-            className="cursor-grab active:cursor-grabbing relative">
-            {error && (
-              <div className="absolute inset-0 z-30 flex items-center justify-center bg-black/70 backdrop-blur-[2px] rounded-lg ">
-                <ErrorState
-                  title="Unable to load trending show"
-                  onRetry={refetch}
-                />
-              </div>
-            )}
 
-            <motion.div
-              drag={error ? false : 'x'}
-              dragConstraints={{ right: 0, left: -maxScroll }}
-              className="flex gap-6  px-8 md:px-16">
-              {isLoading || !isVisible || error
-                ? skeletonNodes
-                : posterCardNodes}
-              <div className="min-w-10 h-1" />
-            </motion.div>
-          </motion.div>
-        </div>
-      </div>
+      <HorizontalCarousel error={error} refetch={refetch} isLoading={isLoading}>
+        {isLoading || !isVisible || error ? skeletonNodes : posterCardNodes}
+      </HorizontalCarousel>
     </div>
   );
 };
