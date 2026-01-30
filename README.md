@@ -48,6 +48,11 @@
 
 ## Issues
 
+1.  **iframe** for youtube video :
+    - Native `<iframe>` cannot detect if a video is blocked by Regional Restrictions or copyright (it always returns HTTP 200).
+      with react-player:
+      1. error handling, react-player will captures `onError` for region-blocked or private video
+
 ## Credits
 
 This project's UI/UX design is inspired by the [Kurosaw – Anime Streaming Web App](https://dribbble.com/shots/21268682-Kurosaw-Anime-Streaming-Web-App) concept by **[Max Lewayer](https://dribbble.com/maxlewayer)**.

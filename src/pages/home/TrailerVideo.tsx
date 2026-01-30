@@ -1,18 +1,54 @@
-const TrailerVideo = () => {
-  const youtubeConfig =
-    '?autoplay=1&mute=1&controls=0&loop=1&playlist=B1gDCOTpDzA&rel=0&showinfo=0&iv_load_policy=3';
-  return (
-    <div className="absolute inset-0 z-0">
-      <iframe
-        className="w-full h-full scale-[1.2] pointer-events-none"
-        loading="lazy"
-        src={'https://www.youtube.com/embed/B1gDCOTpDzA' + youtubeConfig}
-        title="Trailer"
-        allow="autoplay; encrypted-media"></iframe>
+import { useState } from 'react';
+import ReactPlayer from 'react-player';
+import { getYoutubeIdFromUrl } from '../../utils/urlHelper';
+interface TrailerVideoProps {
+  embedUrl: string;
+  backdropUrl: string;
+}
 
-      <div className="absolute inset-0 bg-linear-to-r from-black/70 via-black/20 to-transparent z-10"></div>
-    </div>
-  );
+const TrailerVideo = ({ embedUrl, backdropUrl }: TrailerVideoProps) => {
+  const [hasError, setHasError] = useState(false);
+
+  const youtubeId = getYoutubeIdFromUrl(embedUrl);
+  const noCookieUrl = 'https://www.youtube-nocookie.com/embed/';
+
+  const renderContent = () => {
+    if (hasError) {
+      return (
+        <div className="absolute inset-0 z-0">
+          <img
+            src={backdropUrl}
+            className="w-full h-full object-cover blur-1xl scale-110 opacity-60"
+            alt="Fallback"
+          />
+        </div>
+      );
+    }
+
+    return (
+      <div className="absolute inset-0 z-0">
+        <ReactPlayer
+          width={'100%'}
+          height={'100%'}
+          style={{
+            width: '100%',
+            height: '100%',
+            pointerEvents: 'none',
+          }}
+          autoPlay={true}
+          muted={true}
+          controls={false}
+          loop={true}
+          onError={() => setHasError(true)}
+          src={noCookieUrl + youtubeId}
+        />
+
+        <div className="absolute inset-0 bg-linear-to-r from-black/70 via-black/20 to-transparent z-10"></div>
+      </div>
+    );
+  };
+
+  return renderContent();
 };
 
 export default TrailerVideo;
