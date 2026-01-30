@@ -5,27 +5,10 @@ import {
   type AnimeSearchQueryRating,
   type AnimeSearchQueryOrderBy,
   ANIME_MAXIMUM_LIMIT,
+  type TopAnimeFilter,
 } from '../types/anime.request';
 import type { ApiListResponse } from '../types/api.response';
 import apiClient from './apiClient';
-
-export const getAnime = async (
-  req: GetAnimeSearchRequest = {
-    limit: 10,
-    page: 1,
-    q: '',
-  },
-) => {
-  if (req.limit! > ANIME_MAXIMUM_LIMIT) {
-    throw new Error('Limit cannot exceed 25');
-  }
-
-  const response = await apiClient.get<ApiListResponse<Anime>>('/anime', {
-    params: { ...req },
-  });
-
-  return response.data;
-};
 
 export interface GetAnimeSearchRequest {
   /** Current page number for pagination. */
@@ -89,3 +72,46 @@ export interface GetAnimeSearchRequest {
    */
   end_date?: string;
 }
+
+export const getAnime = async (
+  req: GetAnimeSearchRequest = {
+    limit: 10,
+    page: 1,
+    q: '',
+  },
+) => {
+  if (req.limit! > ANIME_MAXIMUM_LIMIT) {
+    throw new Error('Limit cannot exceed 25');
+  }
+
+  const response = await apiClient.get<ApiListResponse<Anime>>('/anime', {
+    params: { ...req },
+  });
+
+  return response.data;
+};
+
+export interface GetTopAnimeRequest {
+  page?: number;
+  limit?: number;
+  type?: AnimeSearchQueryType;
+  filter?: TopAnimeFilter;
+  rating?: AnimeSearchQueryRating;
+}
+
+export const getTopAnime = async (
+  req: GetTopAnimeRequest = {
+    limit: 10,
+    page: 1,
+  },
+) => {
+  if (req.limit! > ANIME_MAXIMUM_LIMIT) {
+    throw new Error('Limit cannot exceed 25');
+  }
+
+  const response = await apiClient.get<ApiListResponse<Anime>>('/top/anime', {
+    params: { ...req },
+  });
+
+  return response.data;
+};

@@ -37,3 +37,9 @@ export type AnimeSeasonQueryFilter =
   | 'music';
 
 export const ANIME_MAXIMUM_LIMIT = 25;
+
+export type TopAnimeFilter =
+  | 'airing'
+  | 'upcoming'
+  | 'bypopularity'
+  | 'favorite';
