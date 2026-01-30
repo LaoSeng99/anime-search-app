@@ -35,7 +35,11 @@
     - Nested Routes
     - Client-side routing
 
-7.  **Naming**:
+7.  **Caching** : local/persist caching
+    - Prevent tanstack query request too many time reach Jikan Rate limit
+    - TanStack session/memory level cache -> persist (indexDb local storage)
+
+8.  **Naming**:
     | Type | Style | Example |
     | ---- | ----- | ------- |
     |**Components** |PascalCase | `AnimeCard.tsx` |
@@ -47,10 +51,9 @@
 
 ## Issues
 
-1.  **iframe** for youtube video :
-    - Native `<iframe>` cannot detect if a video is blocked by Regional Restrictions or copyright (it always returns HTTP 200).
-      with react-player:
-      1. error handling, react-player will captures `onError` for region-blocked or private video
+1.  **tanstack/persist query**
+    - Design Intent: Originally designed with a stale-while-revalidate approach. For Infinite Loading or paginated data, it tends to return all data at once, sending requests for every single page to update the old cache.
+    - Performance: Rendering the data may cause UI lag or stuttering. It is necessary to use a Virtual List to ensure items are only rendered when they enter the viewport.
 
 ## Credits
 
