@@ -5,12 +5,14 @@ interface MotionImageProps extends HTMLMotionProps<'img'> {
   src: string;
   alt: string;
   className?: string;
+  loading?: 'lazy' | 'eager';
 }
 
 const MotionImage = ({
   src,
   alt,
   className = '',
+  loading = 'lazy',
   ...props
 }: MotionImageProps) => {
   const [isLoaded, setIsLoaded] = useState(false);
@@ -19,7 +21,7 @@ const MotionImage = ({
     <motion.img
       src={src}
       alt={alt}
-      loading="lazy"
+      loading={loading}
       decoding="async"
       onLoad={() => setIsLoaded(true)}
       // Load animation

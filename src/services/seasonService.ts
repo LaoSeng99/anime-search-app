@@ -16,7 +16,7 @@ export const getSeasonNow = async (
     throw new Error('Limit cannot exceed 25');
   }
 
-  const response = await apiClient.get<ApiListResponse<Anime>>('/season/now', {
+  const response = await apiClient.get<ApiListResponse<Anime>>('/seasons/now', {
     params: { ...req },
   });
 
