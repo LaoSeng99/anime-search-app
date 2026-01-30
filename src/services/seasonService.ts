@@ -6,7 +6,7 @@ import {
 import type { ApiListResponse } from '../types/api.response';
 import apiClient from './apiClient';
 
-export const getAnime = async (
+export const getSeasonNow = async (
   req: GetSeasonRequest = {
     limit: 10,
     page: 1,

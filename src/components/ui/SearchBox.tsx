@@ -86,12 +86,12 @@ const SearchBox = forwardRef<SearchBoxHandle, SearchBoxProps>(
           onKeyDown={handleKeyDown}
           placeholder="Search anime..."
           className="w-full py-4 pl-12 pr-12 text-gray-100 bg-black/40 border border-white/20 rounded-2xl 
-             backdrop-blur-md transition-all duration-500 outline-none
-             placeholder:text-gray-400
-             focus:bg-black/60 
-             focus:border-white/60
-             focus:ring-0
-             focus:shadow-[0_0_15px_rgba(255,255,255,0.1),0_0_30px_rgba(255,255,255,0.05)]"
+                      backdrop-blur-md transition-all duration-500 outline-none
+                      placeholder:text-gray-400
+                      focus:bg-black/60 
+                      focus:border-white/60
+                      focus:ring-0
+                      focus:shadow-[0_0_15px_rgba(255,255,255,0.1),0_0_30px_rgba(255,255,255,0.05)]"
         />
 
         {/* Conditional Rendering: Show Loader when searching, otherwise show Clear button if input exists */}
