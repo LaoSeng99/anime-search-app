@@ -43,12 +43,25 @@ const Footer = () => {
 
       {/* Copyright Section */}
       <p
-        className="font-sans text-[0.85rem] text-gray-300 tracking-widest uppercase transition-all duration-700
-                   cursor-default hover:text-gray-50 hover:-translate-y-0.5">
-        <span className="font-bold ml-1">LAOSENG</span> ©{' '}
-        <span className="tabular-nums">2026</span>
-        <span className="mx-2 ">|</span>
-        All Rights Reserved
+        className="font-sans text-[0.75rem] md:text-[0.85rem] text-gray-400 tracking-widest uppercase transition-all duration-700 
+                cursor-default hover:text-gray-50 hover:-translate-y-0.5">
+        <span className="font-bold ml-1 text-gray-200">LAOSENG</span> ©{' '}
+        <span className="tabular-nums">{new Date().getFullYear()}</span>
+        <span className="mx-2 opacity-50">|</span>
+        FOR DEMONSTRATION PURPOSES ONLY
+      </p>
+
+      {/* UI Credit */}
+      <p className="text-[10px] text-gray-400 tracking-[0.2em] uppercase transition-all duration-300">
+        UI Inspired by{' '}
+        <a
+          href="https://dribbble.com/shots/22982773-Kurosaw-Anime-Streaming-Web-App"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="text-gray-400 hover:text-white transition-colors cursor-pointer border-b border-transparent pb-0.5
+          ">
+          Max Lewayer
+        </a>
       </p>
     </footer>
   );

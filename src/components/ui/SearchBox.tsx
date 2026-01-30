@@ -73,7 +73,7 @@ const SearchBox = forwardRef<SearchBoxHandle, SearchBoxProps>(
       <div className="relative w-full max-w-2xl mx-auto group">
         {/* Left Search Icon */}
         <div className="absolute inset-y-0 left-0 flex items-center pl-4 pointer-events-none">
-          <Search className="w-5 h-5 text-gray-400 group-focus-within:text-accent-neon transition-colors" />
+          <Search className="w-5 h-5  text-gray-100 group-focus-within:text-accent-neon transition-colors" />
         </div>
 
         {/* Main Search Input */}
@@ -84,11 +84,14 @@ const SearchBox = forwardRef<SearchBoxHandle, SearchBoxProps>(
           onChange={(e) => setInputValue(e.target.value)}
           onFocus={onFocus}
           onKeyDown={handleKeyDown}
-          placeholder="Search..."
-          className="w-full py-4 pl-12 pr-12 text-gray-200 bg-white/5 border border-gray-500 rounded-2xl 
-                 focus:border-cyan-50  focus:ring-cyan-50/20 focus:shadow-[0_0_20px_rgba(6,182,212,0.3)]
-                   backdrop-blur-sm focus:outline-none focus:ring-2 focus:ring-accent-neon/50 
-                   focus:border-accent-neon transition-all placeholder:text-gray-500"
+          placeholder="Search anime..."
+          className="w-full py-4 pl-12 pr-12 text-gray-100 bg-black/40 border border-white/20 rounded-2xl 
+             backdrop-blur-md transition-all duration-500 outline-none
+             placeholder:text-gray-400
+             focus:bg-black/60 
+             focus:border-white/60
+             focus:ring-0
+             focus:shadow-[0_0_15px_rgba(255,255,255,0.1),0_0_30px_rgba(255,255,255,0.05)]"
         />
 
         {/* Conditional Rendering: Show Loader when searching, otherwise show Clear button if input exists */}
