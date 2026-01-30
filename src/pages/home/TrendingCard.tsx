@@ -37,7 +37,7 @@ const TrendingContent = ({ isVisible }: { isVisible: boolean }) => {
   }, [data]);
 
   const skeletonNodes = [...Array(6)].map((_, i) => (
-    <AnimeCardSkeleton key={i} />
+    <AnimeCardSkeleton key={i} className="min-w-65" />
   ));
 
   const posterCardNodes = allAnime.map((anime) => (

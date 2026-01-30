@@ -19,7 +19,7 @@ const PopularCard = () => {
 };
 
 const MAX_ITEMS = 50;
-const ITEMS_PER_PAGE = 12; // 6 cols * 2 rows = 12
+const ITEMS_PER_PAGE = 12;
 
 const PopularContent = ({ isVisible }: { isVisible: boolean }) => {
   const {
@@ -52,7 +52,10 @@ const PopularContent = ({ isVisible }: { isVisible: boolean }) => {
     retry: 3,
     retryDelay: 2000,
   });
+
   const navigate = useNavigate();
+
+  //For infinite load trigger
   const { ref, inView } = useInView({
     threshold: 0,
     rootMargin: '50px',
@@ -78,7 +81,7 @@ const PopularContent = ({ isVisible }: { isVisible: boolean }) => {
     allAnime.length >= MAX_ITEMS || (!hasNextPage && allAnime.length > 0);
 
   const skeletonNodes = [...Array(6)].map((_, i) => (
-    <AnimeCardSkeleton key={i} />
+    <AnimeCardSkeleton key={i} className="w-full" />
   ));
 
   return (

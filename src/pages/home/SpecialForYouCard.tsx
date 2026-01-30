@@ -10,7 +10,7 @@ import { HorizontalCarousel } from '../../components/ui/HorizontalCarousel';
 
 const SpecialForYouCard = () => {
   return (
-    <LazyLoadSection rootMargin="0px">
+    <LazyLoadSection rootMargin="50px">
       {(inView) => <SpecialForYouContent isVisible={inView} />}
     </LazyLoadSection>
   );
@@ -37,7 +37,7 @@ const SpecialForYouContent = ({ isVisible }: { isVisible: boolean }) => {
   }, [data]);
 
   const skeletonNodes = [...Array(6)].map((_, i) => (
-    <AnimeCardSkeleton key={i} />
+    <AnimeCardSkeleton key={i} className="min-w-65" />
   ));
 
   const posterCardNodes = allAnime.map((anime) => (
