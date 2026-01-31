@@ -1,4 +1,4 @@
-import { get, set } from 'idb-keyval';
+import { del, get, set } from 'idb-keyval';
 import type { Anime } from '../types/anime';
 
 const STORAGE_KEY = 'favourite-storage';
@@ -14,7 +14,7 @@ const simplifyAnime = (anime: Anime) => ({
   },
   score: anime.score,
   year: anime.year,
-  genres: anime.genres.map((genre) => genre?.name),
+  genres: anime.genres,
   synopsis: anime.synopsis,
   type: anime.type,
 });
@@ -32,4 +32,8 @@ export const getFavourites = async (): Promise<Anime[]> => {
 export const saveFavourites = async (animeList: Anime[]): Promise<void> => {
   const data = animeList.map(simplifyAnime);
   await set(STORAGE_KEY, data);
+};
+
+export const deleteAllFavourites = async (): Promise<void> => {
+  await del(STORAGE_KEY);
 };

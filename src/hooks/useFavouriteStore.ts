@@ -1,5 +1,9 @@
 import { create } from 'zustand';
-import { getFavourites, saveFavourites } from '../services/favouriteService';
+import {
+  deleteAllFavourites,
+  getFavourites,
+  saveFavourites,
+} from '../services/favouriteService';
 import type { Anime } from '../types/anime';
 
 interface FavouriteState {
@@ -9,6 +13,7 @@ interface FavouriteState {
 
   init: () => Promise<void>;
   toggleFavourite: (anime: Anime) => Promise<void>;
+  removeAllFavourite: () => Promise<void>;
 }
 
 export const useFavouriteStore = create<FavouriteState>((set, get) => ({
@@ -46,6 +51,15 @@ export const useFavouriteStore = create<FavouriteState>((set, get) => ({
       //roll back
       set({ favouriteIds });
       console.error('Failed to sync favourite status', err);
+    }
+  },
+
+  removeAllFavourite: async () => {
+    try {
+      await deleteAllFavourites();
+      set({ favouriteAnime: [], favouriteIds: [] });
+    } catch (err) {
+      console.error('Failed to remove all favourites');
     }
   },
 }));
