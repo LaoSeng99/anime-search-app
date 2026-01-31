@@ -16,7 +16,8 @@ interface ButtonProps extends Omit<HTMLMotionProps<'button'>, 'children'> {
   variant?: ButtonVariant;
   size?: ButtonSize;
   isLoading?: boolean;
-  leftIcon?: React.ReactNode;
+  icon?: React.ReactNode;
+  iconPosition?: 'left' | 'right';
   outline?: boolean;
   children?: React.ReactNode;
 }
@@ -77,7 +78,8 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
       variant = 'primary',
       size = 'md',
       isLoading,
-      leftIcon,
+      icon,
+      iconPosition = 'left',
       children,
       className = '',
       outline = false,
@@ -105,8 +107,13 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
           <Loader2 className="animate-spin" size={iconSize} />
         ) : (
           <>
-            {leftIcon && <span className="shrink-0">{leftIcon}</span>}
+            {icon && iconPosition === 'left' && (
+              <span className="shrink-0">{icon}</span>
+            )}
             {children}
+            {icon && iconPosition === 'right' && (
+              <span className="shrink-0">{icon}</span>
+            )}
           </>
         )}
       </motion.button>

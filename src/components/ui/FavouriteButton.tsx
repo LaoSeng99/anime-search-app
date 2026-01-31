@@ -13,7 +13,7 @@ const FavouriteButton = ({ anime }: { anime: Anime }) => {
 
   return (
     <Button
-      leftIcon={icon}
+      icon={icon}
       onClick={() => {
         toggle(anime);
       }}>
