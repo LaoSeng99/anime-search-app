@@ -1,10 +1,10 @@
 import { useQuery } from '@tanstack/react-query';
 import { useMemo } from 'react';
-import AnimePosterCard from '../../components/AnimePosterCard';
-import AnimeCardSkeleton from '../../components/AnimePosterCardSkeleton';
-import { getSeasonNow } from '../../services/seasonService';
-import LazyLoadSection from '../../components/ui/LazyLoadSection';
-import { HorizontalCarousel } from '../../components/ui/HorizontalCarousel';
+import AnimePosterCard from '../../../components/AnimePosterCard';
+import AnimeCardSkeleton from '../../../components/AnimePosterCardSkeleton';
+import { HorizontalCarousel } from '../../../components/ui/HorizontalCarousel';
+import LazyLoadSection from '../../../components/ui/LazyLoadSection';
+import { getSeasonNow } from '../../../services/seasonService';
 
 const TrendingCard = () => {
   return (

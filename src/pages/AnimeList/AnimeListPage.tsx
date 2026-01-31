@@ -1,10 +1,10 @@
 import { useInfiniteQuery, type InfiniteData } from '@tanstack/react-query';
 import { useState } from 'react';
-import { getAnime } from '../services/animeService';
-import type { Anime } from '../types/anime';
-import type { ApiListResponse } from '../types/api.response';
+import { getAnime } from '../../services/animeService';
+import type { Anime } from '../../types/anime';
+import type { ApiListResponse } from '../../types/api.response';
 import { useInView } from 'react-intersection-observer';
-import { useAnimeSearch } from '../hooks/useAnimeSearch';
+import { useAnimeSearch } from '../../hooks/useAnimeSearch';
 
 const AnimeListPage = () => {
   const {

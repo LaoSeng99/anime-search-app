@@ -1,11 +1,10 @@
 import { useQuery } from '@tanstack/react-query';
-import { getAnime } from '../../services/animeService';
 import { useMemo } from 'react';
-import AnimeCardSkeleton from '../../components/AnimePosterCardSkeleton';
-import AnimePosterCard from '../../components/AnimePosterCard';
-
-import LazyLoadSection from '../../components/ui/LazyLoadSection';
-import { HorizontalCarousel } from '../../components/ui/HorizontalCarousel';
+import AnimePosterCard from '../../../components/AnimePosterCard';
+import AnimeCardSkeleton from '../../../components/AnimePosterCardSkeleton';
+import { HorizontalCarousel } from '../../../components/ui/HorizontalCarousel';
+import LazyLoadSection from '../../../components/ui/LazyLoadSection';
+import { getAnime } from '../../../services/animeService';
 
 const SpecialForYouCard = () => {
   return (

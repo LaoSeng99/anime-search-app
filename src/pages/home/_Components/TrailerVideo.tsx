@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import ReactPlayer from 'react-player';
-import { getYoutubeIdFromUrl } from '../../utils/urlHelper';
+import { getYoutubeIdFromUrl } from '../../../utils/urlHelper';
 interface TrailerVideoProps {
   embedUrl: string;
   backdropUrl: string;
@@ -38,7 +38,9 @@ const TrailerVideo = ({ embedUrl, backdropUrl }: TrailerVideoProps) => {
           autoPlay={true}
           muted={true}
           controls={false}
-          loop={true}
+          onEnded={() => {
+            console.log('video end!');
+          }}
           onError={() => setHasError(true)}
           src={finalVideoUrl}
         />

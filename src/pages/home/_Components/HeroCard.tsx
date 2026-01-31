@@ -1,12 +1,12 @@
-import { Loader2 } from 'lucide-react';
-import Button from '../../components/ui/Button';
-import TrailerVideo from './TrailerVideo';
 import { useQuery } from '@tanstack/react-query';
-import { getSeasonNow } from '../../services/seasonService';
-import MotionImage from '../../components/ui/MotionImage';
+import { Loader2 } from 'lucide-react';
 import { useNavigate } from 'react-router';
-import ErrorState from '../../components/ui/ErrorState';
-import FavouriteButton from '../../components/ui/FavouriteButton';
+import Button from '../../../components/ui/Button';
+import ErrorState from '../../../components/ui/ErrorState';
+import FavouriteButton from '../../../components/ui/FavouriteButton';
+import MotionImage from '../../../components/ui/MotionImage';
+import { getSeasonNow } from '../../../services/seasonService';
+import TrailerVideo from './TrailerVideo';
 
 const HeroCard = () => {
   const { data, isLoading, isError, refetch } = useQuery({

@@ -1,15 +1,12 @@
-import { useInfiniteQuery } from '@tanstack/react-query';
-import AnimePosterCard from '../../components/AnimePosterCard';
-import AnimeCardSkeleton from '../../components/AnimePosterCardSkeleton';
-import LazyLoadSection from '../../components/ui/LazyLoadSection';
-import { USE_INFINITY_STALE } from '../../types/app.constant';
-import ErrorState from '../../components/ui/ErrorState';
-import Button from '../../components/ui/Button';
+import { useEffect } from 'react';
 import { useInView } from 'react-intersection-observer';
-import { useEffect, useMemo } from 'react';
 import { useNavigate } from 'react-router';
-import { getTopAnime } from '../../services/animeService';
-
+import AnimePosterCard from '../../../components/AnimePosterCard';
+import AnimeCardSkeleton from '../../../components/AnimePosterCardSkeleton';
+import Button from '../../../components/ui/Button';
+import ErrorState from '../../../components/ui/ErrorState';
+import LazyLoadSection from '../../../components/ui/LazyLoadSection';
+import { usePopularCardLogic } from './PopularCard.hook';
 const PopularCard = () => {
   return (
     <LazyLoadSection rootMargin="0px">
@@ -18,42 +15,19 @@ const PopularCard = () => {
   );
 };
 
-const MAX_ITEMS = 50;
-const ITEMS_PER_PAGE = 12;
-
 const PopularContent = ({ isVisible }: { isVisible: boolean }) => {
+  const navigate = useNavigate();
+
   const {
-    data,
+    allAnime,
     isLoading,
     error,
     fetchNextPage,
     hasNextPage,
     isFetchingNextPage,
     refetch,
-  } = useInfiniteQuery({
-    queryKey: ['anime-popular'],
-    queryFn: async ({ pageParam = 1 }) => {
-      return await getTopAnime({ limit: ITEMS_PER_PAGE, page: pageParam });
-    },
-    initialPageParam: 1,
-    getNextPageParam: (lastPage, allPages) => {
-      const currentTotal = allPages.flatMap((p) => p.data).length;
-
-      if (currentTotal >= MAX_ITEMS) return undefined;
-
-      const pagination = lastPage.pagination;
-      if (pagination.has_next_page) {
-        return pagination.current_page + 1;
-      }
-      return undefined;
-    },
-    enabled: isVisible,
-    staleTime: USE_INFINITY_STALE,
-    retry: 3,
-    retryDelay: 2000,
-  });
-
-  const navigate = useNavigate();
+    showViewMoreButton,
+  } = usePopularCardLogic({ isVisible });
 
   //For infinite load trigger
   const { ref, inView } = useInView({
@@ -61,24 +35,11 @@ const PopularContent = ({ isVisible }: { isVisible: boolean }) => {
     rootMargin: '50px',
   });
 
-  const allAnime = useMemo(() => {
-    if (!data) return [];
-    const flattened = data.pages.flatMap((page) => page.data);
-
-    const uniqueMap = new Map();
-    flattened.forEach((item) => uniqueMap.set(item.mal_id, item));
-
-    return Array.from(uniqueMap.values()).slice(0, MAX_ITEMS);
-  }, [data]);
-
   useEffect(() => {
     if (inView && hasNextPage) {
       fetchNextPage();
     }
   }, [inView, hasNextPage, fetchNextPage]);
-
-  const showViewMoreButton =
-    allAnime.length >= MAX_ITEMS || (!hasNextPage && allAnime.length > 0);
 
   const skeletonNodes = [...Array(6)].map((_, i) => (
     <AnimeCardSkeleton key={i} className="w-full" />

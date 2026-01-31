@@ -1,9 +1,7 @@
-import Button from '../../components/ui/Button';
-
-import SpecialForYouCard from './SpecialForYouCard';
-import HeroCard from './HeroCard';
-import TrendingCard from './TrendingCard';
-import PopularCard from './PopularCard';
+import SpecialForYouCard from './_Components/SpecialForYouCard';
+import HeroCard from './_Components/HeroCard';
+import TrendingCard from './_Components/TrendingCard';
+import PopularCard from './_Components/PopularCard';
 
 const HomePage = () => {
   return (
