@@ -4,18 +4,18 @@ import AnimePosterCard from '../../components/AnimePosterCard';
 import PaginationGroup from '../../components/ui/PaginationGroup';
 import AnimeListSidebar from './_Components/AnimeListSidebar';
 import BackgroundSection from '../../components/layout/BackgroundSection';
-import { useDebounce } from '../../hooks/useDebounce';
 import AnimeCardSkeleton from '../../components/AnimePosterCardSkeleton';
 
 import { useUrlQueryState } from '../../hooks/useUrlQueryState';
 import AnimeListToolbar from './_Components/AnimeListToolbar';
+import { useDebounce } from 'use-debounce';
 
 const AnimeListPage = () => {
   const topRef = useRef<HTMLDivElement>(null);
 
   const { urlRequest, activeFilters } = useUrlQueryState();
 
-  const debouncedRequest = useDebounce(urlRequest, 500);
+  const [debouncedRequest] = useDebounce(urlRequest, 500);
 
   const { animeList, pagination, isLoading, isFetching } = useAnimeSearch({
     req: debouncedRequest,
@@ -47,11 +47,11 @@ const AnimeListPage = () => {
         </h1>
 
         <div
-          className="flex justify-between w-full bg-black/80 px-8 py-8 min-h-150 scroll-mt-18"
+          className="flex justify-between w-full bg-black/80 px-8 pl-0 pb-0 min-h-150 scroll-mt-18"
           ref={topRef}>
           <AnimeListSidebar />
 
-          <main className="flex-1 px-6 w-full max-w-496 m-auto">
+          <main className=" flex flex-col flex-1 pt-8 px-6 w-full max-w-496 h-full">
             <AnimeListToolbar isFetching={false}></AnimeListToolbar>
             {activeFilters.length > 0 && (
               <div className="mt-6 flex flex-wrap items-center gap-2">
@@ -69,21 +69,23 @@ const AnimeListPage = () => {
               </div>
             )}
             {/* Grid */}
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 gap-6 mt-8">
-              {showSkeleton
-                ? // show skeleton first
-                  skeletonNodes
-                : animeList.length > 0 // show data
-                  ? animeList.map((anime, index) => (
-                      <div
-                        key={`${anime.mal_id}-${index}`}
-                        className="relative w-full">
-                        <AnimePosterCard className="w-full" anime={anime} />
-                      </div>
-                    ))
-                  : !isLoading && <EmptyState />}
+            <div className="flex-1">
+              <div className="grid-1 h-full grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 gap-6 mt-8">
+                {showSkeleton
+                  ? // show skeleton first
+                    skeletonNodes
+                  : animeList.length > 0 // show data
+                    ? animeList.map((anime, index) => (
+                        <div
+                          key={`${anime.mal_id}-${index}`}
+                          className="relative w-full">
+                          <AnimePosterCard className="w-full" anime={anime} />
+                        </div>
+                      ))
+                    : !isLoading && <EmptyState />}
+              </div>
             </div>
-            <div className="mt-12">
+            <div className="mt-12 mb-8">
               <PaginationGroup
                 itemLength={pagination?.items?.total ?? 0}
                 currentPage={urlRequest.page || 1}

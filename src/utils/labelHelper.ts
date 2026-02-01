@@ -1,6 +1,9 @@
-import type { AnimeSearchQueryType } from '../types/anime.request';
+import type {
+  AnimeSearchQueryOrderBy,
+  AnimeSearchQueryType,
+} from '../types/anime.request';
 
-const AnimeTypeLabelMap: Record<string, string> = {
+export const ANIME_TYPE_LABELS: Record<AnimeSearchQueryType, string> = {
   tv: 'TV Series',
   movie: 'Movie',
   ova: 'OVA',
@@ -15,5 +18,27 @@ const AnimeTypeLabelMap: Record<string, string> = {
 export const getAnimeTypeLabel = (
   type: string | AnimeSearchQueryType,
 ): string => {
-  return AnimeTypeLabelMap[type.toLowerCase()] ?? 'N/A';
+  return ANIME_TYPE_LABELS[type.toLowerCase() as AnimeSearchQueryType] ?? 'N/A';
+};
+
+export const ORDER_BY_LABELS: Record<AnimeSearchQueryOrderBy, string> = {
+  mal_id: 'ID',
+  title: 'Title',
+  start_date: 'Start Date',
+  end_date: 'End Date',
+  episodes: 'Episodes',
+  score: 'Score',
+  scored_by: 'Scored By',
+  rank: 'Rank',
+  popularity: 'Popularity',
+  members: 'Members',
+  favorites: 'Favorites',
+};
+
+export const getAnimeSorterLabel = (
+  type: string | AnimeSearchQueryOrderBy,
+): string => {
+  return (
+    ORDER_BY_LABELS[type.toLowerCase() as AnimeSearchQueryOrderBy] ?? 'N/A'
+  );
 };

@@ -1,19 +1,25 @@
 import { AnimatePresence, motion } from 'framer-motion';
 import { Check } from 'lucide-react';
+import { cn } from '../../utils/ui.util';
 
 interface CheckboxProps {
   label: string;
   checked: boolean;
   onChange: (checked: boolean) => void;
+  className?: string;
 }
 
-const Checkbox = ({ label, checked, onChange }: CheckboxProps) => {
+const Checkbox = ({ label, checked, onChange, className }: CheckboxProps) => {
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     onChange(e.target.checked);
   };
 
   return (
-    <label className="flex items-center gap-4 cursor-pointer group select-none">
+    <label
+      className={cn([
+        'flex items-center gap-4 cursor-pointer group select-none',
+        className,
+      ])}>
       <div className="relative flex items-center justify-center">
         <input
           type="checkbox"

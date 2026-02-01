@@ -1,20 +1,19 @@
 import type { Anime } from '../types/anime';
-import type { AnimeSearchQueryOrderBy } from '../types/anime.request';
-import type { SorterItem, SortParams } from '../types/ui.interface';
-
-export const ORDER_BY_LABELS: Record<AnimeSearchQueryOrderBy, string> = {
-  mal_id: 'ID',
-  title: 'Title',
-  start_date: 'Start Date',
-  end_date: 'End Date',
-  episodes: 'Episodes',
-  score: 'Score',
-  scored_by: 'Scored By',
-  rank: 'Rank',
-  popularity: 'Popularity',
-  members: 'Members',
-  favorites: 'Favorites',
-};
+import type {
+  AnimeSearchQueryOrderBy,
+  AnimeSearchQueryType,
+} from '../types/anime.request';
+import type {
+  CheckboxOption,
+  SorterItem,
+  SortParams,
+} from '../types/ui.interface';
+import {
+  ANIME_TYPE_LABELS,
+  getAnimeSorterLabel,
+  getAnimeTypeLabel,
+  ORDER_BY_LABELS,
+} from './labelHelper';
 
 export const getAnimeSorterList = (currentParams: SortParams): SorterItem[] => {
   const fields: AnimeSearchQueryOrderBy[] = Object.keys(
@@ -25,7 +24,7 @@ export const getAnimeSorterList = (currentParams: SortParams): SorterItem[] => {
     const isActive = currentParams.order_by === field;
 
     return {
-      label: ORDER_BY_LABELS[field],
+      label: getAnimeSorterLabel(field),
       isActive: isActive,
       currentSort: isActive ? currentParams.sort : undefined,
       sortBy: {
@@ -82,6 +81,20 @@ export const sortAnime = (data: Anime[], params: SortParams): Anime[] => {
     const res = valA > valB ? 1 : valA < valB ? -1 : 0;
     return sort === 'desc' ? -res : res;
   });
+};
+
+export const getAnimeTypeFilterList = (): CheckboxOption[] => {
+  const fields: AnimeSearchQueryType[] = Object.keys(
+    ANIME_TYPE_LABELS,
+  ) as AnimeSearchQueryType[];
+
+  const options: CheckboxOption[] = fields.map((type) => ({
+    id: type,
+    label: getAnimeTypeLabel(type),
+    checked: false,
+  }));
+
+  return options;
 };
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any

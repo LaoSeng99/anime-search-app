@@ -1,6 +1,7 @@
 import React from 'react';
 import { Loader2 } from 'lucide-react';
 import { motion, type HTMLMotionProps } from 'framer-motion';
+import { cn } from '../../utils/ui.util';
 type ButtonVariant =
   | 'primary'
   | 'secondary'
@@ -93,14 +94,20 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
       ] || colorConfigs.primary.solid;
 
     const iconSize = size === 'sm' ? 14 : size === 'lg' ? 20 : 16;
+
+    const buttonClassName = cn([
+      baseStyles,
+      variantStyles,
+      sizes[size as keyof typeof sizes],
+      className,
+    ]);
     return (
       <motion.button
         ref={ref}
         whileHover={{ scale: 1.02 }}
         whileTap={{ scale: 0.98 }}
         transition={{ type: 'spring', stiffness: 400, damping: 15 }}
-        className={`${baseStyles} ${variantStyles} ${sizes[size]} ${className} 
-        `}
+        className={buttonClassName}
         disabled={isLoading || props.disabled}
         {...props}>
         {isLoading ? (
