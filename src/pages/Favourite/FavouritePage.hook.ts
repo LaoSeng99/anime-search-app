@@ -3,7 +3,7 @@ import { useSearchParams } from 'react-router';
 import { useCheckboxGroup } from '../../hooks/useCheckboxGroup';
 import { useFavouriteStore } from '../../hooks/useFavouriteStore';
 import type { CheckboxOption, SortParams } from '../../types/ui.interface';
-import { getAnimeSorterList } from '../../utils/anime.util';
+import { getAnimeSorterList, sortAnime } from '../../utils/anime.util';
 import { getAnimeTypeLabel } from '../../utils/labelHelper';
 import { useDebounce } from '../../hooks/useDebounce';
 
@@ -58,8 +58,9 @@ export const useFavouriteLogic = () => {
             debouncedFilterSet.has(a.type?.toLowerCase()),
           );
 
-    // TODO: Sorting
-    console.log('Ready for sort', debouncedSortParams);
+    if (debouncedSortParams) {
+      return sortAnime(result, debouncedSortParams);
+    }
     return result;
   }, [favouriteAnime, debouncedFilterSet, debouncedSortParams]);
 

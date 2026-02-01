@@ -25,7 +25,7 @@ export interface Anime {
   favorites: number;
   synopsis: string | null;
   background: string | null;
-  season: string | null;
+  season: Season | null;
   year: number | null;
   broadcast: Broadcast;
   producers: ResourceReference[];
@@ -90,3 +90,5 @@ export interface ResourceReference {
   name: string;
   url: string;
 }
+
+export type Season = 'winter' | 'spring' | 'summer' | 'fall';

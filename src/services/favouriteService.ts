@@ -12,11 +12,20 @@ const simplifyAnime = (anime: Anime) => ({
       image_url: anime.images.webp.image_url,
     },
   },
-  score: anime.score,
   year: anime.year,
   genres: anime.genres,
   synopsis: anime.synopsis,
   type: anime.type,
+  /* order_by value */
+  episodes: anime.episodes,
+  rating: anime.rating,
+  score: anime.score,
+  scored_by: anime.scored_by,
+  rank: anime.rank,
+  popularity: anime.popularity,
+  members: anime.members,
+  favorites: anime.favorites,
+  aired: anime.aired,
 });
 
 export const getFavourites = async (): Promise<Anime[]> => {
