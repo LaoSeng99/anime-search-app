@@ -7,8 +7,8 @@ import type {
   AnimeSearchQueryRating,
   AnimeSearchQueryOrderBy,
 } from '../types/anime.request';
-import { ORDER_BY_LABELS } from '../utils/anime.util';
 import type { ActiveFilterItem } from '../types/ui.interface';
+import { ANIME_TYPE_LABELS, ORDER_BY_LABELS } from '../utils/labelHelper';
 
 export const useUrlQueryState = () => {
   const [searchParams, setSearchParams] = useSearchParams();
@@ -76,7 +76,7 @@ export const useUrlQueryState = () => {
     }
 
     if (newParams.toString() !== searchParams.toString()) {
-      setSearchParams(newParams);
+      setSearchParams(newParams, { replace: true });
     }
   };
 
@@ -101,6 +101,8 @@ export const useUrlQueryState = () => {
           displayValue = value === 'desc' ? 'Descending' : 'Ascending';
         } else if (key === 'q') {
           displayKey = 'Search';
+        } else if (key === 'type') {
+          displayValue = ANIME_TYPE_LABELS[value as AnimeSearchQueryType];
         }
 
         return {
