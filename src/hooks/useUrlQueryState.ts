@@ -8,7 +8,12 @@ import type {
   AnimeSearchQueryOrderBy,
 } from '../types/anime.request';
 import type { ActiveFilterItem } from '../types/ui.interface';
-import { ANIME_TYPE_LABELS, ORDER_BY_LABELS } from '../utils/labelHelper';
+import {
+  ANIME_TYPE_LABELS,
+  ORDER_BY_LABELS,
+  RATING_LABEL,
+  STATUS_LABEL,
+} from '../utils/labelHelper';
 
 export const useUrlQueryState = () => {
   const [searchParams, setSearchParams] = useSearchParams();
@@ -103,6 +108,10 @@ export const useUrlQueryState = () => {
           displayKey = 'Search';
         } else if (key === 'type') {
           displayValue = ANIME_TYPE_LABELS[value as AnimeSearchQueryType];
+        } else if (key === 'rating') {
+          displayValue = RATING_LABEL[value as AnimeSearchQueryRating];
+        } else if (key === 'status') {
+          displayValue = STATUS_LABEL[value as AnimeSearchQueryStatus];
         }
 
         return {

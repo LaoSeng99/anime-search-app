@@ -19,10 +19,7 @@ const AccordionSection = ({
 }: AccordionSectionProps) => {
   return (
     <section
-      className={cn([
-        'mb-8 flex flex-col items-center w-full px-0',
-        className,
-      ])}>
+      className={cn(['flex flex-col items-center w-full px-0', className])}>
       {/* Clickable Header */}
       <div
         onClick={onToggle}

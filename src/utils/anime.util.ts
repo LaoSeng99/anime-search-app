@@ -1,6 +1,8 @@
 import type { Anime } from '../types/anime';
 import type {
   AnimeSearchQueryOrderBy,
+  AnimeSearchQueryRating,
+  AnimeSearchQueryStatus,
   AnimeSearchQueryType,
 } from '../types/anime.request';
 import type {
@@ -10,35 +12,14 @@ import type {
 } from '../types/ui.interface';
 import {
   ANIME_TYPE_LABELS,
+  getAnimeRatingLabel,
   getAnimeSorterLabel,
+  getAnimeStatusLabel,
   getAnimeTypeLabel,
   ORDER_BY_LABELS,
+  RATING_LABEL,
+  STATUS_LABEL,
 } from './labelHelper';
-
-export const getAnimeSorterList = (currentParams: SortParams): SorterItem[] => {
-  const fields: AnimeSearchQueryOrderBy[] = Object.keys(
-    ORDER_BY_LABELS,
-  ) as AnimeSearchQueryOrderBy[];
-
-  return fields.map((field) => {
-    const isActive = currentParams.order_by === field;
-
-    return {
-      label: getAnimeSorterLabel(field),
-      isActive: isActive,
-      currentSort: isActive ? currentParams.sort : undefined,
-      sortBy: {
-        order_by: field,
-        // if is active, change direction; if not default to desc
-        sort: isActive
-          ? currentParams.sort === 'desc'
-            ? 'asc'
-            : 'desc'
-          : 'desc',
-      },
-    };
-  });
-};
 
 /**
  * Sorts and return new array of Anime objects locally based on AnimeSearchQueryOrderBy. (only support sorting 1 value)
@@ -83,14 +64,67 @@ export const sortAnime = (data: Anime[], params: SortParams): Anime[] => {
   });
 };
 
+export const getAnimeSorterList = (currentParams: SortParams): SorterItem[] => {
+  const fields: AnimeSearchQueryOrderBy[] = Object.keys(
+    ORDER_BY_LABELS,
+  ) as AnimeSearchQueryOrderBy[];
+
+  return fields.map((field) => {
+    const isActive = currentParams.order_by === field;
+
+    return {
+      label: getAnimeSorterLabel(field),
+      isActive: isActive,
+      currentSort: isActive ? currentParams.sort : undefined,
+      sortBy: {
+        order_by: field,
+        // if is active, change direction; if not default to desc
+        sort: isActive
+          ? currentParams.sort === 'desc'
+            ? 'asc'
+            : 'desc'
+          : 'desc',
+      },
+    };
+  });
+};
+
 export const getAnimeTypeFilterList = (): CheckboxOption[] => {
   const fields: AnimeSearchQueryType[] = Object.keys(
     ANIME_TYPE_LABELS,
   ) as AnimeSearchQueryType[];
 
-  const options: CheckboxOption[] = fields.map((type) => ({
-    id: type,
-    label: getAnimeTypeLabel(type),
+  const options: CheckboxOption[] = fields.map((field) => ({
+    id: field,
+    label: getAnimeTypeLabel(field),
+    checked: false,
+  }));
+
+  return options;
+};
+
+export const getAnimeRatingFilterList = (): CheckboxOption[] => {
+  const fields: AnimeSearchQueryRating[] = Object.keys(
+    RATING_LABEL,
+  ) as AnimeSearchQueryRating[];
+
+  const options: CheckboxOption[] = fields.map((field) => ({
+    id: field,
+    label: getAnimeRatingLabel(field),
+    checked: false,
+  }));
+
+  return options;
+};
+
+export const getAnimeStatusFilterList = (): CheckboxOption[] => {
+  const fields: AnimeSearchQueryStatus[] = Object.keys(
+    STATUS_LABEL,
+  ) as AnimeSearchQueryStatus[];
+
+  const options: CheckboxOption[] = fields.map((field) => ({
+    id: field,
+    label: getAnimeStatusLabel(field),
     checked: false,
   }));
 

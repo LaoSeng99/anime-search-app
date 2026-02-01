@@ -1,5 +1,7 @@
 import type {
   AnimeSearchQueryOrderBy,
+  AnimeSearchQueryRating,
+  AnimeSearchQueryStatus,
   AnimeSearchQueryType,
 } from '../types/anime.request';
 
@@ -41,4 +43,31 @@ export const getAnimeSorterLabel = (
   return (
     ORDER_BY_LABELS[type.toLowerCase() as AnimeSearchQueryOrderBy] ?? 'N/A'
   );
+};
+
+export const RATING_LABEL: Record<AnimeSearchQueryRating, string> = {
+  g: 'G - All Ages',
+  pg: 'PG - Children',
+  pg13: 'PG-13 - Teens 13 or older',
+  r17: 'R - 17+ (violence & profanity)',
+  r: 'R+ - Mild Nudity',
+  rx: 'Rx - Hentai',
+};
+
+export const getAnimeRatingLabel = (
+  rating: string | AnimeSearchQueryRating,
+): string => {
+  return RATING_LABEL[rating.toLowerCase() as AnimeSearchQueryRating] ?? 'N/A';
+};
+
+export const STATUS_LABEL: Record<AnimeSearchQueryStatus, string> = {
+  airing: 'Airing',
+  complete: 'Completed',
+  upcoming: 'Upcoming',
+};
+
+export const getAnimeStatusLabel = (
+  status: string | AnimeSearchQueryStatus,
+): string => {
+  return STATUS_LABEL[status.toLowerCase() as AnimeSearchQueryStatus] ?? 'N/A';
 };
