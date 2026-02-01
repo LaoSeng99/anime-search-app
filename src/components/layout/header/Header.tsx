@@ -37,27 +37,26 @@ const Header = () => {
         <div className="flex items-center gap-10">
           <a
             onClick={(e) => handleNavigate(e, '/')}
-            className="text-3xl font-bold tracking-tight cursor-pointer font-heading">
+            className="text-3xl font-extrabold tracking-tighter cursor-pointer font-heading drop-shadow-[0_2px_2px_rgba(0,0,0,0.8)] text-white antialiased">
             AnimeSearch
           </a>
 
           <ul className="flex items-center gap-6">
-            {' '}
-            {navItems.map((item) => {
-              return (
-                <li key={item.name}>
-                  <a
-                    onClick={(e) => handleNavigate(e, item.href)}
-                    href={item.href} // for "right click open in new tab, block default behavior in handleNavigate"
-                    className={`
-                           px-3 py-2 text-md font-medium transition-all duration-200
-                         text-gray-400 hover:text-white 
-                        `}>
-                    {item.name}
-                  </a>
-                </li>
-              );
-            })}
+            {navItems.map((item) => (
+              <li key={item.name}>
+                <a
+                  onClick={(e) => handleNavigate(e, item.href)}
+                  href={item.href}
+                  className={`
+            px-3 py-2 text-md font-semibold transition-all duration-200
+            text-gray-200 hover:text-white 
+            drop-shadow-[0_1.2px_1.2px_rgba(0,0,0,0.8)]
+            hover:drop-shadow-[0_0_8px_rgba(255,255,255,0.3)]
+          `}>
+                  {item.name}
+                </a>
+              </li>
+            ))}
           </ul>
         </div>
 
