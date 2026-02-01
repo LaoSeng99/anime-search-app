@@ -17,3 +17,9 @@ export interface SortParams {
   order_by?: string | AnimeSearchQueryOrderBy;
   sort?: 'desc' | 'asc';
 }
+
+export interface ActiveFilterItem {
+  key: string;
+  label: string;
+  value: string | number;
+}

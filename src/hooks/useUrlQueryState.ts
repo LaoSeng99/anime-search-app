@@ -1,4 +1,4 @@
-import { useMemo, useCallback } from 'react';
+import { useMemo } from 'react';
 import { useSearchParams } from 'react-router';
 import type { GetAnimeSearchRequest } from '../services/animeService';
 import type {
@@ -7,6 +7,8 @@ import type {
   AnimeSearchQueryRating,
   AnimeSearchQueryOrderBy,
 } from '../types/anime.request';
+import { ORDER_BY_LABELS } from '../utils/anime.util';
+import type { ActiveFilterItem } from '../types/ui.interface';
 
 export const useUrlQueryState = () => {
   const [searchParams, setSearchParams] = useSearchParams();
@@ -82,5 +84,32 @@ export const useUrlQueryState = () => {
     updateUrl([{ key, value }]);
   };
 
-  return { urlRequest, updateUrl, setSingleParam, searchParams };
+  const activeFilters = useMemo((): ActiveFilterItem[] => {
+    return Object.entries(urlRequest)
+      .filter(([key, value]) => {
+        if (key === 'page' || key === 'limit') return false;
+        return !!value;
+      })
+      .map(([key, value]) => {
+        let displayKey = String(key);
+
+        let displayValue = String(value);
+
+        if (key === 'order_by') {
+          displayValue = ORDER_BY_LABELS[value as AnimeSearchQueryOrderBy];
+        } else if (key === 'sort') {
+          displayValue = value === 'desc' ? 'Descending' : 'Ascending';
+        } else if (key === 'q') {
+          displayKey = 'Search';
+        }
+
+        return {
+          key,
+          label: displayKey.replace('_', ' '),
+          value: displayValue,
+        };
+      });
+  }, [urlRequest]);
+
+  return { urlRequest, updateUrl, setSingleParam, searchParams, activeFilters };
 };

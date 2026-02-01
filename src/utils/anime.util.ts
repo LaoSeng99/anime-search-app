@@ -2,7 +2,7 @@ import type { Anime } from '../types/anime';
 import type { AnimeSearchQueryOrderBy } from '../types/anime.request';
 import type { SorterItem, SortParams } from '../types/ui.interface';
 
-const ORDER_BY_LABELS: Record<AnimeSearchQueryOrderBy, string> = {
+export const ORDER_BY_LABELS: Record<AnimeSearchQueryOrderBy, string> = {
   mal_id: 'ID',
   title: 'Title',
   start_date: 'Start Date',
