@@ -1,27 +1,20 @@
-import { useQuery } from '@tanstack/react-query';
 import { Loader2 } from 'lucide-react';
 import { useNavigate } from 'react-router';
 import Button from '../../../components/ui/Button';
 import ErrorState from '../../../components/ui/ErrorState';
 import FavouriteButton from '../../../components/ui/FavouriteButton';
 import MotionImage from '../../../components/ui/MotionImage';
-import { getSeasonNow } from '../../../services/seasonService';
 import TrailerVideo from './TrailerVideo';
+import { useRandomAnime } from '../../../hooks/useRandomAnime';
 
 const HeroCard = () => {
-  const { data, isLoading, isError, refetch } = useQuery({
-    queryKey: ['anime-random'],
-    queryFn: async () => {
-      const res = await getSeasonNow({ page: 1, limit: 25, filter: 'tv' });
-
-      const list = res.data.filter((anime) => (anime.score ?? 0) > 7.5);
-      const targetList = list.length > 0 ? list : res.data;
-
-      const index = Math.floor(Math.random() * targetList.length);
-      return targetList[index];
-    },
-    staleTime: Infinity,
-  });
+  const {
+    selected: anime,
+    isLoading,
+    isError,
+    handleRefetch,
+    rePick,
+  } = useRandomAnime();
 
   const navigate = useNavigate();
 
@@ -33,11 +26,11 @@ const HeroCard = () => {
     );
   }
 
-  if (isError || !data) {
+  if (isError || !anime) {
     return (
       <ErrorState
         title="Unable to load spotlight"
-        onRetry={refetch}
+        onRetry={handleRefetch}
         className={
           'relative w-full aspect-video rounded-xl flex flex-col items-center justify-center bg-gray-900 border border-gray-800 text-center px-4'
         }
@@ -48,8 +41,9 @@ const HeroCard = () => {
   return (
     <div className="group relative w-full aspect-video rounded-xl overflow-hidden shadow-2xl bg-black">
       <TrailerVideo
-        embedUrl={data.trailer?.embed_url ?? ''}
-        backdropUrl={data.images.webp.large_image_url}></TrailerVideo>
+        onVideoEnd={rePick}
+        embedUrl={anime.trailer?.embed_url ?? ''}
+        backdropUrl={anime.images.webp.large_image_url}></TrailerVideo>
       <div
         className="absolute inset-0 z-0 scale-110 blur-2xl opacity-50 transition-transform duration-700 group-hover:scale-100"
         style={{
@@ -64,23 +58,23 @@ const HeroCard = () => {
       <section className="relative z-20 h-full flex flex-col justify-center px-8 md:px-16 gap-6 max-w-3xl">
         {/* Badges */}
         <div className="flex gap-2">
-          {data.score && (
+          {anime.score && (
             <span className="bg-yellow-500 text-black px-2 py-0.5 rounded text-sm font-bold">
-              ★ {data.score}
+              ★ {anime.score}
             </span>
           )}
           <span className="bg-white/20 backdrop-blur-md text-white px-2 py-0.5 rounded text-sm capitalize">
-            {data.season} {data.year}
+            {anime.season} {anime.year}
           </span>
         </div>
 
         {/* Information */}
         <div className="space-y-4">
           <h1 className="text-white text-4xl md:text-6xl font-extrabold tracking-tight line-clamp-2 drop-shadow-xl">
-            {data.title_english || data.title}
+            {anime.title_english || anime.title}
           </h1>
           <p className="text-gray-200 text-sm md:text-lg leading-relaxed drop-shadow-md line-clamp-3 max-w-xl italic">
-            {data.synopsis}
+            {anime.synopsis}
           </p>
         </div>
 
@@ -92,12 +86,12 @@ const HeroCard = () => {
             variant="primary"
             className="hover:scale-105 transition-transform"
             onClick={() => {
-              navigate(`/anime/${data.mal_id}`);
+              navigate(`/anime/${anime.mal_id}`);
             }}>
             Learn More
           </Button>
 
-          <FavouriteButton anime={data}></FavouriteButton>
+          <FavouriteButton anime={anime}></FavouriteButton>
         </div>
       </section>
 
@@ -105,8 +99,8 @@ const HeroCard = () => {
       <div className="absolute right-[10%] top-1/2 -translate-y-1/2 hidden lg:block z-20 w-64 shadow-[0_0_50px_rgba(0,0,0,0.5)] transform rotate-3 hover:rotate-0 transition-all duration-500">
         <MotionImage
           loading={'eager'}
-          src={data.images.webp.large_image_url}
-          alt={data.title}
+          src={anime.images.webp.large_image_url}
+          alt={anime.title}
           className="rounded-lg object-cover w-full h-full border border-white/10"
         />
       </div>

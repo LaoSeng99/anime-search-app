@@ -4,9 +4,14 @@ import { getYoutubeIdFromUrl } from '../../../utils/urlHelper';
 interface TrailerVideoProps {
   embedUrl: string;
   backdropUrl: string;
+  onVideoEnd: () => void;
 }
 
-const TrailerVideo = ({ embedUrl, backdropUrl }: TrailerVideoProps) => {
+const TrailerVideo = ({
+  embedUrl,
+  backdropUrl,
+  onVideoEnd,
+}: TrailerVideoProps) => {
   const [hasError, setHasError] = useState(false);
 
   const noCookieUrl = 'https://www.youtube-nocookie.com/embed/';
@@ -38,9 +43,7 @@ const TrailerVideo = ({ embedUrl, backdropUrl }: TrailerVideoProps) => {
           autoPlay={true}
           muted={true}
           controls={false}
-          onEnded={() => {
-            console.log('video end!');
-          }}
+          onEnded={onVideoEnd}
           onError={() => setHasError(true)}
           src={finalVideoUrl}
         />
