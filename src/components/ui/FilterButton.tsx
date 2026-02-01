@@ -31,6 +31,7 @@ const FilterButton = ({
   const handleReset = () => {
     if (isLoading) return;
     onReset();
+    toggle();
   };
 
   return (

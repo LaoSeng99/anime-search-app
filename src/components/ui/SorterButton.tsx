@@ -30,6 +30,7 @@ const SorterButton = ({
   const handleReset = () => {
     if (isLoading) return;
     onReset();
+    toggle();
   };
 
   return (
