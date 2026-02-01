@@ -1,4 +1,4 @@
-import { useNavigate } from 'react-router';
+import { useLocation, useNavigate } from 'react-router';
 import { useKeyboardAccessibilityState } from '../../../hooks/useKeyboardAccessibilityState';
 import { useKeyboardAccessibility } from '../../../hooks/useKeyboardAccessibility';
 import { useQuery } from '@tanstack/react-query';
@@ -7,6 +7,9 @@ import { useClickOutside } from '../../../hooks/useClickOutside';
 import { getTopAnime, getAnime } from '../../../services/animeService';
 import SearchBox, { type SearchBoxHandle } from '../../ui/SearchBox';
 import SearchDropdown from './SearchDropdown';
+import { SEARCH_DEBOUNCE } from '../../../types/app.constant';
+import { useUrlQueryState } from '../../../hooks/useUrlQueryState';
+import { useDebounce } from 'use-debounce';
 
 interface NavItem {
   name: string;
@@ -66,6 +69,8 @@ const Header = () => {
 
 const AnimeSearchBox = () => {
   const [searchQuery, setSearchQuery] = useState('');
+  const [debouncedSearch] = useDebounce(searchQuery, SEARCH_DEBOUNCE);
+
   const [isResultsVisible, setIsResultsVisible] = useState(false);
   const [hasInteracted, setHasInteracted] = useState(false); // lazy load for search
 
@@ -75,14 +80,17 @@ const AnimeSearchBox = () => {
   const isForcedDisabled = useKeyboardAccessibilityState(
     (s) => s.isForcedDisabled,
   );
+  const navigate = useNavigate();
+  const location = useLocation();
 
+  const { setSingleParam } = useUrlQueryState();
   const { data, isLoading, isFetching } = useQuery({
-    queryKey: ['search-anime', searchQuery],
+    queryKey: ['search-anime', debouncedSearch],
     queryFn: async () => {
-      if (searchQuery.trim() === '') {
+      if (debouncedSearch.trim() === '') {
         return await getTopAnime({ limit: 5, filter: 'airing' });
       }
-      return await getAnime({ limit: 7, q: searchQuery });
+      return await getAnime({ limit: 7, q: debouncedSearch });
     },
     enabled: hasInteracted,
   });
@@ -91,7 +99,11 @@ const AnimeSearchBox = () => {
     if (searchQuery.trim() !== '') {
       setIsResultsVisible(false);
       setSearchQuery('');
-      searchBoxRef.current?.clear();
+      if (location.pathname === '/anime') {
+        setSingleParam('q', searchQuery);
+        return;
+      }
+      navigate(`/anime?q=${searchQuery}`);
     }
   };
 
@@ -119,13 +131,13 @@ const AnimeSearchBox = () => {
       >
         <SearchBox
           ref={searchBoxRef}
+          value={searchQuery}
           onFocus={() => {
             if (!hasInteracted) setHasInteracted(true);
           }}
-          onSearch={setSearchQuery}
+          onChange={setSearchQuery}
           onClear={() => handleClear}
           isLoading={isLoading || isFetching}
-          initialValue={searchQuery}
         />
       </div>
 
