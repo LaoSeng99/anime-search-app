@@ -1,42 +1,25 @@
-import { useInfiniteQuery, type InfiniteData } from '@tanstack/react-query';
-import { getAnime } from '../services/animeService';
-import type { Anime } from '../types/anime';
-import type { ApiListResponse } from '../types/api.response';
-import { useState } from 'react';
+import { useQuery } from '@tanstack/react-query';
+import { getAnime, type GetAnimeSearchRequest } from '../services/animeService';
+
 import { USE_INFINITY_STALE } from '../types/app.constant';
 
-export const useAnimeSearch = (limit: number = 10) => {
-  const [pageLimit, setPageLimit] = useState(limit);
-  const [searchQuery, setSearchQuery] = useState('');
-
-  const queryInfo = useInfiniteQuery<
-    ApiListResponse<Anime>,
-    Error,
-    InfiniteData<ApiListResponse<Anime>>,
-    [string, string],
-    number
-  >({
-    queryKey: ['anime', searchQuery],
-    queryFn: async ({ pageParam }) => {
-      const data = await getAnime({ limit, page: pageParam, q: searchQuery });
-      return data;
-    },
-    initialPageParam: 1,
-    getNextPageParam: (lastPage) => {
-      const pagination = lastPage.pagination;
-      if (pagination.has_next_page) {
-        return pagination.current_page + 1;
-      }
-      return undefined;
+export const useAnimeSearch = ({ req }: { req: GetAnimeSearchRequest }) => {
+  const { data, isLoading, isError, isFetching, refetch } = useQuery({
+    queryKey: ['anime', 'search', req],
+    queryFn: async () => {
+      const response = await getAnime(req);
+      return response;
     },
     staleTime: USE_INFINITY_STALE,
+    placeholderData: (previousData) => previousData,
   });
 
   return {
-    ...queryInfo,
-    searchQuery,
-    setSearchQuery,
-    pageLimit,
-    setPageLimit,
+    animeList: data?.data ?? [],
+    pagination: data?.pagination,
+    isLoading,
+    isError,
+    isFetching,
+    refresh: refetch,
   };
 };
