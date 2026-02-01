@@ -1,5 +1,12 @@
-import { useLocation, useNavigate } from 'react-router';
-import AnimeSearchBox from './AnimeSearchBox';
+import { useNavigate } from 'react-router';
+import { useKeyboardAccessibilityState } from '../../../hooks/useKeyboardAccessibilityState';
+import { useKeyboardAccessibility } from '../../../hooks/useKeyboardAccessibility';
+import { useQuery } from '@tanstack/react-query';
+import { useRef, useState } from 'react';
+import { useClickOutside } from '../../../hooks/useClickOutside';
+import { getTopAnime, getAnime } from '../../../services/animeService';
+import SearchBox, { type SearchBoxHandle } from '../../ui/SearchBox';
+import SearchDropdown from './SearchDropdown';
 
 interface NavItem {
   name: string;
@@ -14,7 +21,6 @@ const Header = () => {
   ];
 
   const navigate = useNavigate();
-  const location = useLocation();
 
   const handleNavigate = (e: React.MouseEvent, href: string) => {
     e.preventDefault(); // prevent href"#"
@@ -27,7 +33,7 @@ const Header = () => {
         {/*  Logo Section */}
         <div className="flex items-center gap-10">
           <a
-            href="/"
+            onClick={(e) => handleNavigate(e, '/')}
             className="text-3xl font-bold tracking-tight cursor-pointer font-heading">
             AnimeSearch
           </a>
@@ -35,8 +41,6 @@ const Header = () => {
           <ul className="flex items-center gap-6">
             {' '}
             {navItems.map((item) => {
-              const isActive = location.pathname === item.href;
-
               return (
                 <li key={item.name}>
                   <a
@@ -54,9 +58,84 @@ const Header = () => {
           </ul>
         </div>
 
-        <AnimeSearchBox></AnimeSearchBox>
+        <AnimeSearchBox />
       </nav>
     </header>
+  );
+};
+
+const AnimeSearchBox = () => {
+  const [searchQuery, setSearchQuery] = useState('');
+  const [isResultsVisible, setIsResultsVisible] = useState(false);
+  const [hasInteracted, setHasInteracted] = useState(false); // lazy load for search
+
+  const containerRef = useRef<HTMLDivElement>(null);
+  const searchBoxRef = useRef<SearchBoxHandle>(null);
+
+  const isForcedDisabled = useKeyboardAccessibilityState(
+    (s) => s.isForcedDisabled,
+  );
+
+  const { data, isLoading, isFetching } = useQuery({
+    queryKey: ['search-anime', searchQuery],
+    queryFn: async () => {
+      if (searchQuery.trim() === '') {
+        return await getTopAnime({ limit: 5, filter: 'airing' });
+      }
+      return await getAnime({ limit: 7, q: searchQuery });
+    },
+    enabled: hasInteracted,
+  });
+
+  const handleSeeMore = () => {
+    if (searchQuery.trim() !== '') {
+      setIsResultsVisible(false);
+      setSearchQuery('');
+      searchBoxRef.current?.clear();
+    }
+  };
+
+  const handleClear = () => {
+    setIsResultsVisible(false);
+  };
+
+  useClickOutside(containerRef, () => {
+    setIsResultsVisible(false);
+  });
+
+  useKeyboardAccessibility({
+    searchBoxRef: searchBoxRef,
+    onEscape: handleClear,
+    enabled: !isForcedDisabled,
+  });
+
+  return (
+    <div
+      ref={containerRef}
+      className="flex flex-col flex-1 max-w-xl gap-6 ml-10 relative">
+      <div
+        className="relative flex-1 group"
+        onFocus={() => setIsResultsVisible(true)} // Re-show when focused
+      >
+        <SearchBox
+          ref={searchBoxRef}
+          onFocus={() => {
+            if (!hasInteracted) setHasInteracted(true);
+          }}
+          onSearch={setSearchQuery}
+          onClear={() => handleClear}
+          isLoading={isLoading || isFetching}
+          initialValue={searchQuery}
+        />
+      </div>
+
+      <SearchDropdown
+        animeList={data?.data}
+        isLoading={isLoading}
+        isVisible={isResultsVisible}
+        onSeeMore={handleSeeMore}
+        searchQuery={searchQuery}></SearchDropdown>
+    </div>
   );
 };
 
