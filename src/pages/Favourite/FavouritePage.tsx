@@ -5,7 +5,7 @@ import { useDialog } from '../../hooks/useDialog';
 import BackgroundSection from '../../components/layout/BackgroundSection';
 
 import { useFavouriteLogic } from './FavouritePage.hook';
-import FavouriteToolbar from './FavoriteToolbar';
+import FavouriteToolbar from './FavouriteToolbar';
 
 const FavouritePage = () => {
   const {

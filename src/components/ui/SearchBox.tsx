@@ -7,6 +7,7 @@ import {
   useState,
 } from 'react';
 import Button from './Button';
+import { useDebounce } from '../../hooks/useDebounce';
 
 //handle search value to parent
 interface SearchBoxProps {
@@ -54,20 +55,16 @@ const SearchBox = forwardRef<SearchBoxHandle, SearchBoxProps>(
     }));
 
     // Debounce logic: Triggers onSearch only after 500ms of inactivity
+    const debouncedSearch = useDebounce(inputValue, DEBOUNCE_DELAY_MS);
+
     useEffect(() => {
-      //If value is empty , trigger search immediately (default/trend)
-      if (inputValue.trim() === '') {
+      if (debouncedSearch.trim() === '') {
         onSearch('');
         return;
       }
 
-      const handler = setTimeout(() => {
-        onSearch(inputValue);
-      }, DEBOUNCE_DELAY_MS);
-
-      // Cleanup: Resets the timer if inputValue changes again before 500ms
-      return () => clearTimeout(handler);
-    }, [inputValue, onSearch]);
+      onSearch(debouncedSearch);
+    }, [debouncedSearch, onSearch]);
 
     return (
       <div className="relative w-full max-w-2xl mx-auto group">

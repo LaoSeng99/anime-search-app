@@ -5,6 +5,7 @@ import { useFavouriteStore } from '../../hooks/useFavouriteStore';
 import type { CheckboxOption, SortParams } from '../../types/ui.interface';
 import { getAnimeSorterList } from '../../utils/anime.util';
 import { getAnimeTypeLabel } from '../../utils/labelHelper';
+import { useDebounce } from '../../hooks/useDebounce';
 
 export const useFavouriteLogic = () => {
   const PER_PAGE = 12;
@@ -44,19 +45,23 @@ export const useFavouriteLogic = () => {
     [sortParams],
   );
 
+  // Debounce
+  const debouncedFilterSet = useDebounce(activeFilterSet, 300);
+  const debouncedSortParams = useDebounce(sortParams, 300);
+
   // Process, Filter > Sorting
   const filteredAnime = useMemo(() => {
     const result =
-      activeFilterSet.size === 0
+      debouncedFilterSet.size === 0
         ? [...favouriteAnime]
         : favouriteAnime.filter((a) =>
-            activeFilterSet.has(a.type?.toLowerCase()),
+            debouncedFilterSet.has(a.type?.toLowerCase()),
           );
 
     // TODO: Sorting
-    console.log(sortParams);
+    console.log('Ready for sort', debouncedSortParams);
     return result;
-  }, [favouriteAnime, activeFilterSet, sortParams]);
+  }, [favouriteAnime, debouncedFilterSet, debouncedSortParams]);
 
   // Pagination
   const displayAnime = useMemo(() => {

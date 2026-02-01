@@ -8,7 +8,7 @@ import type {
   SortParams,
 } from '../../types/ui.interface';
 
-interface FavoriteToolbarProps {
+interface FavouriteToolbarProps {
   isLoading: boolean;
   totalItems: number;
 
@@ -33,7 +33,7 @@ const FavouriteToolbar = ({
   onSorting,
   onSortingReset,
   onRemoveAllFavourite,
-}: FavoriteToolbarProps) => {
+}: FavouriteToolbarProps) => {
   return (
     <div className="flex gap-6 justify-between">
       <div className="flex gap-6">
@@ -56,8 +56,8 @@ const FavouriteToolbar = ({
 
       <SorterButton
         isLoading={isLoading}
-        onReset={() => onSortingReset}
-        onClick={onSorting}
+        onReset={onSortingReset}
+        onClick={(p) => onSorting(p)}
         sorters={sorters}></SorterButton>
     </div>
   );
