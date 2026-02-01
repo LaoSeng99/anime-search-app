@@ -60,6 +60,11 @@
     - Design Intent: Originally designed with a stale-while-revalidate approach. For Infinite Loading or paginated data, it tends to return all data at once, sending requests for every single page to update the old cache.
     - Performance: Rendering the data may cause UI lag or stuttering. It is necessary to use a Virtual List to ensure items are only rendered when they enter the viewport.
 
+2.  **Jikan API**
+    - In certain scenarios, the Jikan API may return duplicate anime entries within the same pagination result (e.g., specific mal_id appearing multiple times when sorted by start_date).
+    - sample :https://api.jikan.moe/v4/anime?page=1&limit=12&order_by=start_date&sort=desc | mal_id `63235` ang `62841` appear twice
+    - Using `mal_id` as a React key may trigger "Duplicate Key" errors. in some case, use a composite key with index also will a chance to duplicate..
+
 ## Credits
 
 This project's UI/UX design is inspired by the [Kurosaw – Anime Streaming Web App](https://dribbble.com/shots/21268682-Kurosaw-Anime-Streaming-Web-App) concept by **[Max Lewayer](https://dribbble.com/maxlewayer)**.
