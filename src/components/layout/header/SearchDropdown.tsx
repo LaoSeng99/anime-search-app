@@ -1,7 +1,6 @@
 import type { Anime } from '../../../types/anime';
 import { AnimatePresence, motion } from 'framer-motion';
 import Button from '../../ui/Button';
-import { useNavigate } from 'react-router';
 import SearchDropdownItem from './SearchDropdownItem';
 
 interface SearchDropdownProps {
@@ -19,15 +18,6 @@ export const SearchDropdown = ({
   onSeeMore,
   searchQuery,
 }: SearchDropdownProps) => {
-  const navigate = useNavigate();
-
-  const handleSeeMore = () => {
-    onSeeMore();
-    if (searchQuery.trim() !== '') {
-      navigate(`/anime?q=${encodeURIComponent(searchQuery)}`);
-    }
-  };
-
   return (
     <AnimatePresence>
       {isVisible && animeList && (
@@ -46,7 +36,7 @@ export const SearchDropdown = ({
 
             {/* Navigate to anime list and apply filter */}
             {animeList.length > 6 && searchQuery.trim() !== '' && (
-              <Button onClick={handleSeeMore}>Show more results</Button>
+              <Button onClick={onSeeMore}>Show more results</Button>
             )}
 
             {animeList.length === 0 && !isLoading && (
