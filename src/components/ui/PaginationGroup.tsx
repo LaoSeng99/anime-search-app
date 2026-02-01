@@ -1,6 +1,7 @@
-import { useSearchParams } from 'react-router';
 import Button from './Button';
 import usePagination from '../../hooks/usePagination';
+import { useKeyboardAccessibility } from '../../hooks/useKeyboardAccessibility';
+import { useUrlQueryState } from '../../hooks/useUrlQueryState';
 
 interface PaginationGroupProps {
   itemLength: number;
@@ -19,7 +20,7 @@ const PaginationGroup = ({
 }: PaginationGroupProps) => {
   if (!currentPage || currentPage < 0) currentPage = 1;
 
-  const [searchParams, setSearchParams] = useSearchParams();
+  const { setSingleParam } = useUrlQueryState();
   const totalPage = Math.ceil(itemLength / perPage) || 1;
 
   const { pages, showLeftDots, showRightDots, isFirst, isLast } = usePagination(
@@ -34,12 +35,28 @@ const PaginationGroup = ({
     if (isLoading || page < 1 || page > totalPage) return;
 
     onChangePage(page);
-    searchParams.set('page', page.toString());
-    setSearchParams(searchParams);
+    setSingleParam('page', page);
   };
+
+  useKeyboardAccessibility({
+    onArrowLeft: () => {
+      handlePageChange(currentPage - 1);
+    },
+    onArrowRight: () => {
+      handlePageChange(currentPage + 1);
+    },
+    enabled: !isLoading,
+  });
 
   return (
     <div className="flex items-center justify-center gap-2 p-4">
+      {/* Last */}
+      <Button
+        outline
+        disabled={isFirst || isLoading}
+        onClick={() => handlePageChange(1)}>
+        First
+      </Button>
       {/* Previous */}
       <Button
         outline
@@ -93,6 +110,13 @@ const PaginationGroup = ({
         disabled={isLast || isLoading}
         onClick={() => handlePageChange(currentPage + 1)}>
         Next
+      </Button>
+      {/* Last */}
+      <Button
+        outline
+        disabled={isLast || isLoading}
+        onClick={() => handlePageChange(totalPage)}>
+        Last
       </Button>
     </div>
   );

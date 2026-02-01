@@ -21,6 +21,7 @@ interface SearchBoxProps {
 // to parent ref
 export interface SearchBoxHandle {
   clear: () => void;
+  inputRef: React.RefObject<HTMLInputElement | null>;
 }
 
 const SearchBox = forwardRef<SearchBoxHandle, SearchBoxProps>(
@@ -45,13 +46,10 @@ const SearchBox = forwardRef<SearchBoxHandle, SearchBoxProps>(
       inputRef.current?.focus();
     };
 
-    const handleKeyDown = (e: React.KeyboardEvent) => {
-      if (e.key === 'Escape') handleClear();
-    };
-
     useImperativeHandle(ref, () => ({
       // clear search input for better ux
       clear: () => setInputValue(''),
+      inputRef: inputRef,
     }));
 
     // Debounce logic: Triggers onSearch only after 500ms of inactivity
@@ -67,7 +65,7 @@ const SearchBox = forwardRef<SearchBoxHandle, SearchBoxProps>(
     }, [debouncedSearch, onSearch]);
 
     return (
-      <div className="relative w-full max-w-2xl mx-auto group">
+      <div className="relative w-full max-w-2xl group">
         {/* Left Search Icon */}
         <div className="absolute inset-y-0 left-0 flex items-center pl-4 pointer-events-none">
           <Search className="w-5 h-5  text-gray-100 group-focus-within:text-accent-neon transition-colors" />
@@ -80,7 +78,6 @@ const SearchBox = forwardRef<SearchBoxHandle, SearchBoxProps>(
           value={inputValue}
           onChange={(e) => setInputValue(e.target.value)}
           onFocus={onFocus}
-          onKeyDown={handleKeyDown}
           placeholder="Search anime..."
           className="w-full py-4 pl-12 pr-12 text-gray-100 bg-black/40 border border-white/20 rounded-2xl 
                       backdrop-blur-md transition-all duration-500 outline-none
