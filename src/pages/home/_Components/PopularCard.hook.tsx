@@ -34,8 +34,6 @@ export const usePopularCardLogic = ({ isVisible }: { isVisible: boolean }) => {
     },
     enabled: isVisible,
     staleTime: USE_INFINITY_STALE,
-    retry: 3,
-    retryDelay: 2000,
   });
 
   const allAnime = useMemo(() => {

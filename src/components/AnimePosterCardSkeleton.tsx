@@ -7,7 +7,8 @@ const AnimeCardSkeleton = ({
 }) => {
   return (
     <div
-      className={`relative ${className} min-w-[16rem] h-96 rounded-2xl bg-gray-800 animate-pulse flex flex-col justify-end p-4`}>
+      className={`relative ${className} h-96 rounded-2xl bg-gray-800 overflow-hidden shadow-xl  transition-all duration-300 
+      animate-pulse flex flex-col justify-end p-4`}>
       <div className="h-6 bg-gray-700 rounded w-3/4 mb-2"></div>
       <div className="h-4 bg-gray-700 rounded w-1/2"></div>
 

@@ -13,12 +13,11 @@ const AnimePosterCard = React.memo(
     return (
       <div
         className={`relative ${className} h-96 rounded-2xl overflow-hidden shadow-xl group cursor-pointer bg-gray-900 transition-all duration-300 hover:shadow-2xl hover:shadow-blue-500/20`}>
-        {' '}
         {/* Background Image */}
         <MotionImage
           src={anime.images.webp.image_url}
           alt={anime.title}
-          className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 ease-out group-hover:scale-110"
+          className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 ease-out group-hover:scale-110 aspect-3/4 "
         />
         {/* gradient layer */}
         <div className="absolute inset-0 bg-linear-to-t from-black via-black/40 to-transparent opacity-80 transition-opacity duration-300 group-hover:opacity-90" />
