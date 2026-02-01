@@ -20,6 +20,8 @@ const SorterButton = ({
 }: SorterButtonProps) => {
   const { isOpen, toggle, dropdownRef } = useDropdown();
 
+  const activeSorter = sorters.find((s) => s.isActive);
+
   const handleClick = (params: SortParams) => {
     if (isLoading) return;
     onClick(params);
@@ -34,7 +36,7 @@ const SorterButton = ({
     <Dropdown
       isOpen={isOpen}
       dropdownRef={dropdownRef}
-      renderTrigger={TriggerButton(toggle)}>
+      renderTrigger={TriggerButton(toggle, activeSorter)}>
       <AnimatePresence>{isLoading && LoadingState()}</AnimatePresence>
 
       <div
@@ -89,15 +91,35 @@ const SorterButton = ({
   );
 };
 
-const TriggerButton = (toggle: () => void) => {
+const TriggerButton = (toggle: () => void, activeSorter?: SorterItem) => {
+  const sortDirection =
+    activeSorter?.currentSort === 'asc' ? 'Ascending' : 'Descending';
+
   return (
     <Button
       variant={'ghost'}
       outline
-      icon={<ChevronDown size={16} />}
+      className={
+        activeSorter ? 'border-indigo-500/50 text-white' : 'text-slate-400'
+      }
+      icon={
+        <ChevronDown
+          size={16}
+          className={`transition-transform ${activeSorter ? 'text-white' : ''}`}
+        />
+      }
       onClick={toggle}
       iconPosition="right">
-      Sort By
+      {activeSorter ? (
+        <>
+          Sort by
+          <span className="text-white">{activeSorter.label}</span>
+          by
+          <span className="text-white"> {sortDirection} </span>
+        </>
+      ) : (
+        'Sort By'
+      )}
     </Button>
   );
 };

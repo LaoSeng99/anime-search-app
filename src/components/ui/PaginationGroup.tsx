@@ -17,6 +17,8 @@ const PaginationGroup = ({
   isLoading = false,
   onChangePage,
 }: PaginationGroupProps) => {
+  if (!currentPage || currentPage < 0) currentPage = 1;
+
   const [searchParams, setSearchParams] = useSearchParams();
   const totalPage = Math.ceil(itemLength / perPage) || 1;
 
