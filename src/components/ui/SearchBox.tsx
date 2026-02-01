@@ -1,20 +1,13 @@
 import { Loader2, Search, X } from 'lucide-react';
-import {
-  forwardRef,
-  useEffect,
-  useImperativeHandle,
-  useRef,
-  useState,
-} from 'react';
+import { forwardRef, useImperativeHandle, useRef } from 'react';
 import Button from './Button';
-import { useDebounce } from '../../hooks/useDebounce';
 
 //handle search value to parent
 interface SearchBoxProps {
-  onSearch: (query: string) => void; // Callback when search query is debounced
-  onClear: () => void; // Callback when clear button is clicked
-  onFocus: () => void;
-  initialValue?: string; // Optional initial input text
+  value: string;
+  onChange?: (query: string) => void; // Callback when search query is debounced
+  onClear?: () => void; // Callback when clear button is clicked
+  onFocus?: () => void;
   isLoading?: boolean; // Shows a loading spinner if true
 }
 
@@ -26,57 +19,35 @@ export interface SearchBoxHandle {
 
 const SearchBox = forwardRef<SearchBoxHandle, SearchBoxProps>(
   (
-    {
-      onSearch,
-      onClear,
-      onFocus,
-      initialValue = '',
-      isLoading,
-    }: SearchBoxProps,
+    { value = '', onChange, onClear, onFocus, isLoading }: SearchBoxProps,
     ref,
   ) => {
-    const DEBOUNCE_DELAY_MS = 500;
-    // Local state for the input text field
-    const [inputValue, setInputValue] = useState(initialValue);
     const inputRef = useRef<HTMLInputElement>(null);
     // Resets local input state and triggers parent onClear callback
     const handleClear = () => {
-      onClear();
-      setInputValue('');
+      onChange?.('');
       inputRef.current?.focus();
     };
 
     useImperativeHandle(ref, () => ({
       // clear search input for better ux
-      clear: () => setInputValue(''),
+      clear: handleClear,
       inputRef: inputRef,
     }));
-
-    // Debounce logic: Triggers onSearch only after 500ms of inactivity
-    const debouncedSearch = useDebounce(inputValue, DEBOUNCE_DELAY_MS);
-
-    useEffect(() => {
-      if (debouncedSearch.trim() === '') {
-        onSearch('');
-        return;
-      }
-
-      onSearch(debouncedSearch);
-    }, [debouncedSearch, onSearch]);
 
     return (
       <div className="relative w-full max-w-2xl group">
         {/* Left Search Icon */}
         <div className="absolute inset-y-0 left-0 flex items-center pl-4 pointer-events-none">
-          <Search className="w-5 h-5  text-gray-100 group-focus-within:text-accent-neon transition-colors" />
+          <Search className="w-5 h-5 text-gray-100 group-focus-within:text-accent-neon transition-colors" />
         </div>
 
         {/* Main Search Input */}
         <input
           ref={inputRef}
           type="text"
-          value={inputValue}
-          onChange={(e) => setInputValue(e.target.value)}
+          value={value}
+          onChange={(e) => onChange?.(e.target.value)}
           onFocus={onFocus}
           placeholder="Search anime..."
           className="w-full py-4 pl-12 pr-12 text-gray-100 bg-black/40 border border-white/20 rounded-2xl 
@@ -93,7 +64,8 @@ const SearchBox = forwardRef<SearchBoxHandle, SearchBoxProps>(
           {isLoading ? (
             <Loader2 className="w-5 h-5 text-accent-neon animate-spin" />
           ) : (
-            inputValue && (
+            value &&
+            onClear && (
               <Button
                 onClick={handleClear}
                 onMouseDown={(e) => e.stopPropagation()}>
