@@ -10,6 +10,9 @@ import SearchDropdown from './SearchDropdown';
 import { SEARCH_DEBOUNCE } from '../../../types/app.constant';
 import { useUrlQueryState } from '../../../hooks/useUrlQueryState';
 import { useDebounce } from 'use-debounce';
+import { Keyboard } from 'lucide-react';
+import { useDialog } from '../../../hooks/useDialog';
+import KeyboardShortcutContent from '../../KeyboardShortcutContent';
 
 interface NavItem {
   name: string;
@@ -23,8 +26,8 @@ const Header = () => {
     { name: 'Favourites', href: '/favourites' },
   ];
 
+  const { custom } = useDialog();
   const navigate = useNavigate();
-
   const handleNavigate = (e: React.MouseEvent, href: string) => {
     e.preventDefault(); // prevent href"#"
     navigate(href);
@@ -57,6 +60,22 @@ const Header = () => {
                 </a>
               </li>
             ))}
+
+            <li className="flex items-center gap-4 ml-4 py-1 px-3 border-l border-white/20 text-xs font-medium text-gray-300 drop-shadow-[0_1.5px_1.5px_rgba(0,0,0,0.9)]">
+              {/* Search Shortcut */}
+              <div
+                className="flex items-center gap-2 group cursor-help"
+                onClick={() => {
+                  custom('Keyboard shortcut', <KeyboardShortcutContent />);
+                }}>
+                <div className="flex items-center justify-center w-8 h-8 bg-white/10 border border-white/20 rounded shadow-inner">
+                  <Keyboard size={24} className="text-white" />
+                </div>
+                <span className="text-[12px] uppercase tracking-wider opacity-70">
+                  Keyboard Shortcut
+                </span>
+              </div>
+            </li>
           </ul>
         </div>
 

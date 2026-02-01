@@ -9,6 +9,7 @@ interface DialogContextType {
   show: (options: DialogConfig) => void;
   hide: () => void;
   setLoading: (loading: boolean) => void;
+  isOpen: boolean;
 }
 
 const DialogContext = createContext<DialogContextType | undefined>(undefined);
@@ -18,18 +19,23 @@ export const DialogProvider: React.FC<{ children: React.ReactNode }> = ({
 }) => {
   const [config, setConfig] = useState<DialogProps | null>(null);
   const [isLoading, setIsLoading] = useState(false);
+  const [isOpen, setIsOpen] = useState(false);
 
   const show = useCallback((options: DialogConfig) => {
     setConfig({ ...options } as DialogProps);
     setIsLoading(false);
+    setIsOpen(true);
   }, []);
 
   const hide = useCallback(() => {
     if (!isLoading) setConfig(null);
+
+    setIsOpen(false);
   }, [isLoading]);
 
   return (
-    <DialogContext.Provider value={{ show, hide, setLoading: setIsLoading }}>
+    <DialogContext.Provider
+      value={{ show, hide, setLoading: setIsLoading, isOpen }}>
       {children}
 
       {typeof document !== 'undefined' &&

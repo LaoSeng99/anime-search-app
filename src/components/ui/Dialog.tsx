@@ -4,7 +4,7 @@ import Button from './Button';
 export interface DialogProps {
   type: 'info' | 'confirm';
   title: string;
-  message: string;
+  message?: string;
   onConfirm: () => void;
   onCancel?: () => void;
   isLoading?: boolean;
@@ -16,6 +16,10 @@ export interface DialogProps {
 
   /** Custom text for the cancel button. Default: 'Cancel' */
   cancelLabel?: string;
+  /** * Custom render for the content.
+   * Message will be ignore if renderContent was use
+   */
+  renderContent?: React.ReactNode;
 
   /** * Custom render for the Confirm button.
    * Set 'confirmLabel' to null/undefined when using this to avoid confusion.
@@ -45,6 +49,7 @@ const Dialog = ({
   cancelLabel,
   renderConfirm,
   renderCancel,
+  renderContent,
 }: DialogProps) => {
   const defaultConfirmLabel = type === 'confirm' ? 'Confirm' : 'Got it';
   return (
@@ -55,13 +60,18 @@ const Dialog = ({
       transition={{ type: 'spring', damping: 20, stiffness: 300 }}
       className="relative w-[95vw] min-w-[320px] max-w-md overflow-hidden bg-[#1a1a1a] border border-white/10 rounded-2xl shadow-[0_20px_50px_rgba(0,0,0,0.5)]">
       {/* Content */}
+
       <div className="p-6">
         <h3 className="text-xl font-bold text-white tracking-tight leading-snug wrap-break-word">
           {title}
         </h3>
-        <p className="mt-4 text-gray-400 text-[15px] leading-relaxed wrap-break-word opacity-90">
-          {message}
-        </p>
+        {renderContent ? (
+          <div className="mt-4">{renderContent}</div>
+        ) : (
+          <p className="mt-4 text-gray-400 text-[15px] leading-relaxed wrap-break-word opacity-90">
+            {message}
+          </p>
+        )}{' '}
       </div>
 
       {/* Action */}

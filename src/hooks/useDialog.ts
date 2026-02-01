@@ -1,6 +1,7 @@
 import { useContext } from 'react';
 import type { DialogProps } from '../components/ui/Dialog';
 import DialogContext from '../context/DialogContext';
+import { useKeyboardAccessibility } from './useKeyboardAccessibility';
 
 type ConfirmOptions = Pick<
   DialogProps,
@@ -16,6 +17,11 @@ export const useDialog = () => {
   const context = useContext(DialogContext);
   if (!context) throw new Error('useDialog must be used within DialogProvider');
 
+  const hide = context.hide;
+  useKeyboardAccessibility({
+    onEscape: hide,
+    enabled: context.isOpen,
+  });
   /**
    * @param title - Dialog Title
    * @param message - Dialog Content
@@ -40,19 +46,19 @@ export const useDialog = () => {
           context.setLoading(true);
           try {
             await result;
-            context.hide();
+            hide();
           } catch (error) {
             console.error('Dialog Action Failed:', error);
           } finally {
             context.setLoading(false);
           }
         } else {
-          context.hide();
+          hide();
         }
       },
       onCancel: () => {
         options?.onCancel?.();
-        context.hide();
+        hide();
       },
     });
   };
@@ -63,9 +69,23 @@ export const useDialog = () => {
       title,
       message,
       ...options,
-      onConfirm: () => context.hide(),
+      onConfirm: () => hide(),
     });
   };
 
-  return { confirm, info, hide: context.hide };
+  const custom = (
+    title: string,
+    content: React.ReactNode,
+    options?: ConfirmOptions,
+  ) => {
+    context.show({
+      type: 'info',
+      title,
+      ...options,
+      renderContent: content,
+      onConfirm: () => hide(),
+    });
+  };
+
+  return { confirm, info, custom, hide: context.hide };
 };
