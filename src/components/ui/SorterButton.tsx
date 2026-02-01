@@ -99,10 +99,7 @@ const TriggerButton = (toggle: () => void, activeSorter?: SorterItem) => {
   return (
     <Button
       variant={'ghost'}
-      outline
-      className={
-        activeSorter ? 'border-indigo-500/50 text-white' : 'text-slate-400'
-      }
+      className={' text-gray-400'}
       icon={
         <ChevronDown
           size={16}

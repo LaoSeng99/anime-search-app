@@ -77,7 +77,7 @@ const PopularContent = ({ isVisible }: { isVisible: boolean }) => {
           {showViewMoreButton ? (
             <Button
               onClick={() => {
-                navigate('/anime');
+                navigate('/anime?order_by=popularity&sort=asc');
               }}>
               View More
             </Button>

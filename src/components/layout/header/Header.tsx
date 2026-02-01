@@ -53,25 +53,23 @@ const Header = () => {
                   className={`
             px-3 py-2 text-md font-semibold transition-all duration-200
             text-gray-200 hover:text-white 
-            drop-shadow-[0_1.2px_1.2px_rgba(0,0,0,0.8)]
-            hover:drop-shadow-[0_0_8px_rgba(255,255,255,0.3)]
-          `}>
+            drop-shadow-[0_1.2px_1.2px_rgba(0,0,0,0.8)] `}>
                   {item.name}
                 </a>
               </li>
             ))}
 
-            <li className="flex items-center gap-4 ml-4 py-1 px-3 border-l border-white/20 text-xs font-medium text-gray-300 drop-shadow-[0_1.5px_1.5px_rgba(0,0,0,0.9)]">
+            <li className="flex items-center gap-4 ml-4 py-1 px-3 border-l border-white/30 text-xs font-medium text-gray-300 drop-shadow-[0_1.5px_1.5px_rgba(0,0,0,1)]">
               {/* Search Shortcut */}
               <div
-                className="flex items-center gap-2 group cursor-help"
+                className="flex items-center gap-2 group cursor-help "
                 onClick={() => {
                   custom('Keyboard shortcut', <KeyboardShortcutContent />);
                 }}>
                 <div className="flex items-center justify-center w-8 h-8 bg-white/10 border border-white/20 rounded shadow-inner">
                   <Keyboard size={24} className="text-white" />
                 </div>
-                <span className="text-[12px] uppercase tracking-wider opacity-70">
+                <span className="font-semibold transition-all duration-200  text-[12px]  text-gray-200 hover:text-white  drop-shadow-[0_0_8px_rgba(255,255,255,0.3)] uppercase tracking-wider ">
                   Keyboard Shortcut
                 </span>
               </div>

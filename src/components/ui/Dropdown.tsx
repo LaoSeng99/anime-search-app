@@ -50,7 +50,7 @@ const Dropdown = ({
             className={`
               absolute z-50 rounded-xl bg-[#0f1117] border border-white/10 shadow-2xl
               ${className}
-              ${position.isUp ? 'bottom-full mb-3 origin-bottom' : 'top-full mt-3 origin-top'}
+              ${position.isUp ? 'bottom-full mb-3 origin-bottom' : 'top-full origin-top'}
               ${position.isRight ? 'right-0' : 'left-0'}
             `}>
             {children}
