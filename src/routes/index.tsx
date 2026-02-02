@@ -2,8 +2,8 @@ import { createBrowserRouter, redirect } from 'react-router';
 import AnimeDetailPage from '../pages/AnimeDetail/AnimeDetailPage';
 import AnimeListPage from '../pages/AnimeList/AnimeListPage';
 import FavouritePage from '../pages/Favourite/FavouritePage';
-import HomePage from '../pages/Home/HomePage';
 import MainLayout from '../components/layout/MainLayout';
+import HomePage from '../pages/Home/HomePage';
 
 export const router = createBrowserRouter([
   {

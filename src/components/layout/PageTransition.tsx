@@ -44,7 +44,7 @@ export const PageTransition = () => {
         animate="animate"
         exit="exit"
         className="w-full min-h-screen relative">
-        <main className="flex flex-col justify-between min-h-screen w-full">
+        <main className="justify-between min-h-screen w-full">
           {outlet}
           <Footer />
         </main>

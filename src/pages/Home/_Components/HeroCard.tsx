@@ -4,7 +4,7 @@ import Button from '../../../components/ui/Button';
 import ErrorState from '../../../components/ui/ErrorState';
 import FavouriteButton from '../../../components/ui/FavouriteButton';
 import MotionImage from '../../../components/ui/MotionImage';
-import TrailerVideo from './TrailerVideo';
+import TrailerVideo from '../../../components/TrailerVideo';
 import { useRandomAnime } from '../../../hooks/useRandomAnime';
 
 const HeroCard = () => {
@@ -44,16 +44,15 @@ const HeroCard = () => {
         onVideoEnd={rePick}
         embedUrl={anime.trailer?.embed_url ?? ''}
         backdropUrl={anime.images.webp.large_image_url}></TrailerVideo>
-      <div
-        className="absolute inset-0 z-0 scale-110 blur-2xl opacity-50 transition-transform duration-700 group-hover:scale-100"
-        style={{
-          backgroundPosition: 'center',
-          backgroundSize: 'cover',
-        }}
-      />
 
-      <div className="absolute inset-0 z-10 bg-linear-to-r from-black via-black/10 to-transparent" />
-      <div className="absolute inset-0 z-10 bg-linear-to-t from-black via-transparent to-transparent" />
+      <div
+        aria-label="left-shadow"
+        className="absolute inset-0 z-10 bg-linear-to-r from-black via-black/10 to-transparent"
+      />
+      <div
+        aria-label="bottom-shadow"
+        className="absolute inset-0 z-10 bg-linear-to-t from-black via-transparent to-transparent"
+      />
 
       <section className="relative z-20 h-full flex flex-col justify-center px-8 md:px-16 gap-6 max-w-3xl">
         {/* Badges */}
