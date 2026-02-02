@@ -91,7 +91,6 @@ const AnimeListPage = () => {
                 currentPage={urlRequest.page || 1}
                 perPage={urlRequest.limit || 12}
                 isLoading={isLoading || isFetching}
-                onChangePage={() => {}}
               />
             </div>
           </main>

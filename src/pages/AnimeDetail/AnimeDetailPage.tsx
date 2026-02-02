@@ -6,6 +6,7 @@ import {
   GitBranch,
   Info,
   PlayCircle,
+  SearchX,
   UserRoundPen,
   Users,
   Youtube,
@@ -16,6 +17,7 @@ import FavouriteButton from '../../components/ui/FavouriteButton';
 import { getLastSegment, getYoutubeVideoUrl } from '../../utils/urlHelper';
 import { useBackgroundStore } from '../../hooks/useBackgroundStore';
 import NavigationTab, { type NavTab } from '../../components/ui/NavigationTab';
+import Button from '../../components/ui/Button';
 
 const AnimeDetailPage = () => {
   const { id } = useParams<{ id: string }>();
@@ -25,6 +27,7 @@ const AnimeDetailPage = () => {
     data: anime,
     isLoading,
     error,
+    refetch,
   } = useQuery({
     queryKey: ['anime', id],
     queryFn: async () => {
@@ -45,16 +48,15 @@ const AnimeDetailPage = () => {
     return () => clearBackground();
   }, [anime, setBackground, clearBackground]);
 
-  if (!id) {
-    return <>Id missing, please go back</>;
-  }
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
 
   if (isLoading) {
-    return <>Loading...</>;
+    return <DetailHeaderSkeleton />;
   }
-
   if (error || !anime) {
-    return <>Retrieve data failed</>;
+    return <ErrorState onRetry={refetch} />;
   }
 
   return (
@@ -175,5 +177,62 @@ const NavTabSection = () => {
     />
   );
 };
+
+const ErrorState = ({ onRetry }: { onRetry: () => void }) => {
+  const navigate = useNavigate();
+  return (
+    <section className="w-full min-h-screen flex items-center justify-center bg-[#0a0a0a] px-6">
+      <div className="max-w-md w-full p-12 bg-white/5 rounded-3xl border border-dashed border-white/10 flex flex-col items-center justify-center gap-6 text-center animate-in fade-in zoom-in duration-300">
+        <div className="p-4 bg-white/5 rounded-full">
+          <SearchX className='text-md text-white/20"' />
+        </div>
+        <div className="space-y-2">
+          <h2 className="text-xl font-bold text-white/90">
+            Failed to retrieve anime data
+          </h2>
+          <p className="text-zinc-500 text-sm">Retry or Back to home </p>
+        </div>
+        <div className="flex gap-4">
+          <Button secondary onClick={onRetry}>
+            Retry
+          </Button>
+
+          <Button onClick={() => navigate('/')}>Back to Home</Button>
+        </div>
+      </div>
+    </section>
+  );
+};
+
+const DetailHeaderSkeleton = () => (
+  <section className="relative w-full min-h-screen text-white animate-pulse">
+    {/* Video Area Placeholder */}
+    <div className="w-full aspect-video bg-zinc-900/50" />
+
+    <div className="sm:-mt-[30vw] md:-mt-[5vw] lg:-mt-[25vw] xl:-mt-[30vw] relative z-30 px-6 md:px-16">
+      <div className="flex flex-col md:flex-row gap-8 items-start">
+        {/* Poster Skeleton */}
+        <div className="shrink-0 w-44 md:w-64 aspect-3/4 bg-zinc-800 rounded-xl border border-white/10" />
+
+        {/* Info Skeleton */}
+        <div className="grow space-y-6 pt-4">
+          <div className="h-12 w-3/4 bg-zinc-800 rounded-lg" />
+          <div className="flex gap-4">
+            <div className="h-6 w-20 bg-zinc-800 rounded" />
+            <div className="h-6 w-20 bg-zinc-800 rounded" />
+          </div>
+          <div className="h-10 w-32 bg-zinc-800 rounded-lg" />
+        </div>
+      </div>
+
+      {/* Tabs Skeleton */}
+      <div className="mt-12 flex gap-8 border-b border-white/5 pb-4">
+        {[1, 2, 3, 4, 5].map((i) => (
+          <div key={i} className="h-4 w-16 bg-zinc-800 rounded" />
+        ))}
+      </div>
+    </div>
+  </section>
+);
 
 export default AnimeDetailPage;
