@@ -2,8 +2,8 @@ import { motion, type HTMLMotionProps } from 'framer-motion';
 import { useState } from 'react';
 
 interface MotionImageProps extends HTMLMotionProps<'img'> {
-  src: string;
-  alt: string;
+  src?: string;
+  alt?: string;
   className?: string;
   loading?: 'lazy' | 'eager';
 }
