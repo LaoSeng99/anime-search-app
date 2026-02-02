@@ -1,16 +1,19 @@
 import { useState } from 'react';
 import ReactPlayer from 'react-player';
-import { getYoutubeIdFromUrl } from '../../../utils/urlHelper';
+import { getYoutubeIdFromUrl } from '../utils/urlHelper';
+import MotionImage from './ui/MotionImage';
 interface TrailerVideoProps {
   embedUrl: string;
   backdropUrl: string;
-  onVideoEnd: () => void;
+  onVideoEnd?: () => void;
+  loop?: boolean;
 }
 
 const TrailerVideo = ({
   embedUrl,
   backdropUrl,
   onVideoEnd,
+  loop = false,
 }: TrailerVideoProps) => {
   const [hasError, setHasError] = useState(false);
 
@@ -18,13 +21,13 @@ const TrailerVideo = ({
   const youtubeId = getYoutubeIdFromUrl(embedUrl);
   const finalVideoUrl = `${noCookieUrl}${youtubeId}?enablejsapi=1&origin=${window.location.origin}`;
   const renderContent = () => {
-    if (hasError) {
+    if (hasError || embedUrl === '') {
       return (
         <div className="absolute inset-0 z-0">
-          <img
+          <MotionImage
             src={backdropUrl}
             className="w-full h-full object-cover blur-1xl scale-110 opacity-60"
-            alt="Fallback"
+            alt="Anime poster"
           />
         </div>
       );
@@ -46,6 +49,7 @@ const TrailerVideo = ({
           onEnded={onVideoEnd}
           onError={() => setHasError(true)}
           src={finalVideoUrl}
+          loop={loop}
         />
 
         <div className="absolute inset-0 bg-linear-to-r from-black/70 via-black/20 to-transparent z-10"></div>
