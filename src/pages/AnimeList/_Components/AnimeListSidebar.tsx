@@ -1,4 +1,4 @@
-import { useMemo, useState } from 'react';
+import { useCallback, useMemo, useState } from 'react';
 import { useUrlQueryState } from '../../../hooks/useUrlQueryState';
 import DatePicker from '../../../components/ui/DatePicker';
 
@@ -10,13 +10,7 @@ import {
 } from '../../../utils/anime.util';
 import Checkbox from '../../../components/ui/Checkbox';
 import { useCheckboxGroup } from '../../../hooks/useCheckboxGroup';
-import Button from '../../../components/ui/Button';
 import type { CheckboxOption } from '../../../types/ui.interface';
-import {
-  getAnimeRatingLabel,
-  getAnimeStatusLabel,
-  getAnimeTypeLabel,
-} from '../../../utils/labelHelper';
 
 const AnimeListSidebar = () => {
   const [openSections, setOpenSections] = useState({
@@ -120,15 +114,18 @@ const AnimeTypeFilterSection = ({
     const types = getAnimeTypeFilterList();
     const result = types.map((type) => ({
       id: type.id,
-      label: getAnimeTypeLabel(type.id),
+      label: type.label,
       checked: urlRequest.type === type.id,
     }));
     return result;
   }, [urlRequest.type]);
 
-  const handleOnChange = (ids: string[]) => {
-    setSingleParam('type', ids.join(','));
-  };
+  const handleOnChange = useCallback(
+    (ids: string[]) => {
+      setSingleParam('type', ids.join(','));
+    },
+    [setSingleParam],
+  );
 
   const { options, toggleSingle } = useCheckboxGroup(
     animeFilters,
@@ -169,7 +166,7 @@ const StatusFilterSection = ({
     const types = getAnimeStatusFilterList();
     const result = types.map((type) => ({
       id: type.id,
-      label: getAnimeStatusLabel(type.id),
+      label: type.label,
       checked: urlRequest.status === type.id,
     }));
     return result;
@@ -218,7 +215,7 @@ const RatingFilterSection = ({
     const types = getAnimeRatingFilterList();
     const result = types.map((type) => ({
       id: type.id,
-      label: getAnimeRatingLabel(type.id),
+      label: type.label,
       checked: urlRequest.rating === type.id,
     }));
     return result;
