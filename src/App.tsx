@@ -1,19 +1,22 @@
-import './App.css';
-import { Outlet } from 'react-router';
-import Header from './components/header/Header';
-import Footer from './components/footer/Footer';
+import { RouterProvider } from 'react-router';
+import { router } from './routes';
+import { useEffect } from 'react';
+import { useFavouriteStore } from './hooks/useFavouriteStore';
+import { ComposeProviders } from './context/ComposeProviders';
+import { DialogProvider } from './context/DialogContext';
+import { ReactQueryProvider } from './context/ReactQueryProvider';
+
+const providers = [ReactQueryProvider, DialogProvider];
 
 function App() {
+  useEffect(() => {
+    useFavouriteStore.getState().init();
+  }, []);
+
   return (
-    <div className="min-h-screen bg-black text-white">
-      <Header />
-
-      <main className="flex flex-col justify-between min-h-screen w-full">
-        <Outlet />
-
-        <Footer />
-      </main>
-    </div>
+    <ComposeProviders providers={providers}>
+      <RouterProvider router={router} />
+    </ComposeProviders>
   );
 }
 

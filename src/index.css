@@ -1,5 +1,9 @@
 @import 'tailwindcss';
 
+@theme {
+  --breakpoint-3xl: 120rem;
+}
+
 @layer utilities {
   .no-scrollbar::-webkit-scrollbar {
     display: none;
@@ -8,4 +12,13 @@
     -ms-overflow-style: none;
     scrollbar-width: none;
   }
+}
+
+html,
+body {
+  overflow-x: hidden;
+}
+
+.framer-motion-container-fix::-webkit-scrollbar {
+  display: none;
 }

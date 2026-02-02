@@ -1,99 +1,181 @@
 import React from 'react';
 import { Loader2 } from 'lucide-react';
-type ButtonVariant =
-  | 'primary'
-  | 'secondary'
-  | 'success'
-  | 'info'
-  | 'warn'
-  | 'help'
-  | 'danger'
-  | 'contrast';
-type ButtonSize = 'sm' | 'md' | 'lg' | 'icon';
+import { motion, type HTMLMotionProps } from 'framer-motion';
+import { cn } from '../../utils/ui.util';
 
-interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
-  variant?: ButtonVariant;
-  size?: ButtonSize;
-  isLoading?: boolean;
-  leftIcon?: React.ReactNode;
+interface ButtonProps extends Omit<HTMLMotionProps<'button'>, 'children'> {
+  // Boolean Variants
+  primary?: boolean;
+  secondary?: boolean;
+  success?: boolean;
+  info?: boolean;
+  warn?: boolean;
+  danger?: boolean;
+  ghost?: boolean;
+  contrast?: boolean;
   outline?: boolean;
+
+  size?: 'sm' | 'md' | 'lg' | 'icon';
+  isLoading?: boolean;
+  icon?: React.ReactNode;
+  iconPosition?: 'left' | 'right';
+  children?: React.ReactNode;
 }
-
-const baseStyles = `inline-flex items-center justify-center font-medium transition-all duration-200 rounded-lg 
-                    cursor-pointer active:scale-[0.98] disabled:opacity-50 disabled:pointer-events-none `;
-const colorConfigs = {
-  primary: {
-    solid: 'bg-white text-black hover:bg-gray-100',
-    outline: 'border border-white/20 text-white hover:bg-white/10',
-  },
-  secondary: {
-    solid: 'bg-[#2a2a2a] text-[#a1a1aa] hover:bg-[#333333]',
-    outline: 'border border-[#2a2a2a] text-[#a1a1aa] hover:bg-[#2a2a2a]/30',
-  },
-  success: {
-    solid: 'bg-[#4ade80] text-black hover:bg-[#22c55e]',
-    outline: 'border border-[#4ade80] text-[#4ade80] hover:bg-[#4ade80]/10',
-  },
-  info: {
-    solid: 'bg-[#3b82f6] text-white hover:bg-[#2563eb]',
-    outline: 'border border-[#3b82f6] text-[#3b82f6] hover:bg-[#3b82f6]/10',
-  },
-  warn: {
-    solid: 'bg-[#f97316] text-white hover:bg-[#ea580c]',
-    outline: 'border border-[#f97316] text-[#f97316] hover:bg-[#f97316]/10',
-  },
-  help: {
-    solid: 'bg-[#a855f7] text-white hover:bg-[#9333ea]',
-    outline: 'border border-[#a855f7] text-[#a855f7] hover:bg-[#a855f7]/10',
-  },
-  danger: {
-    solid: 'bg-[#ef4444] text-white hover:bg-[#dc2626]',
-    outline: 'border border-[#ef4444] text-[#ef4444] hover:bg-[#ef4444]/10',
-  },
-  contrast: {
-    solid: 'bg-white text-black hover:bg-gray-200',
-    outline: 'border border-white text-white hover:bg-white hover:text-black',
-  },
-};
-
-const sizes = {
-  sm: 'px-3 py-1 text-xs',
-  md: 'px-4 py-2 text-sm',
-  lg: 'px-6 py-3 text-base',
-  icon: 'p-2',
-};
 
 const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
   (
     {
-      variant = 'primary',
+      primary,
+      secondary,
+      success,
+      info,
+      warn,
+      danger,
+      ghost,
+      contrast,
+      outline = false,
       size = 'md',
       isLoading,
-      leftIcon,
+      icon,
+      iconPosition = 'left',
       children,
-      className = '',
-      outline = false,
+      className,
       ...props
     },
     ref,
   ) => {
-    const variantStyles = outline
-      ? colorConfigs[variant].outline
-      : colorConfigs[variant].solid;
+    const variant = danger
+      ? 'danger'
+      : success
+        ? 'success'
+        : warn
+          ? 'warn'
+          : info
+            ? 'info'
+            : secondary
+              ? 'secondary'
+              : ghost
+                ? 'ghost'
+                : contrast
+                  ? 'contrast'
+                  : 'primary';
 
-    const iconSize = size === 'sm' ? 14 : size === 'lg' ? 20 : 16;
+    const baseStyles =
+      'relative cursor-pointer inline-flex items-center justify-center font-bold tracking-tight transition-all duration-200 rounded-xl outline-none focus-visible:ring-2 focus-visible:ring-zinc-400 focus-visible:ring-offset-2 disabled:opacity-40 disabled:pointer-events-none';
+
+    const colorConfigs = {
+      primary: {
+        solid:
+          'bg-zinc-900 text-zinc-50 hover:bg-zinc-800 dark:bg-zinc-50 dark:text-zinc-950 dark:hover:bg-zinc-200 shadow-sm',
+        outline:
+          'border border-zinc-200 text-zinc-900 hover:bg-zinc-50 dark:border-zinc-800 dark:text-zinc-50 dark:hover:bg-zinc-900',
+      },
+      secondary: {
+        solid:
+          'bg-zinc-100 text-zinc-900 hover:bg-zinc-200 dark:bg-zinc-800 dark:text-zinc-50 dark:hover:bg-zinc-700',
+        outline:
+          'border border-zinc-200 text-zinc-600 hover:text-zinc-900 dark:border-zinc-800 dark:text-zinc-400 dark:hover:text-zinc-50',
+      },
+      success: {
+        solid: 'bg-emerald-600 text-white hover:bg-emerald-700 shadow-sm',
+        outline:
+          'border border-emerald-500/50 text-emerald-600 hover:bg-emerald-50 dark:text-emerald-400 dark:hover:bg-emerald-500/10',
+      },
+      danger: {
+        solid: 'bg-red-600 text-white hover:bg-red-700 shadow-sm',
+        outline:
+          'border border-red-500/50 text-red-600 hover:bg-red-50 dark:text-red-400 dark:hover:bg-red-500/10',
+      },
+      warn: {
+        solid: 'bg-amber-500 text-black hover:bg-amber-600',
+        outline: 'border border-amber-500/50 text-amber-600 hover:bg-amber-50',
+      },
+      info: {
+        solid: 'bg-blue-600 text-white hover:bg-blue-700',
+        outline: 'border border-blue-500/50 text-blue-600 hover:bg-blue-50',
+      },
+      contrast: {
+        solid:
+          'bg-black text-white border border-zinc-800 hover:bg-zinc-900 dark:bg-white dark:text-black dark:hover:bg-zinc-100',
+        outline:
+          'border-2 border-zinc-900 text-zinc-900 hover:bg-zinc-900 hover:text-white dark:border-white dark:text-white dark:hover:bg-white dark:hover:text-black',
+      },
+      ghost: {
+        solid:
+          'bg-transparent text-zinc-500 hover:text-zinc-900 hover:bg-zinc-100 dark:text-zinc-400 dark:hover:text-zinc-50 dark:hover:bg-zinc-800/50',
+        outline:
+          'border border-transparent text-zinc-500 hover:border-zinc-200 dark:hover:border-zinc-800',
+      },
+    };
+
+    const sizeConfigs = {
+      sm: {
+        container: 'h-8 px-3 text-xs rounded-lg',
+        gap: 'gap-1.5',
+        icon: 14,
+      },
+      md: { container: 'h-11 px-6 text-sm rounded-xl', gap: 'gap-2', icon: 18 },
+      lg: {
+        container: 'h-14 px-8 text-base rounded-2xl',
+        gap: 'gap-3',
+        icon: 20,
+      },
+      icon: { container: 'h-10 w-10 p-0 rounded-xl', gap: 'gap-0', icon: 20 },
+    };
+
+    const activeVariant = colorConfigs[variant][outline ? 'outline' : 'solid'];
+    const activeSize = sizeConfigs[size];
+
     return (
-      <button
+      <motion.button
         ref={ref}
-        className={`${baseStyles} ${variantStyles} ${sizes[size]} ${className}`}
+        whileHover={{ y: -1 }}
+        whileTap={{ scale: 0.98 }}
+        className={cn(
+          baseStyles,
+          activeVariant,
+          activeSize.container,
+          className,
+        )}
         disabled={isLoading || props.disabled}
+        aria-busy={isLoading}
         {...props}>
         {isLoading && (
-          <Loader2 size={iconSize} className="animate-spin text-current" />
+          <motion.span
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            className="absolute inset-0 flex items-center justify-center bg-inherit rounded-inherit z-10">
+            <Loader2 className="animate-spin" size={activeSize.icon} />
+          </motion.span>
         )}
-        {!isLoading && leftIcon && <span className="mr-2">{leftIcon}</span>}
-        {children}
-      </button>
+
+        <span
+          className={cn(
+            'inline-flex items-center transition-opacity duration-200',
+            activeSize.gap,
+            isLoading ? 'opacity-0' : 'opacity-100',
+          )}>
+          {icon && iconPosition === 'left' && (
+            <span
+              className="shrink-0 flex items-center justify-center [&>svg]:w-[1em] [&>svg]:h-[1em]"
+              style={{ fontSize: activeSize.icon }}
+              aria-hidden="true">
+              {icon}
+            </span>
+          )}
+
+          {children && <span>{children}</span>}
+
+          {icon && iconPosition === 'right' && (
+            <span
+              className="shrink-0 flex items-center justify-center"
+              aria-hidden="true"
+              style={{ fontSize: activeSize.icon }}>
+              {icon}
+            </span>
+          )}
+        </span>
+      </motion.button>
     );
   },
 );

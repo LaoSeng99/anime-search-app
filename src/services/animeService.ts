@@ -1,30 +1,20 @@
-import type { Anime } from '../types/anime';
-import type { ApiListResponse } from '../types/api.response';
+import type {
+  Anime,
+  AnimeCharacter,
+  AnimeEpisode,
+  AnimeStaff,
+  VideoEpisode,
+} from '../types/anime';
+import {
+  type AnimeSearchQueryType,
+  type AnimeSearchQueryStatus,
+  type AnimeSearchQueryRating,
+  type AnimeSearchQueryOrderBy,
+  ANIME_MAXIMUM_LIMIT,
+  type TopAnimeFilter,
+} from '../types/anime.request';
+import type { ApiListResponse, ApiResponse } from '../types/api.response';
 import apiClient from './apiClient';
-
-const ANIME_MAXIMUM_LIMIT = 25;
-
-export const getAnime = async (
-  req: GetAnimeSearchRequest = {
-    limit: 10,
-    page: 1,
-    q: '',
-  },
-) => {
-  if (req.limit! > ANIME_MAXIMUM_LIMIT) {
-    throw new Error('Limit cannot exceed 25');
-  }
-
-  const response = await apiClient.get<ApiListResponse<Anime>>('/anime', {
-    params: {
-      limit: req.limit,
-      page: req.page,
-      q: req.q,
-    },
-  });
-
-  return response.data;
-};
 
 export interface GetAnimeSearchRequest {
   /** Current page number for pagination. */
@@ -89,32 +79,93 @@ export interface GetAnimeSearchRequest {
   end_date?: string;
 }
 
-// --- Supporting Types ---
+export const getAnime = async (
+  req: GetAnimeSearchRequest = {
+    limit: 10,
+    page: 1,
+    q: '',
+  },
+) => {
+  if (req.limit! > ANIME_MAXIMUM_LIMIT) {
+    throw new Error('Limit cannot exceed 25');
+  }
 
-export type AnimeSearchQueryType =
-  | 'tv'
-  | 'movie'
-  | 'ova'
-  | 'special'
-  | 'ona'
-  | 'music'
-  | 'cm'
-  | 'pv'
-  | 'tv_special';
+  const response = await apiClient.get<ApiListResponse<Anime>>('/anime', {
+    params: { ...req },
+  });
 
-export type AnimeSearchQueryStatus = 'airing' | 'complete' | 'upcoming';
+  return response.data;
+};
 
-export type AnimeSearchQueryRating = 'g' | 'pg' | 'pg13' | 'r17' | 'r' | 'rx';
+export const getAnimeById = async (id: string) => {
+  if (!id) throw new Error('Id cannot be empty');
 
-export type AnimeSearchQueryOrderBy =
-  | 'mal_id'
-  | 'title'
-  | 'start_date'
-  | 'end_date'
-  | 'episodes'
-  | 'score'
-  | 'scored_by'
-  | 'rank'
-  | 'popularity'
-  | 'members'
-  | 'favorites';
+  const response = await apiClient.get<ApiResponse<Anime>>(`/anime/${id}/full`);
+
+  return response.data;
+};
+
+export interface GetTopAnimeRequest {
+  page?: number;
+  limit?: number;
+  type?: AnimeSearchQueryType;
+  filter?: TopAnimeFilter;
+  rating?: AnimeSearchQueryRating;
+}
+
+export const getTopAnime = async (
+  req: GetTopAnimeRequest = {
+    limit: 10,
+    page: 1,
+  },
+) => {
+  if (req.limit! > ANIME_MAXIMUM_LIMIT) {
+    throw new Error('Limit cannot exceed 25');
+  }
+
+  const response = await apiClient.get<ApiListResponse<Anime>>('/top/anime', {
+    params: { ...req },
+  });
+
+  return response.data;
+};
+
+export const getAnimeCharacters = async (id: string | number) => {
+  if (!id) throw new Error('Id cannot be empty');
+
+  const response = await apiClient.get<ApiResponse<AnimeCharacter[]>>(
+    `/anime/${id}/characters`,
+  );
+
+  return response.data;
+};
+
+export const getAnimeEpisodes = async (id: string | number) => {
+  if (!id) throw new Error('Id cannot be empty');
+  const response = await apiClient.get<ApiResponse<AnimeEpisode[]>>(
+    `/anime/${id}/episodes`,
+  );
+  return response.data;
+};
+
+export const getAnimeStaff = async (id: string | number) => {
+  if (!id) throw new Error('Id cannot be empty');
+  const response = await apiClient.get<ApiResponse<AnimeStaff[]>>(
+    `/anime/${id}/staff`,
+  );
+  return response.data;
+};
+
+export const getAnimeVideoEpisodes = async (
+  id: string | number,
+  page: number = 1,
+) => {
+  if (!id) throw new Error('Id cannot be empty');
+
+  const response = await apiClient.get<ApiListResponse<VideoEpisode>>(
+    `/anime/${id}/videos/episodes`,
+    { params: { page } },
+  );
+
+  return response.data;
+};

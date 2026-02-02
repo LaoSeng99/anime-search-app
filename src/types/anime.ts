@@ -25,7 +25,7 @@ export interface Anime {
   favorites: number;
   synopsis: string | null;
   background: string | null;
-  season: string | null;
+  season: Season | null;
   year: number | null;
   broadcast: Broadcast;
   producers: ResourceReference[];
@@ -33,11 +33,72 @@ export interface Anime {
   studios: ResourceReference[];
   genres: ResourceReference[];
   explicit_genres: ResourceReference[];
+  external: ResourceReference[];
   themes: ResourceReference[];
   demographics: ResourceReference[];
+  relations: Relation[];
 }
 
-// --- 子类型 (Sub-types) ---
+export interface AnimeEpisode {
+  mal_id: number;
+  url: string;
+  title: string;
+  title_japanese: string | null;
+  title_romanji: string | null;
+  duration: number | null;
+  aired: string | null;
+  filler: boolean;
+  recap: boolean;
+  forum_url: string | null;
+  score: number | null;
+}
+export interface AnimeStaff {
+  person: {
+    mal_id: number;
+    url: string;
+    images: Images;
+    name: string;
+  };
+  positions: string[];
+}
+
+export interface AnimeCharacter {
+  character: CharacterBase;
+  role: 'Main' | 'Supporting';
+  voice_actors: VoiceActor[];
+}
+
+export interface CharacterBase {
+  mal_id: number;
+  url: string;
+  name: string;
+  images: CharacterImages;
+}
+
+export interface CharacterImages {
+  jpg: {
+    image_url: string;
+    small_image_url?: string;
+  };
+  webp: {
+    image_url: string;
+    small_image_url?: string;
+  };
+}
+
+export interface VoiceActor {
+  person: {
+    mal_id: number;
+    url: string;
+    images: {
+      jpg: {
+        image_url: string;
+      };
+    };
+    name: string;
+  };
+  language: string;
+}
 
 export interface Images {
   jpg: ImageUrls;
@@ -89,4 +150,26 @@ export interface ResourceReference {
   type: string;
   name: string;
   url: string;
+}
+
+export interface RelationEntry {
+  mal_id: number;
+  type: string;
+  name: string;
+  url: string;
+}
+
+export interface Relation {
+  relation: string;
+  entry: RelationEntry[];
+}
+
+export type Season = 'winter' | 'spring' | 'summer' | 'fall';
+
+export interface VideoEpisode {
+  mal_id: number;
+  url: string;
+  title: string;
+  episode: string;
+  images: Images;
 }

@@ -31,7 +31,6 @@ apiClient.interceptors.response.use(
 
     if (status === 429) {
       console.error('Too many requests! Jikan API rate limit hit.');
-      // 这里可以集成一个 Toast 通知用户“请求太频繁，请稍后再试”
     }
 
     if (status === 404) {
