@@ -1,4 +1,10 @@
-import type { Anime } from '../types/anime';
+import type {
+  Anime,
+  AnimeCharacter,
+  AnimeEpisode,
+  AnimeStaff,
+  VideoEpisode,
+} from '../types/anime';
 import {
   type AnimeSearchQueryType,
   type AnimeSearchQueryStatus,
@@ -7,7 +13,7 @@ import {
   ANIME_MAXIMUM_LIMIT,
   type TopAnimeFilter,
 } from '../types/anime.request';
-import type { ApiListResponse } from '../types/api.response';
+import type { ApiListResponse, ApiResponse } from '../types/api.response';
 import apiClient from './apiClient';
 
 export interface GetAnimeSearchRequest {
@@ -91,6 +97,14 @@ export const getAnime = async (
   return response.data;
 };
 
+export const getAnimeById = async (id: string) => {
+  if (!id) throw new Error('Id cannot be empty');
+
+  const response = await apiClient.get<ApiResponse<Anime>>(`/anime/${id}/full`);
+
+  return response.data;
+};
+
 export interface GetTopAnimeRequest {
   page?: number;
   limit?: number;
@@ -112,6 +126,46 @@ export const getTopAnime = async (
   const response = await apiClient.get<ApiListResponse<Anime>>('/top/anime', {
     params: { ...req },
   });
+
+  return response.data;
+};
+
+export const getAnimeCharacters = async (id: string | number) => {
+  if (!id) throw new Error('Id cannot be empty');
+
+  const response = await apiClient.get<ApiResponse<AnimeCharacter[]>>(
+    `/anime/${id}/characters`,
+  );
+
+  return response.data;
+};
+
+export const getAnimeEpisodes = async (id: string | number) => {
+  if (!id) throw new Error('Id cannot be empty');
+  const response = await apiClient.get<ApiResponse<AnimeEpisode[]>>(
+    `/anime/${id}/episodes`,
+  );
+  return response.data;
+};
+
+export const getAnimeStaff = async (id: string | number) => {
+  if (!id) throw new Error('Id cannot be empty');
+  const response = await apiClient.get<ApiResponse<AnimeStaff[]>>(
+    `/anime/${id}/staff`,
+  );
+  return response.data;
+};
+
+export const getAnimeVideoEpisodes = async (
+  id: string | number,
+  page: number = 1,
+) => {
+  if (!id) throw new Error('Id cannot be empty');
+
+  const response = await apiClient.get<ApiListResponse<VideoEpisode>>(
+    `/anime/${id}/videos/episodes`,
+    { params: { page } },
+  );
 
   return response.data;
 };
