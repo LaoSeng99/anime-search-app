@@ -1,5 +1,9 @@
 @import 'tailwindcss';
 
+@theme {
+  --breakpoint-3xl: 120rem;
+}
+
 @layer utilities {
   .no-scrollbar::-webkit-scrollbar {
     display: none;
