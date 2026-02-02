@@ -50,12 +50,12 @@ const FavouritePage = () => {
 
       <div className="absolute inset-0 z-10 backdrop-blur-sm bg-black/40" />
       {/* Content */}
-      <section className="relative z-20 h-full min-w-full flex flex-col items-center pt-48">
+      <section className="relative z-20 h-full  min-w-full flex flex-col items-center pt-48">
         <h1 className="text-white text-4xl md:text-6xl font-extrabold tracking-tight drop-shadow-xl self-start px-8 md:px-16 mb-8">
           Favourite Anime
         </h1>
 
-        <div className="w-full bg-black/80 px-8 py-12 min-h-150">
+        <div className="w-full  bg-black/80 px-8 py-12 min-h-150">
           {/* Action Group */}
           <FavouriteToolbar
             isLoading={isLoading}
@@ -69,7 +69,7 @@ const FavouritePage = () => {
             onRemoveAllFavourite={handleRemoveAllFavourite}></FavouriteToolbar>
 
           {/* Grid */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 2xl:grid-cols-6 gap-4 md:gap-6 w-full mt-8">
+          <div className="min-h-70 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 2xl:grid-cols-6 gap-4 md:gap-6 w-full mt-8">
             {displayAnime.map((anime) => (
               <div key={anime.mal_id} className="relative w-full">
                 <AnimePosterCard className="w-full" anime={anime} />
@@ -99,7 +99,7 @@ const FavouritePage = () => {
 };
 
 const EmptyState = () => (
-  <div className="text-gray-500 text-center py-20">
+  <div className="text-gray-500 text-center min-h-105">
     No anime found in this category.
   </div>
 );

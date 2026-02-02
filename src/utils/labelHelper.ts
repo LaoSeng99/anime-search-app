@@ -71,3 +71,7 @@ export const getAnimeStatusLabel = (
 ): string => {
   return STATUS_LABEL[status.toLowerCase() as AnimeSearchQueryStatus] ?? 'N/A';
 };
+
+export const cleanSynopsis = (value: string | null): string => {
+  return value?.replace(/\[Written by MAL Rewrite\]/g, '') ?? '';
+};

@@ -27,17 +27,18 @@ const pageVariants: Variants = {
 
 export const PageTransition = () => {
   const location = useLocation();
+  const parentPath = location.pathname.split('/').slice(0, 3).join('/');
   const outlet = useOutlet();
 
   const getDirection = () => {
-    if (location.pathname.includes('/anime/')) return 'forward';
+    if (parentPath.includes('/anime/')) return 'forward';
     return 'fade';
   };
 
   return (
     <AnimatePresence mode="popLayout" custom={getDirection()}>
       <motion.div
-        key={location.pathname}
+        key={parentPath}
         custom={getDirection()}
         variants={pageVariants}
         initial="initial"

@@ -6,7 +6,7 @@ const KeyboardShortcutContent = () => {
     { key: 'S', desc: 'Focus Search', icon: <Search size={14} /> },
     {
       key: '← →',
-      desc: 'Switch Pages (with page button only)',
+      desc: 'Switch Pages/ Tabs',
       icon: <ArrowLeftRight size={14} />,
     },
     {

@@ -9,7 +9,7 @@ import { type RefObject, useState, useEffect } from 'react';
 export const useMaxScroll = (
   ref: RefObject<HTMLElement | null>,
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  dependency: any,
+  dependency?: any,
 ) => {
   const [maxScroll, setMaxScroll] = useState(0);
 

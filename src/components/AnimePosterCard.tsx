@@ -1,6 +1,7 @@
 import React from 'react';
 import type { Anime } from '../types/anime';
 import MotionImage from './ui/MotionImage';
+import { useNavigate } from 'react-router';
 
 const AnimePosterCard = React.memo(
   ({
@@ -10,12 +11,17 @@ const AnimePosterCard = React.memo(
     anime: Anime;
     className?: string;
   }) => {
+    const navigation = useNavigate();
+
     return (
       <div
-        className={`relative ${className} h-96 rounded-2xl overflow-hidden shadow-xl group cursor-pointer bg-gray-900 transition-all duration-300 hover:shadow-2xl hover:shadow-blue-500/20`}>
+        className={`relative ${className} h-96 rounded-2xl overflow-hidden shadow-xl group cursor-pointer bg-gray-900 transition-all duration-300 hover:shadow-2xl hover:shadow-blue-500/20`}
+        onClick={() => {
+          navigation(`/anime/${anime.mal_id}`);
+        }}>
         {/* Background Image */}
         <MotionImage
-          src={anime.images.webp.image_url}
+          src={anime.images.webp.large_image_url || anime.images.webp.image_url}
           alt={anime.title}
           className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 ease-out group-hover:scale-110 aspect-3/4 "
         />

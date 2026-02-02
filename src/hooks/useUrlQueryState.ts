@@ -1,4 +1,4 @@
-import { useMemo } from 'react';
+import { useCallback, useMemo } from 'react';
 import { useSearchParams } from 'react-router';
 import type { GetAnimeSearchRequest } from '../services/animeService';
 import type {
@@ -48,42 +48,51 @@ export const useUrlQueryState = () => {
     };
   }, [searchParams]);
 
-  const updateUrl = (
-    params: { key: string; value: string | number | undefined | null }[],
-  ) => {
-    const newParams = new URLSearchParams(searchParams);
+  const updateUrl = useCallback(
+    (params: { key: string; value: string | number | undefined | null }[]) => {
+      setSearchParams(
+        //prev is realtime, the latest value
+        (prev) => {
+          const next = new URLSearchParams(prev);
 
-    params.forEach(({ key, value }) => {
-      if (!key.trim()) return;
+          params.forEach(({ key, value }) => {
+            if (!key.trim()) return;
 
-      // remove if value not set (not filtering)
-      if (value === '' || value === undefined || value === null) {
-        newParams.delete(key);
-      } else {
-        newParams.set(key, String(value));
-      }
-    });
+            // remove if value not set (not filtering)
+            if (value === '' || value === undefined || value === null) {
+              next.delete(key);
+            } else {
+              next.set(key, String(value));
+            }
+          });
 
-    const hasFilterChanged = params.some(({ key }) => {
-      if (key === 'page') return false; // page change not included
-      return newParams.get(key) !== searchParams.get(key); //new value compare with old value
-    });
+          const hasFilterChanged = params.some(({ key }) => {
+            if (key === 'page') return false; // page change not included
+            return next.get(key) !== prev.get(key); //new value compare with old value
+          });
 
-    // only change when filter change
-    // and currently not in page 1
-    // if already in page 1, not need to set page 1
-    if (
-      hasFilterChanged &&
-      searchParams.get('page') !== '1' &&
-      searchParams.has('page')
-    ) {
-      newParams.set('page', '1');
-    }
+          // only change when filter change
+          // and currently not in page 1
+          // if already in page 1, not need to set page 1
+          if (
+            hasFilterChanged &&
+            prev.get('page') !== '1' &&
+            prev.has('page')
+          ) {
+            next.set('page', '1');
+          }
 
-    if (newParams.toString() !== searchParams.toString()) {
-      setSearchParams(newParams, { replace: true });
-    }
-  };
+          if (next.toString() === prev.toString()) {
+            return prev;
+          }
+
+          return next;
+        },
+        { replace: true },
+      );
+    },
+    [setSearchParams],
+  );
 
   const setSingleParam = (key: string, value: string | number | undefined) => {
     updateUrl([{ key, value }]);
@@ -122,5 +131,11 @@ export const useUrlQueryState = () => {
       });
   }, [urlRequest]);
 
-  return { urlRequest, updateUrl, setSingleParam, searchParams, activeFilters };
+  return {
+    urlRequest,
+    updateUrl,
+    setSingleParam,
+    searchParams,
+    activeFilters,
+  };
 };

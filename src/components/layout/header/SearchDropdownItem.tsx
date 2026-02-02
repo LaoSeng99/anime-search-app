@@ -1,12 +1,8 @@
 import type { Anime } from '../../../types/anime';
+import { cleanSynopsis } from '../../../utils/labelHelper';
 import MotionImage from '../../ui/MotionImage';
 
 const SearchDropdownItem = ({ anime }: { anime: Anime }) => {
-  const cleanSynopsis = anime.synopsis?.replace(
-    /\[Written by MAL Rewrite\]/g,
-    '',
-  );
-
   return (
     <div className="flex items-start gap-4 p-3 hover:bg-white/10 rounded-xl cursor-pointer transition-colors group">
       <MotionImage
@@ -42,7 +38,7 @@ const SearchDropdownItem = ({ anime }: { anime: Anime }) => {
 
         {anime.synopsis && (
           <p className="text-[11px] text-gray-400 mt-1.5 line-clamp-2 leading-relaxed">
-            {cleanSynopsis}
+            {cleanSynopsis(anime.synopsis)}
           </p>
         )}
       </div>
