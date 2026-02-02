@@ -81,8 +81,7 @@ const HeroCard = () => {
         <div className="flex items-center gap-4">
           <Button
             size={'lg'}
-            outline={true}
-            variant="primary"
+            outline
             className="hover:scale-105 transition-transform"
             onClick={() => {
               navigate(`/anime/${anime.mal_id}`);

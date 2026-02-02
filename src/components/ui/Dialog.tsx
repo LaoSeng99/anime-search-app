@@ -81,11 +81,7 @@ const Dialog = ({
           (renderCancel ? (
             renderCancel({ disabled: isLoading, onClick: onCancel! })
           ) : (
-            <Button
-              onClick={onCancel}
-              disabled={isLoading}
-              variant="ghost"
-              size="md">
+            <Button onClick={onCancel} disabled={isLoading} ghost size="md">
               {cancelLabel || 'Cancel'}
             </Button>
           ))}
@@ -96,7 +92,8 @@ const Dialog = ({
         ) : (
           <Button
             onClick={onConfirm}
-            variant={isDanger ? 'danger' : 'primary'}
+            danger={isDanger}
+            primary={!isDanger}
             isLoading={isLoading}
             size="md"
             className="min-w-25">

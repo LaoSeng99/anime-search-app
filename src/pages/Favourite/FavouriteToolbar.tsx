@@ -47,7 +47,7 @@ const FavouriteToolbar = ({
 
         <Button
           icon={<HeartCrack />}
-          variant="danger"
+          danger
           onClick={onRemoveAllFavourite}
           disabled={totalItems === 0}>
           Remove all favourites
