@@ -10,6 +10,7 @@ const simplifyAnime = (anime: Anime) => ({
   images: {
     webp: {
       image_url: anime.images.webp.image_url,
+      large_image_url: anime.images.webp.large_image_url,
     },
   },
   year: anime.year,
