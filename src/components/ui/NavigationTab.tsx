@@ -48,8 +48,8 @@ const NavigationTab = ({
   };
 
   useKeyboardAccessibility({
-    onArrowLeft: () => handleNavigation('prev'),
-    onArrowRight: () => handleNavigation('next'),
+    onCtrlArrowLeft: () => handleNavigation('prev'),
+    onCtrlArrowRight: () => handleNavigation('next'),
     enabled: enableKeyboardControl,
   });
 

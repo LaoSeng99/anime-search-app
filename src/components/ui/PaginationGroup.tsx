@@ -4,24 +4,26 @@ import { useKeyboardAccessibility } from '../../hooks/useKeyboardAccessibility';
 import { useUrlQueryState } from '../../hooks/useUrlQueryState';
 
 interface PaginationGroupProps {
-  itemLength: number;
+  totalPage?: number; // pagination.last_visible_page
+  itemLength?: number; // use when totalPage is not available
+  perPage?: number; // use with item length
   currentPage: number;
-  perPage: number;
   isLoading: boolean;
-  onChangePage: (page: number) => void;
+  onChangePage?: (page: number) => void;
 }
 
 const PaginationGroup = ({
   currentPage = 1,
-  itemLength,
-  perPage,
+  itemLength = 0,
+  perPage = 6,
+  totalPage: providedTotalPage,
   isLoading = false,
   onChangePage,
 }: PaginationGroupProps) => {
   if (!currentPage || currentPage < 0) currentPage = 1;
 
   const { setSingleParam } = useUrlQueryState();
-  const totalPage = Math.ceil(itemLength / perPage) || 1;
+  const totalPage = (providedTotalPage ?? Math.ceil(itemLength / perPage)) || 1;
 
   const { pages, showLeftDots, showRightDots, isFirst, isLast } = usePagination(
     {
@@ -34,7 +36,7 @@ const PaginationGroup = ({
   const handlePageChange = (page: number) => {
     if (isLoading || page < 1 || page > totalPage) return;
 
-    onChangePage(page);
+    onChangePage?.(page);
     setSingleParam('page', page);
   };
 

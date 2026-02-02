@@ -4,6 +4,8 @@ import type { SearchBoxHandle } from '../components/ui/SearchBox';
 interface KeyboardAccessOptions {
   onArrowLeft?: () => void;
   onArrowRight?: () => void;
+  onCtrlArrowLeft?: () => void;
+  onCtrlArrowRight?: () => void;
   onEscape?: () => void;
   searchBoxRef?: RefObject<SearchBoxHandle | null>;
 
@@ -13,6 +15,8 @@ interface KeyboardAccessOptions {
 export const useKeyboardAccessibility = ({
   onArrowLeft,
   onArrowRight,
+  onCtrlArrowRight,
+  onCtrlArrowLeft,
   onEscape,
   searchBoxRef,
   enabled = true,
@@ -50,7 +54,13 @@ export const useKeyboardAccessibility = ({
       }
 
       // "Arrow key" pagination
-      if (event.key === 'ArrowLeft') {
+      if (event.ctrlKey && event.key === 'ArrowLeft') {
+        onCtrlArrowLeft?.();
+        return;
+      } else if (event.ctrlKey && event.key === 'ArrowRight') {
+        onCtrlArrowRight?.();
+        return;
+      } else if (event.key === 'ArrowLeft') {
         onArrowLeft?.();
       } else if (event.key === 'ArrowRight') {
         onArrowRight?.();
@@ -60,5 +70,13 @@ export const useKeyboardAccessibility = ({
     window.addEventListener('keydown', handleKeyDown);
 
     return () => window.removeEventListener('keydown', handleKeyDown);
-  }, [enabled, onArrowLeft, onArrowRight, onEscape, searchBoxRef]);
+  }, [
+    enabled,
+    onArrowLeft,
+    onArrowRight,
+    onCtrlArrowLeft,
+    onCtrlArrowRight,
+    onEscape,
+    searchBoxRef,
+  ]);
 };
