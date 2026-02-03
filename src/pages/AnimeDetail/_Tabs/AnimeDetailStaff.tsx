@@ -9,6 +9,7 @@ import { useDebouncedCallback } from 'use-debounce';
 import MotionImage from '../../../components/ui/MotionImage';
 import React from 'react';
 import { UserPen } from 'lucide-react';
+import EmptyState from '../../../components/ui/EmptyState';
 
 const itemVariants = {
   hidden: { opacity: 0, y: 20 },
@@ -100,7 +101,12 @@ const AnimeDetailStaff = () => {
   }
 
   if (!staffLoading && (!staff || staff.length === 0)) {
-    return <EmptyState />;
+    return (
+      <EmptyState
+        message="No production staff information found."
+        icon={UserPen}
+      />
+    );
   }
 
   const displayItems = renderList.slice(0, displayCount);
@@ -214,16 +220,5 @@ const StaffSkeleton = () => (
     </div>
   </section>
 );
-
-const EmptyState = () => {
-  return (
-    <div className="mt-12 p-12 bg-white/2 rounded-3xl border border-dashed border-white/10 flex flex-col items-center justify-center gap-3">
-      <UserPen className="w-8 h-8 text-white/20" />
-      <p className="text-zinc-500 text-sm md:text-base font-medium">
-        No production staff information found.
-      </p>
-    </div>
-  );
-};
 
 export default AnimeDetailStaff;

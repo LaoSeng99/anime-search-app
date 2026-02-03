@@ -6,6 +6,8 @@ import BackgroundSection from '../../components/layout/BackgroundSection';
 
 import { useFavouriteLogic } from './FavouritePage.hook';
 import FavouriteToolbar from './FavouriteToolbar';
+import { Heart } from 'lucide-react';
+import EmptyState from '../../components/ui/EmptyState';
 
 const FavouritePage = () => {
   const {
@@ -78,7 +80,9 @@ const FavouritePage = () => {
           </div>
 
           {/* Empty handle */}
-          {displayAnime.length === 0 && EmptyState()}
+          {displayAnime.length === 0 && (
+            <EmptyState icon={Heart} message="No favourite anime found." />
+          )}
 
           {/* Pagination */}
           <div className="mt-12">
@@ -97,11 +101,5 @@ const FavouritePage = () => {
     </div>
   );
 };
-
-const EmptyState = () => (
-  <div className="text-gray-500 text-center min-h-105">
-    No anime found in this category.
-  </div>
-);
 
 export default FavouritePage;

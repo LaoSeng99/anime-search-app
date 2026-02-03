@@ -7,6 +7,7 @@ import { motion } from 'framer-motion';
 import { PlayCircle, ImageIcon } from 'lucide-react';
 import { useUrlQueryState } from '../../../hooks/useUrlQueryState';
 import PaginationGroup from '../../../components/ui/PaginationGroup';
+import EmptyState from '../../../components/ui/EmptyState';
 
 const containerVariants = {
   hidden: { opacity: 0 },
@@ -43,7 +44,12 @@ const AnimeDetailEpisodes: React.FC = () => {
   const pagination = data?.pagination;
 
   if (!isLoading && (!episodes || episodes.length === 0)) {
-    return <EmptyState />;
+    return (
+      <EmptyState
+        message="No episodes information available."
+        icon={PlayCircle}
+      />
+    );
   }
 
   return (
@@ -162,17 +168,6 @@ const AnimeEpisodesSkeleton = () => {
         </div>
       ))}
     </>
-  );
-};
-
-const EmptyState = () => {
-  return (
-    <div className="mt-12 p-12 bg-white/2 rounded-3xl border border-dashed border-white/10 flex flex-col items-center justify-center gap-3">
-      <PlayCircle className="w-8 h-8 text-white/20" />
-      <p className="text-zinc-500 text-sm md:text-base font-medium">
-        No episodes information available.
-      </p>
-    </div>
   );
 };
 

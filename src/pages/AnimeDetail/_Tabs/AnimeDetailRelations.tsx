@@ -2,6 +2,7 @@ import { Link, useOutletContext } from 'react-router';
 import type { Anime, RelationEntry } from '../../../types/anime';
 import { motion } from 'framer-motion';
 import { ArrowRight, Layers } from 'lucide-react';
+import EmptyState from '../../../components/ui/EmptyState';
 const containerVariants = {
   hidden: { opacity: 0 },
   visible: {
@@ -23,7 +24,7 @@ const AnimeDetailRelations = () => {
   if (isLoading) return <RelationSkeleton />;
 
   if (!anime.relations || anime.relations.length === 0) {
-    return <EmptyState />;
+    return <EmptyState message="No related content available." icon={Layers} />;
   }
 
   return (
@@ -123,14 +124,4 @@ const RelationCard = ({ item }: { item: RelationEntry }) => {
   );
 };
 
-const EmptyState = () => {
-  return (
-    <div className="mt-12 p-12 bg-white/2 rounded-3xl  border border-dashed border-white/10 flex flex-col items-center justify-center gap-3">
-      <Layers className="w-8 h-8 text-white/20" />
-      <p className="text-zinc-500 text-sm md:text-base font-medium">
-        No related content available.
-      </p>
-    </div>
-  );
-};
 export default AnimeDetailRelations;

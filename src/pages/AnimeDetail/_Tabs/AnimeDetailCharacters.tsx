@@ -8,6 +8,7 @@ import { getAnimeCharacters } from '../../../services/animeService';
 import PaginationGroup from '../../../components/ui/PaginationGroup';
 import { useMemo } from 'react';
 import { useUrlQueryState } from '../../../hooks/useUrlQueryState';
+import EmptyState from '../../../components/ui/EmptyState';
 
 const containerVariants = {
   hidden: { opacity: 0 },
@@ -55,7 +56,9 @@ const AnimeDetailCharacters = () => {
   }, [urlRequest.page, characters]);
 
   if (!characterLoading && (!characters || characters.length === 0)) {
-    return <EmptyState />;
+    return (
+      <EmptyState message="No characters found for this anime." icon={Users} />
+    );
   }
 
   return (
@@ -187,14 +190,4 @@ const CharacterSkeleton = () => {
   });
 };
 
-const EmptyState = () => {
-  return (
-    <div className="mt-12 p-12 bg-white/2 rounded-3xl border border-dashed border-white/10 flex flex-col items-center justify-center gap-3">
-      <Users className="w-8 h-8 text-white/20" />
-      <p className="text-zinc-500 text-sm md:text-base font-medium">
-        No characters found for this anime.
-      </p>
-    </div>
-  );
-};
 export default AnimeDetailCharacters;

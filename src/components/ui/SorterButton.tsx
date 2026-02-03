@@ -99,7 +99,7 @@ const TriggerButton = (toggle: () => void, activeSorter?: SorterItem) => {
   return (
     <Button
       ghost
-      className={' text-gray-400'}
+      className={' text-gray-400 px-0'}
       icon={
         <ChevronDown
           size={16}
@@ -110,9 +110,8 @@ const TriggerButton = (toggle: () => void, activeSorter?: SorterItem) => {
       iconPosition="right">
       {activeSorter ? (
         <>
-          Sort by
-          <span className="text-white">{activeSorter.label}</span>
-          by
+          Sort by <span className="text-white">{activeSorter.label}</span>
+          {''} by {''}
           <span className="text-white"> {sortDirection} </span>
         </>
       ) : (
