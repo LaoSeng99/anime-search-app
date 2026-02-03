@@ -28,7 +28,7 @@ const AnimeDetailEpisodes: React.FC = () => {
   }>();
 
   const { urlRequest } = useUrlQueryState();
-  const { data, error, isLoading, isFetching } = useQuery({
+  const { data, isLoading } = useQuery({
     queryKey: ['anime', anime.mal_id, 'episodes', urlRequest.page ?? 1],
     queryFn: async () => {
       const data = await getAnimeVideoEpisodes(
@@ -114,7 +114,7 @@ const AnimeDetailEpisodes: React.FC = () => {
                   <h4 className="text-zinc-100 font-semibold text-lg line-clamp-1 group-hover:text-white transition-colors">
                     {ep.title}
                   </h4>
-                  <p className="text-zinc-500 text-sm mt-2 line-clamp-2 leading-relaxed leading-snug">
+                  <p className="text-zinc-500 text-sm mt-2 line-clamp-2 leading-relaxed">
                     Watch {ep.title} ({ep.episode}) from {anime.title}. Explore
                     the full details and media on the official portal.
                   </p>

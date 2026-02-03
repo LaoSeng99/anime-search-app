@@ -81,7 +81,7 @@ const RelationSkeleton = () => {
               {[1, 2].map((card) => (
                 <div
                   key={card}
-                  className="h-[76px] p-4 bg-white/3 border border-white/5 rounded-xl flex flex-col justify-center gap-2">
+                  className="h-19 p-4 bg-white/3 border border-white/5 rounded-xl flex flex-col justify-center gap-2">
                   <div className="h-4 w-3/4 bg-zinc-800 rounded" />
                   <div className="h-3 w-12 bg-zinc-800/50 rounded" />
                 </div>
