@@ -1,10 +1,11 @@
 import { useMemo, useRef } from 'react';
 import { useAnimeSearch } from '../../hooks/useAnimeSearch';
-import AnimePosterCard from '../../components/AnimePosterCard';
+import AnimePosterCard, {
+  AnimeCardSkeleton,
+} from '../../components/AnimePosterCard';
 import PaginationGroup from '../../components/ui/PaginationGroup';
 import AnimeListSidebar from './_Components/AnimeListSidebar';
 import BackgroundSection from '../../components/layout/BackgroundSection';
-import AnimeCardSkeleton from '../../components/AnimePosterCardSkeleton';
 
 import { useUrlQueryState } from '../../hooks/useUrlQueryState';
 import AnimeListToolbar from './_Components/AnimeListToolbar';

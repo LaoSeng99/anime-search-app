@@ -1,7 +1,8 @@
 import { useQuery } from '@tanstack/react-query';
 import { useMemo } from 'react';
-import AnimePosterCard from '../../../components/AnimePosterCard';
-import AnimeCardSkeleton from '../../../components/AnimePosterCardSkeleton';
+import AnimePosterCard, {
+  AnimeCardSkeleton,
+} from '../../../components/AnimePosterCard';
 import { HorizontalCarousel } from '../../../components/ui/HorizontalCarousel';
 import LazyLoadSection from '../../../components/ui/LazyLoadSection';
 import { getSeasonNow } from '../../../services/seasonService';
@@ -43,10 +44,7 @@ const TrendingContent = ({ isVisible }: { isVisible: boolean }) => {
   ));
 
   return (
-    <div
-      className="
-    lg:-translate-y-40 md:-translate-y-20
-    relative z-20 text-white  overflow-hidden">
+    <div className="text-white  overflow-hidden">
       <h2 className="text-2xl font-medium text-white  px-8 md:px-16 pb-4">
         Trending Now
       </h2>

@@ -1,10 +1,12 @@
 import { useQuery } from '@tanstack/react-query';
 import { useMemo } from 'react';
-import AnimePosterCard from '../../../components/AnimePosterCard';
-import AnimeCardSkeleton from '../../../components/AnimePosterCardSkeleton';
+import AnimePosterCard, {
+  AnimeCardSkeleton,
+} from '../../../components/AnimePosterCard';
 import { HorizontalCarousel } from '../../../components/ui/HorizontalCarousel';
 import LazyLoadSection from '../../../components/ui/LazyLoadSection';
 import { getAnime } from '../../../services/animeService';
+import { cn } from '../../../utils/ui.util';
 
 const SpecialForYouCard = () => {
   return (
@@ -42,7 +44,7 @@ const SpecialForYouContent = ({ isVisible }: { isVisible: boolean }) => {
   ));
 
   return (
-    <div className="relative z-20 text-white lg:-translate-y-40 md:-translate-y-20 overflow-hidden">
+    <div className={cn([' text-white overflow-hidden '])}>
       <h2 className="text-2xl font-medium text-white  px-8 md:px-16 pb-4">
         Special for you
       </h2>

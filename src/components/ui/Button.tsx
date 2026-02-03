@@ -149,9 +149,10 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
           </motion.span>
         )}
 
-        <span
+        <div
           className={cn(
-            'inline-flex items-center transition-opacity duration-200',
+            'flex items-center transition-opacity duration-200',
+            'whitespace-nowrap w-max',
             activeSize.gap,
             isLoading ? 'opacity-0' : 'opacity-100',
           )}>
@@ -174,7 +175,7 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
               {icon}
             </span>
           )}
-        </span>
+        </div>
       </motion.button>
     );
   },

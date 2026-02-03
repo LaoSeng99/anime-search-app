@@ -13,6 +13,7 @@ import SearchBox, { type SearchBoxHandle } from '../../ui/SearchBox';
 import SearchDropdown from './SearchDropdown';
 import Button from '../../ui/Button';
 import { cn } from '../../../utils/ui.util';
+import { createPortal } from 'react-dom';
 
 interface SearchSectionProps {
   isExpanded: boolean;
@@ -61,7 +62,6 @@ const SearchSection = ({ isExpanded, setIsExpanded }: SearchSectionProps) => {
   };
 
   useClickOutside(containerRef, () => {
-    setIsExpanded(false);
     setIsResultsVisible(false);
   });
 
@@ -73,15 +73,13 @@ const SearchSection = ({ isExpanded, setIsExpanded }: SearchSectionProps) => {
 
   return (
     <div
-      ref={containerRef}
       className={cn(
-        'transition-all duration-300 ease-in-out flex justify-end items-center',
-        isExpanded ? 'w-full' : 'w-10 lg:w-auto',
+        'transition-all duration-300 ease-in-out flex flex-1 justify-end items-center w-full',
       )}>
       {!isExpanded && (
         <Button
           secondary
-          className="lg:hidden"
+          className="md:hidden"
           onClick={() => {
             setIsExpanded(true);
             setIsResultsVisible(true);
@@ -89,27 +87,27 @@ const SearchSection = ({ isExpanded, setIsExpanded }: SearchSectionProps) => {
           icon={<Search size={22} />}
         />
       )}
+
       <div
-        className={cn(
-          'transition-all duration-300 overflow-hidden lg:block',
+        ref={containerRef}
+        className={cn([
+          'transition-all duration-300 flex justify-end items-center w-full relative group max-w-140',
           isExpanded
-            ? 'w-full opacity-100'
-            : 'w-0 opacity-0 lg:w-auto lg:opacity-100',
-        )}>
-        <div
-          className="relative flex-1 group"
-          onFocus={() => setIsResultsVisible(true)}>
-          <SearchBox
-            ref={searchBoxRef}
-            value={searchQuery}
-            onFocus={() => {
-              if (!hasInteracted) setHasInteracted(true);
-            }}
-            onChange={setSearchQuery}
-            onClear={handleClear}
-            isLoading={isLoading || isFetching}
-          />
-        </div>
+            ? 'w-full'
+            : 'absolute w-0 opacity-0 md:flex md:w-full md:opacity-100 md:relative ',
+        ])}
+        onFocus={() => setIsResultsVisible(true)}>
+        <SearchBox
+          ref={searchBoxRef}
+          value={searchQuery}
+          onFocus={() => {
+            if (!hasInteracted) setHasInteracted(true);
+          }}
+          onChange={setSearchQuery}
+          onClear={handleClear}
+          isLoading={isLoading || isFetching}
+        />
+
         <SearchDropdown
           animeList={data?.data}
           isLoading={isLoading}
@@ -118,6 +116,18 @@ const SearchSection = ({ isExpanded, setIsExpanded }: SearchSectionProps) => {
           searchQuery={searchQuery}
         />
       </div>
+
+      {isExpanded &&
+        createPortal(
+          <div
+            className="fixed w-full h-full bg-transparent top-0 left-0 z-1"
+            onClick={(e) => {
+              e.preventDefault();
+              e.stopPropagation();
+              setIsExpanded(false);
+            }}></div>,
+          document.body,
+        )}
     </div>
   );
 };

@@ -2,20 +2,21 @@ import React from 'react';
 import type { Anime } from '../types/anime';
 import MotionImage from './ui/MotionImage';
 import { useNavigate } from 'react-router';
+import { cn } from '../utils/ui.util';
+import { FileImage } from 'lucide-react';
 
 const AnimePosterCard = React.memo(
-  ({
-    anime,
-    className = 'w-64 max-w-80',
-  }: {
-    anime: Anime;
-    className?: string;
-  }) => {
+  ({ anime, className = '' }: { anime: Anime; className?: string }) => {
     const navigation = useNavigate();
 
     return (
       <div
-        className={`relative ${className} h-96 rounded-2xl overflow-hidden shadow-xl group cursor-pointer bg-gray-900 transition-all duration-300 hover:shadow-2xl hover:shadow-blue-500/20`}
+        className={cn([
+          'relative group h-88 w-64 max-w-80 rounded-2xl overflow-hidden shadow-xl cursor-pointer bg-gray-900 transition-all duration-300',
+          'sm:h-96',
+          'hover:shadow-2xl hover:shadow-blue-500/20 active:scale-[0.98]',
+          className,
+        ])}
         onClick={() => {
           navigation(`/anime/${anime.mal_id}`);
         }}>
@@ -83,4 +84,29 @@ const AnimePosterCard = React.memo(
     );
   },
 );
+
 export default AnimePosterCard;
+
+export const AnimeCardSkeleton = ({
+  className = 'w-64 max-w-80',
+}: {
+  className?: string;
+}) => {
+  return (
+    <div
+      className={cn([
+        'relative group h-88 w-64 max-w-80 rounded-2xl overflow-hidden shadow-xl bg-gray-900 p-4 flex flex-col',
+        'sm:h-96',
+        className,
+      ])}>
+      <div className="flex-1 flex items-center justify-center">
+        <FileImage className="w-12 h-12 text-gray-800 animate-pulse" />
+      </div>
+
+      <div className="space-y-3 z-10">
+        <div className="h-6 bg-gray-800 rounded w-3/4 animate-pulse"></div>
+        <div className="h-4 bg-gray-800 rounded w-1/2 animate-pulse"></div>
+      </div>
+    </div>
+  );
+};

@@ -1,12 +1,14 @@
 import { useEffect } from 'react';
 import { useInView } from 'react-intersection-observer';
 import { useNavigate } from 'react-router';
-import AnimePosterCard from '../../../components/AnimePosterCard';
-import AnimeCardSkeleton from '../../../components/AnimePosterCardSkeleton';
+import AnimePosterCard, {
+  AnimeCardSkeleton,
+} from '../../../components/AnimePosterCard';
 import Button from '../../../components/ui/Button';
 import ErrorState from '../../../components/ui/ErrorState';
 import LazyLoadSection from '../../../components/ui/LazyLoadSection';
 import { usePopularCardLogic } from './PopularCard.hook';
+import { cn } from '../../../utils/ui.util';
 const PopularCard = () => {
   return (
     <LazyLoadSection rootMargin="0px">
@@ -46,14 +48,18 @@ const PopularContent = ({ isVisible }: { isVisible: boolean }) => {
   ));
 
   return (
-    <div className="lg:-translate-y-40 md:-translate-y-20 relative z-20 text-white overflow-hidden">
+    <div className="text-white overflow-hidden">
       <h2 className="text-2xl font-medium text-white px-8 md:px-16 pb-4">
         Most Popular
       </h2>
 
       <div className="px-8 md:px-16">
         {/* Grid */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 2xl:grid-cols-6 gap-4 md:gap-6 w-full">
+        <div
+          className={cn([
+            'grid grid-cols-1 gap-4 md:gap-6 w-full ',
+            'grid-cols-1 xs:grid-cols-2 lg:grid-cols-4 xl:grid-cols-5 2xl:grid-cols-6',
+          ])}>
           {/* Error */}
           {error && (
             <div className="absolute h-full inset-0 z-30 flex items-center justify-center bg-black/70 backdrop-blur-[2px] rounded-lg ">
@@ -64,12 +70,18 @@ const PopularContent = ({ isVisible }: { isVisible: boolean }) => {
             </div>
           )}
           {/* Render Cards */}
-          {allAnime.map((anime) => (
-            <div key={anime.mal_id} className="relative w-full">
-              <AnimePosterCard className="w-full" anime={anime} />
-            </div>
-          ))}
-          {(isLoading || isFetchingNextPage) && !error && skeletonNodes}
+          {(isLoading || isFetchingNextPage) && !error
+            ? skeletonNodes
+            : allAnime.map((anime) => (
+                <div className="relative w-full flex items-center justify-center">
+                  <AnimePosterCard
+                    key={anime.mal_id}
+                    className="w-full"
+                    anime={anime}
+                  />
+                </div>
+              ))}
+          {}
         </div>
 
         {/* Infinity Scroll Sensor & View More Logic */}
