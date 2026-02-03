@@ -41,7 +41,7 @@ const MobileDrawer = ({
             <li key={item.name}>
               <a
                 onClick={(e) => onNavigate(e, item.href)}
-                className="text-xl font-medium text-gray-200 hover:text-white block">
+                className="text-xl font-medium cursor-pointer text-gray-200 hover:text-white block">
                 {item.name}
               </a>
             </li>
