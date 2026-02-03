@@ -8,6 +8,7 @@ import {
   WifiOff,
 } from 'lucide-react';
 import Button from '../components/ui/Button';
+import { cn } from '../utils/ui.util';
 
 const ErrorPage = () => {
   const error = useRouteError();
@@ -80,7 +81,14 @@ const ErrorPage = () => {
             {content.icon}
           </div>
           <div
-            className={`absolute inset-0 ${content.glow} blur-3xl -z-1 animate-pulse`}
+            className={cn(
+              'absolute inset-0 -z-1 animate-pulse',
+              'rounded-full',
+              'scale-125',
+              'transform-gpu',
+              content.glow,
+              'blur-3xl',
+            )}
           />
         </div>
 

@@ -12,13 +12,14 @@ export const queryClient = new QueryClient({
       retry: 3,
       retryDelay: (attemptIndex) => Math.min(1000 * 2 ** attemptIndex, 10000),
       refetchOnWindowFocus: false,
+      refetchOnMount: false,
     },
   },
 });
 
 const APP_CACHE_KEY = 'ANIME_SEARCH_APP_CACHE';
 
-const indexedDBPersister = {
+export const indexedDBPersister = {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   persistClient: async (client: any) => {
     await set(APP_CACHE_KEY, client);

@@ -17,7 +17,7 @@ import FavouriteButton from '../../components/ui/FavouriteButton';
 import { getLastSegment, getYoutubeVideoUrl } from '../../utils/urlHelper';
 import { useBackgroundStore } from '../../hooks/useBackgroundStore';
 import NavigationTab, { type NavTab } from '../../components/ui/NavigationTab';
-import Button from '../../components/ui/Button';
+import ErrorState from '../../components/ui/ErrorState';
 
 const AnimeDetailPage = () => {
   const { id } = useParams<{ id: string }>();
@@ -56,7 +56,15 @@ const AnimeDetailPage = () => {
     return <DetailHeaderSkeleton />;
   }
   if (error || !anime) {
-    return <ErrorState onRetry={refetch} />;
+    return (
+      <ErrorState
+        icon={<SearchX />}
+        showHomeButton
+        title="Failed to retrieve anime data"
+        message="Retry or Back to home"
+        onRetry={refetch}
+      />
+    );
   }
 
   return (
@@ -175,32 +183,6 @@ const NavTabSection = () => {
       onChange={handleTabChange}
       enableKeyboardControl
     />
-  );
-};
-
-const ErrorState = ({ onRetry }: { onRetry: () => void }) => {
-  const navigate = useNavigate();
-  return (
-    <section className="w-full min-h-screen flex items-center justify-center bg-[#0a0a0a] px-6">
-      <div className="max-w-md w-full p-12 bg-white/5 rounded-3xl border border-dashed border-white/10 flex flex-col items-center justify-center gap-6 text-center animate-in fade-in zoom-in duration-300">
-        <div className="p-4 bg-white/5 rounded-full">
-          <SearchX className='text-md text-white/20"' />
-        </div>
-        <div className="space-y-2">
-          <h2 className="text-xl font-bold text-white/90">
-            Failed to retrieve anime data
-          </h2>
-          <p className="text-zinc-500 text-sm">Retry or Back to home </p>
-        </div>
-        <div className="flex gap-4">
-          <Button secondary onClick={onRetry}>
-            Retry
-          </Button>
-
-          <Button onClick={() => navigate('/')}>Back to Home</Button>
-        </div>
-      </div>
-    </section>
   );
 };
 
