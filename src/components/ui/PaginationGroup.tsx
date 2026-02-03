@@ -2,6 +2,12 @@ import Button from './Button';
 import usePagination from '../../hooks/usePagination';
 import { useKeyboardAccessibility } from '../../hooks/useKeyboardAccessibility';
 import { useUrlQueryState } from '../../hooks/useUrlQueryState';
+import {
+  ChevronsLeft,
+  ChevronLeft,
+  ChevronRight,
+  ChevronsRight,
+} from 'lucide-react';
 
 interface PaginationGroupProps {
   totalPage?: number; // pagination.last_visible_page
@@ -29,7 +35,7 @@ const PaginationGroup = ({
     {
       totalPage,
       currentPage,
-      siblingCount: 2,
+      siblingCount: 1,
     },
   );
 
@@ -51,75 +57,109 @@ const PaginationGroup = ({
   });
 
   return (
-    <div className="flex items-center justify-center gap-2 p-4">
-      {/* Last */}
-      <Button
-        outline
-        disabled={isFirst || isLoading}
-        onClick={() => handlePageChange(1)}>
-        First
-      </Button>
-      {/* Previous */}
-      <Button
-        outline
-        disabled={isFirst || isLoading}
-        onClick={() => handlePageChange(currentPage - 1)}>
-        Previous
-      </Button>
+    <div className="flex flex-col items-center gap-4 py-6 w-full">
+      {/* 容器：移动端 justify-between (拉开), 大屏 center (居中) */}
+      <div className="flex items-center justify-between w-full md:justify-center gap-2">
+        {/* --- Left Controls --- */}
+        <div className="flex items-center gap-1">
+          {/* First: hide on mobile */}
+          <Button
+            outline
+            size="icon"
+            icon={<ChevronsLeft />}
+            className="hidden sm:flex"
+            disabled={isFirst || isLoading}
+            onClick={() => handlePageChange(1)}
+            title="First Page"></Button>
 
-      <div className="flex gap-1">
-        {showLeftDots && (
-          <Button outline disabled>
-            ...
-          </Button>
-        )}
+          {/* Previous: */}
+          <Button
+            outline
+            size="icon"
+            icon={<ChevronLeft />}
+            disabled={isFirst || isLoading}
+            onClick={() => handlePageChange(currentPage - 1)}></Button>
+        </div>
 
-        {pages.map((page) => {
-          if (page < currentPage) {
-            return (
-              <Button key={page} outline onClick={() => handlePageChange(page)}>
-                {page}
-              </Button>
-            );
-          }
-          return null;
-        })}
+        {/* --- Middle: Mobile Layout (Text Only) --- */}
+        <div className="flex items-center justify-center text-sm font-medium text-zinc-400 md:hidden">
+          Page <span className="text-white mx-1">{currentPage}</span> of{' '}
+          <span className="text-white mx-1">{totalPage}</span>
+        </div>
 
-        {/* Current Page */}
-        <Button>{currentPage}</Button>
+        {/* --- Middle: Desktop Layout (Buttons) --- */}
+        <div className="hidden md:flex gap-1">
+          {showLeftDots && (
+            <Button outline disabled>
+              ...
+            </Button>
+          )}
 
-        {pages.map((page) => {
-          if (page > currentPage) {
-            return (
-              <Button key={page} outline onClick={() => handlePageChange(page)}>
-                {page}
-              </Button>
-            );
-          }
-          return null;
-        })}
+          {pages.map((page) => {
+            if (page < currentPage) {
+              return (
+                <Button
+                  key={page}
+                  outline
+                  onClick={() => handlePageChange(page)}>
+                  {page}
+                </Button>
+              );
+            }
+            return null;
+          })}
 
-        {showRightDots && (
-          <Button outline disabled>
-            ...
-          </Button>
-        )}
+          {/* Current Page */}
+          <Button>{currentPage}</Button>
+
+          {pages.map((page) => {
+            if (page > currentPage) {
+              return (
+                <Button
+                  key={page}
+                  outline
+                  onClick={() => handlePageChange(page)}>
+                  {page}
+                </Button>
+              );
+            }
+            return null;
+          })}
+
+          {showRightDots && (
+            <Button outline disabled>
+              ...
+            </Button>
+          )}
+        </div>
+
+        {/* --- Right Controls --- */}
+        <div className="flex items-center gap-1">
+          {/* Next */}
+          <Button
+            outline
+            size="icon"
+            icon={<ChevronRight />}
+            disabled={isLast || isLoading}
+            onClick={() => handlePageChange(currentPage + 1)}></Button>
+
+          {/* Last:hide on mobile */}
+          <Button
+            outline
+            size="icon"
+            icon={<ChevronsRight />}
+            className="hidden sm:flex"
+            disabled={isLast || isLoading}
+            onClick={() => handlePageChange(totalPage)}
+            title="Last Page"></Button>
+        </div>
       </div>
 
-      {/* Next */}
-      <Button
-        outline
-        disabled={isLast || isLoading}
-        onClick={() => handlePageChange(currentPage + 1)}>
-        Next
-      </Button>
-      {/* Last */}
-      <Button
-        outline
-        disabled={isLast || isLoading}
-        onClick={() => handlePageChange(totalPage)}>
-        Last
-      </Button>
+      {/* For desktop */}
+      <div className="items-center justify-center text-sm font-medium text-zinc-400 hidden md:flex">
+        Page <span className="text-white mx-1">{currentPage}</span> of{' '}
+        <span className="text-white mx-1">{totalPage}</span>
+      </div>
     </div>
   );
 };
