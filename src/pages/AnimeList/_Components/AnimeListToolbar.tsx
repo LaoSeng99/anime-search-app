@@ -73,7 +73,10 @@ const AnimeListToolbar = ({ isFetching = false }: AnimeListToolbar) => {
           onChange={handleSearch}
           ref={searchBoxRef}></SearchBox>
 
-        <Button onClick={toggleMobileFilter} icon={<Filter />}></Button>
+        <Button
+          className="lg:hidden"
+          onClick={toggleMobileFilter}
+          icon={<Filter />}></Button>
       </div>
       <SorterContent isFetching={isFetching} />
     </div>
