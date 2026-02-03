@@ -10,6 +10,10 @@ import type { SortParams } from '../../../types/ui.interface';
 import { getAnimeSorterList } from '../../../utils/anime.util';
 import { SEARCH_DEBOUNCE } from '../../../types/app.constant';
 import { useDebouncedCallback } from 'use-debounce';
+import { cn } from '../../../utils/ui.util';
+import Button from '../../../components/ui/Button';
+import { Filter } from 'lucide-react';
+import { useAnimeListUI } from '../../../hooks/useAnimeListUI';
 
 interface AnimeListToolbar {
   isFetching: boolean;
@@ -20,7 +24,7 @@ const AnimeListToolbar = ({ isFetching = false }: AnimeListToolbar) => {
   const { urlRequest, setSingleParam } = useUrlQueryState();
 
   const [searchQuery, setSearchQuery] = useState<string>(urlRequest.q ?? '');
-
+  const { toggleMobileFilter } = useAnimeListUI();
   const debounceUpdateSearchQuery = useDebouncedCallback((query: string) => {
     if (searchQuery !== query) setSearchQuery(query);
     if (urlRequest.q !== query) setSingleParam('q', query);
@@ -58,13 +62,18 @@ const AnimeListToolbar = ({ isFetching = false }: AnimeListToolbar) => {
   };
 
   return (
-    <div className="flex justify-between">
-      <div className="relative flex-1 group">
+    <div
+      className={cn([
+        'flex flex-col gap-0 lg:gap-6 lg:flex-row justify-between',
+      ])}>
+      <div className="relative flex gap-6 items-center flex-1 group">
         <SearchBox
           value={searchQuery}
           onClear={() => setSearchQuery('')}
           onChange={handleSearch}
           ref={searchBoxRef}></SearchBox>
+
+        <Button onClick={toggleMobileFilter} icon={<Filter />}></Button>
       </div>
       <SorterContent isFetching={isFetching} />
     </div>

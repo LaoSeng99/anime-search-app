@@ -2,6 +2,7 @@ import { Link, useOutletContext } from 'react-router';
 import type { Anime, RelationEntry } from '../../../types/anime';
 import { motion } from 'framer-motion';
 import { ArrowRight, Layers } from 'lucide-react';
+import EmptyState from '../../../components/ui/EmptyState';
 const containerVariants = {
   hidden: { opacity: 0 },
   visible: {
@@ -23,43 +24,43 @@ const AnimeDetailRelations = () => {
   if (isLoading) return <RelationSkeleton />;
 
   if (!anime.relations || anime.relations.length === 0) {
-    return <EmptyState />;
+    return <EmptyState message="No related content available." icon={Layers} />;
   }
 
   return (
-    <div className="mt-4 lg:mt-16 pb-24">
-      <h2 className="sr-only">Related Content</h2>
+    <>
+      <div className="mt-4">
+        <motion.div
+          variants={containerVariants}
+          initial="hidden"
+          animate="visible"
+          className="flex flex-col gap-10">
+          {anime.relations.map((rel, index) => (
+            <section
+              key={`${rel.relation}-${index}`}
+              aria-labelledby={`relation-type-${index}`}
+              className="group">
+              {/* Relation Type Header */}
+              <div className="flex items-center gap-4 mb-5">
+                <h3
+                  id={`relation-type-${index}`}
+                  className="text-[11px] md:text-xs font-black uppercase tracking-[0.2em] text-white/90 bg-white/10 px-2.5 py-1 rounded-sm">
+                  {rel.relation}
+                </h3>
+                <div className="h-px flex-1 bg-white/10 group-hover:bg-white/20 transition-colors" />
+              </div>
 
-      <motion.div
-        variants={containerVariants}
-        initial="hidden"
-        animate="visible"
-        className="flex flex-col gap-10">
-        {anime.relations.map((rel, index) => (
-          <section
-            key={`${rel.relation}-${index}`}
-            aria-labelledby={`relation-type-${index}`}
-            className="group">
-            {/* Relation Type Header */}
-            <div className="flex items-center gap-4 mb-5">
-              <h3
-                id={`relation-type-${index}`}
-                className="text-[11px] md:text-xs font-black uppercase tracking-[0.2em] text-white/90 bg-white/10 px-2.5 py-1 rounded-sm">
-                {rel.relation}
-              </h3>
-              <div className="h-px flex-1 bg-white/10 group-hover:bg-white/20 transition-colors" />
-            </div>
-
-            {/* Entry Grid */}
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-              {rel.entry.map((item) => (
-                <RelationCard key={item.mal_id} item={item} />
-              ))}
-            </div>
-          </section>
-        ))}
-      </motion.div>
-    </div>
+              {/* Entry Grid */}
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                {rel.entry.map((item) => (
+                  <RelationCard key={item.mal_id} item={item} />
+                ))}
+              </div>
+            </section>
+          ))}
+        </motion.div>
+      </div>
+    </>
   );
 };
 
@@ -80,7 +81,7 @@ const RelationSkeleton = () => {
               {[1, 2].map((card) => (
                 <div
                   key={card}
-                  className="h-[76px] p-4 bg-white/3 border border-white/5 rounded-xl flex flex-col justify-center gap-2">
+                  className="h-19 p-4 bg-white/3 border border-white/5 rounded-xl flex flex-col justify-center gap-2">
                   <div className="h-4 w-3/4 bg-zinc-800 rounded" />
                   <div className="h-3 w-12 bg-zinc-800/50 rounded" />
                 </div>
@@ -123,14 +124,4 @@ const RelationCard = ({ item }: { item: RelationEntry }) => {
   );
 };
 
-const EmptyState = () => {
-  return (
-    <div className="mt-12 p-12 bg-white/2 rounded-3xl  border border-dashed border-white/10 flex flex-col items-center justify-center gap-3">
-      <Layers className="w-8 h-8 text-white/20" />
-      <p className="text-zinc-500 text-sm md:text-base font-medium">
-        No related content available.
-      </p>
-    </div>
-  );
-};
 export default AnimeDetailRelations;

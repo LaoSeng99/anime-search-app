@@ -31,8 +31,8 @@ const Header = () => {
       <header
         className={cn([
           'fixed top-0 z-50 w-full h-20 border-b text-white border-white/10 flex items-center',
-          ' px-4 md:px-6 lg:px-10',
-          'bg-zinc-950 lg:bg-transparent',
+          'px-4 md:px-6 lg:px-10',
+          'bg-zinc-950 lg:bg-transparent lg:backdrop-blur-md',
         ])}>
         <nav className="flex items-center justify-between w-full">
           {/* Left Section */}

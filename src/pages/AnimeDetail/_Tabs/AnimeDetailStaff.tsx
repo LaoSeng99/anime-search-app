@@ -9,6 +9,7 @@ import { useDebouncedCallback } from 'use-debounce';
 import MotionImage from '../../../components/ui/MotionImage';
 import React from 'react';
 import { UserPen } from 'lucide-react';
+import EmptyState from '../../../components/ui/EmptyState';
 
 const itemVariants = {
   hidden: { opacity: 0, y: 20 },
@@ -99,14 +100,19 @@ const AnimeDetailStaff = () => {
     return <StaffSkeleton />;
   }
 
-  if (!staff || staff.length === 0) {
-    return <EmptyState />;
+  if (!staffLoading && (!staff || staff.length === 0)) {
+    return (
+      <EmptyState
+        message="No production staff information found."
+        icon={UserPen}
+      />
+    );
   }
 
   const displayItems = renderList.slice(0, displayCount);
 
   return (
-    <section>
+    <>
       <motion.div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6 items-start">
         {displayItems.map((item, idx) => {
           const currentBatchIndex = idx % ITEMS_PER_BATCH;
@@ -122,7 +128,7 @@ const AnimeDetailStaff = () => {
                 animate={{ opacity: 1 }}
                 className="col-span-full mt-8 mb-2">
                 <div className="flex items-center gap-4">
-                  <h3 className="text-lg font-bold text-white whitespace-nowrap drop-shadow-[0_0_8px_rgba(255,255,255,0.8)]">
+                  <h3 className="text-lg font-bold text-white whitespace-nowrap drop-shadow-[0_0_3px_rgba(255,255,255,0.3)]">
                     {item.label}
                   </h3>
                   <div className="h-px w-full bg-white/10" />
@@ -165,7 +171,6 @@ const AnimeDetailStaff = () => {
           );
         })}
       </motion.div>
-
       {/* for trigger load */}
       {displayCount < renderList.length && (
         <div
@@ -176,7 +181,7 @@ const AnimeDetailStaff = () => {
           )}
         </div>
       )}
-    </section>
+    </>
   );
 };
 
@@ -215,16 +220,5 @@ const StaffSkeleton = () => (
     </div>
   </section>
 );
-
-const EmptyState = () => {
-  return (
-    <div className="mt-12 p-12 bg-white/2 rounded-3xl border border-dashed border-white/10 flex flex-col items-center justify-center gap-3">
-      <UserPen className="w-8 h-8 text-white/20" />
-      <p className="text-zinc-500 text-sm md:text-base font-medium">
-        No production staff information found.
-      </p>
-    </div>
-  );
-};
 
 export default AnimeDetailStaff;

@@ -11,8 +11,13 @@ import {
 import Checkbox from '../../../components/ui/Checkbox';
 import { useCheckboxGroup } from '../../../hooks/useCheckboxGroup';
 import type { CheckboxOption } from '../../../types/ui.interface';
+import { useAnimeListUI } from '../../../hooks/useAnimeListUI';
+import { cn } from '../../../utils/ui.util';
+import Button from '../../../components/ui/Button';
+import { X } from 'lucide-react';
 
 const AnimeListSidebar = () => {
+  const { isMobileFilterOpen, closeMobileFilter } = useAnimeListUI();
   const [openSections, setOpenSections] = useState({
     date: false,
     status: true,
@@ -21,39 +26,84 @@ const AnimeListSidebar = () => {
   });
 
   return (
-    <aside className="w-60 lg:w-80 border-r bg-black/70 border-white/10 p-6 pt-8 hidden lg:block shrink-0">
-      <h2 className="text-xl font-bold text-white mb-8 tracking-wide">
-        Filters
-      </h2>
-
-      <DateFilterSection
-        isOpen={openSections.date}
-        onToggle={() =>
-          setOpenSections({ ...openSections, date: !openSections.date })
-        }
+    <>
+      {/* 1. Mobile Overlay */}
+      <div
+        className={cn(
+          'fixed inset-0 z-40 bg-black/60 backdrop-blur-sm transition-opacity lg:hidden',
+          isMobileFilterOpen ? 'opacity-100' : 'opacity-0 pointer-events-none',
+        )}
+        onClick={closeMobileFilter}
       />
+      {/* Sidebar */}
+      <aside
+        className={cn(
+          // --- Mobile Base Styles (默认) ---
+          'fixed inset-y-0 right-0 z-50 w-[85%] max-w-sm flex flex-col',
+          'bg-zinc-950 border-l border-white/10 shadow-2xl pt-18',
+          'transition-transform duration-300 ease-in-out',
+          // Mobile 动画逻辑：when open x=0，remove from screen when close
+          isMobileFilterOpen ? 'translate-x-0' : 'translate-x-full',
 
-      <StatusFilterSection
-        isOpen={openSections.status}
-        onToggle={() =>
-          setOpenSections({ ...openSections, status: !openSections.status })
-        }
-      />
+          // --- Desktop Styles ---
+          'lg:static lg:w-80 lg:translate-x-0 lg:pt-0',
+          'lg:bg-transparent lg:shadow-none lg:border-l-0 lg:border-r',
+        )}>
+        {/* Mobile layer title */}
+        <div className="flex items-center justify-between p-5 border-b border-white/10 lg:hidden shrink-0">
+          <h2 className="text-xl font-bold text-white tracking-wide">
+            Filters
+          </h2>
+          <Button outline onClick={closeMobileFilter}>
+            <X size={24} />
+          </Button>
+        </div>
 
-      <AnimeTypeFilterSection
-        isOpen={openSections.type}
-        onToggle={() =>
-          setOpenSections({ ...openSections, type: !openSections.type })
-        }
-      />
+        {/* Hidden on mobile */}
+        <div className="hidden lg:block p-6 pt-8 pb-4 shrink-0">
+          <h2 className="text-xl font-bold text-white tracking-wide">
+            Filters
+          </h2>
+        </div>
+        <div className="flex-1 overflow-y-auto p-6 pt-2 lg:pt-0 scrollbar-thin scrollbar-thumb-zinc-700 scrollbar-track-transparent">
+          <DateFilterSection
+            isOpen={openSections.date}
+            onToggle={() =>
+              setOpenSections({ ...openSections, date: !openSections.date })
+            }
+          />
 
-      <RatingFilterSection
-        isOpen={openSections.rating}
-        onToggle={() =>
-          setOpenSections({ ...openSections, rating: !openSections.rating })
-        }
-      />
-    </aside>
+          <StatusFilterSection
+            isOpen={openSections.status}
+            onToggle={() =>
+              setOpenSections({ ...openSections, status: !openSections.status })
+            }
+          />
+
+          <AnimeTypeFilterSection
+            isOpen={openSections.type}
+            onToggle={() =>
+              setOpenSections({ ...openSections, type: !openSections.type })
+            }
+          />
+
+          <RatingFilterSection
+            isOpen={openSections.rating}
+            onToggle={() =>
+              setOpenSections({ ...openSections, rating: !openSections.rating })
+            }
+          />
+        </div>
+
+        <div className="p-4 border-t border-white/10 bg-zinc-950 lg:hidden shrink-0 pb-8">
+          <button
+            onClick={closeMobileFilter}
+            className="w-full py-3 bg-white text-black font-bold rounded-xl active:scale-[0.98] transition-transform">
+            View Results
+          </button>
+        </div>
+      </aside>
+    </>
   );
 };
 

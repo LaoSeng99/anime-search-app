@@ -14,7 +14,7 @@ const HomePage = () => {
           aria-label="content-section"
           className={cn([
             'relative z-20 flex flex-col gap-6',
-            '-translate-y-15 md:-translate-y-20 lg:-translate-y-30 xl:-translate-y-40 2xl:-translate-y-50 3xl:-translate-y-60',
+            '-translate-y-15 sm:-translate-y-20 md:-translate-y-30 lg:-translate-y-18 xl:-translate-y-40 2xl:-translate-y-50 3xl:-translate-y-60',
           ])}>
           <SpecialForYouCard />
 

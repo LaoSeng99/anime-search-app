@@ -4,6 +4,7 @@ import MotionImage from './ui/MotionImage';
 import { useNavigate } from 'react-router';
 import { cn } from '../utils/ui.util';
 import { FileImage } from 'lucide-react';
+import { cleanSynopsis } from '../utils/labelHelper';
 
 const AnimePosterCard = React.memo(
   ({ anime, className = '' }: { anime: Anime; className?: string }) => {
@@ -14,7 +15,7 @@ const AnimePosterCard = React.memo(
         className={cn([
           'relative group h-88 w-64 max-w-80 rounded-2xl overflow-hidden shadow-xl cursor-pointer bg-gray-900 transition-all duration-300',
           'sm:h-96',
-          'hover:shadow-2xl hover:shadow-blue-500/20 active:scale-[0.98]',
+          'active:scale-[0.98]',
           className,
         ])}
         onClick={() => {
@@ -58,8 +59,7 @@ const AnimePosterCard = React.memo(
           ">
               <div className="overflow-hidden">
                 <p className="text-gray-300/90 text-xs line-clamp-3 leading-relaxed border-l-2 border-blue-500/50 pl-2">
-                  {anime.synopsis?.replace(/\[Written by MAL Rewrite\]/g, '') ??
-                    'No description available.'}
+                  {cleanSynopsis(anime.synopsis) ?? 'No description available.'}
                 </p>
 
                 <div className="flex items-center gap-3 mt-4">

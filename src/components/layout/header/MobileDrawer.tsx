@@ -26,7 +26,7 @@ const MobileDrawer = ({
       onClick={onClose}>
       <aside
         className={cn(
-          'w-72 h-full bg-gray-950 border-r border-white/10 p-6 transition-transform duration-300 ease-out',
+          'w-72 h-full bg-zinc-950 border-r border-white/10 p-6 transition-transform duration-300 ease-out',
           isOpen ? 'translate-x-0' : '-translate-x-full',
         )}
         onClick={(e) => e.stopPropagation()}>
@@ -41,7 +41,7 @@ const MobileDrawer = ({
             <li key={item.name}>
               <a
                 onClick={(e) => onNavigate(e, item.href)}
-                className="text-xl font-medium text-gray-200 hover:text-blue-400 block">
+                className="text-xl font-medium cursor-pointer text-gray-200 hover:text-white block">
                 {item.name}
               </a>
             </li>

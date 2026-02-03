@@ -7,6 +7,7 @@ import type {
   SorterItem,
   SortParams,
 } from '../../types/ui.interface';
+import { cn } from '../../utils/ui.util';
 
 interface FavouriteToolbarProps {
   isLoading: boolean;
@@ -35,8 +36,11 @@ const FavouriteToolbar = ({
   onRemoveAllFavourite,
 }: FavouriteToolbarProps) => {
   return (
-    <div className="flex gap-6 justify-between">
-      <div className="flex gap-6">
+    <div
+      className={cn([
+        'flex flex-col gap-6 md:gap-6 md:flex-row justify-between',
+      ])}>
+      <div className="relative flex gap-6 items-center flex-1 group">
         <FilterButton
           title="Anime Type"
           filters={filterOptions}

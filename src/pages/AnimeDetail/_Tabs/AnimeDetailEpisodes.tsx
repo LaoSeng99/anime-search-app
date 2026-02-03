@@ -7,6 +7,7 @@ import { motion } from 'framer-motion';
 import { PlayCircle, ImageIcon } from 'lucide-react';
 import { useUrlQueryState } from '../../../hooks/useUrlQueryState';
 import PaginationGroup from '../../../components/ui/PaginationGroup';
+import EmptyState from '../../../components/ui/EmptyState';
 
 const containerVariants = {
   hidden: { opacity: 0 },
@@ -27,7 +28,7 @@ const AnimeDetailEpisodes: React.FC = () => {
   }>();
 
   const { urlRequest } = useUrlQueryState();
-  const { data, error, isLoading, isFetching } = useQuery({
+  const { data, isLoading } = useQuery({
     queryKey: ['anime', anime.mal_id, 'episodes', urlRequest.page ?? 1],
     queryFn: async () => {
       const data = await getAnimeVideoEpisodes(
@@ -42,17 +43,21 @@ const AnimeDetailEpisodes: React.FC = () => {
   const episodes = data?.data;
   const pagination = data?.pagination;
 
-  if (!episodes || episodes.length === 0) {
-    return <EmptyState />;
+  if (!isLoading && (!episodes || episodes.length === 0)) {
+    return (
+      <EmptyState
+        message="No episodes information available."
+        icon={PlayCircle}
+      />
+    );
   }
 
   return (
-    <section className="pb-24">
-      <div className="flex flex-col mt-6 lg:flex-row lg:mt-0 items-center justify-between mb-8">
+    <>
+      <div className="flex flex-col mt-6 lg:flex-row lg:mt-0 items-center justify-between">
         <h2 className="text-2xl font-bold text-white tracking-tight">
-          Episode Videos
+          Episode List
         </h2>
-
         <PaginationGroup
           totalPage={pagination?.last_visible_page}
           currentPage={urlRequest.page ?? 1}
@@ -109,7 +114,7 @@ const AnimeDetailEpisodes: React.FC = () => {
                   <h4 className="text-zinc-100 font-semibold text-lg line-clamp-1 group-hover:text-white transition-colors">
                     {ep.title}
                   </h4>
-                  <p className="text-zinc-500 text-sm mt-2 line-clamp-2 leading-relaxed leading-snug">
+                  <p className="text-zinc-500 text-sm mt-2 line-clamp-2 leading-relaxed">
                     Watch {ep.title} ({ep.episode}) from {anime.title}. Explore
                     the full details and media on the official portal.
                   </p>
@@ -128,7 +133,7 @@ const AnimeDetailEpisodes: React.FC = () => {
           ))
         )}
       </motion.div>
-    </section>
+    </>
   );
 };
 
@@ -163,17 +168,6 @@ const AnimeEpisodesSkeleton = () => {
         </div>
       ))}
     </>
-  );
-};
-
-const EmptyState = () => {
-  return (
-    <div className="mt-12 p-12 bg-white/2 rounded-3xl border border-dashed border-white/10 flex flex-col items-center justify-center gap-3">
-      <PlayCircle className="w-8 h-8 text-white/20" />
-      <p className="text-zinc-500 text-sm md:text-base font-medium">
-        No episodes information available.
-      </p>
-    </div>
   );
 };
 

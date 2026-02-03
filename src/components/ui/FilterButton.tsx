@@ -52,7 +52,7 @@ const FilterButton = ({
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            className="absolute inset-0 z-20 flex items-center justify-center bg-[#0f1117]/60 backdrop-blur-[1px] cursor-not-allowed">
+            className="absolute inset-0 z-20 flex items-center justify-center bg-[#090909]/60 backdrop-blur-[1px] cursor-not-allowed">
             <Loader2 className="text-indigo-500 animate-spin" size={24} />
           </motion.div>
         )}

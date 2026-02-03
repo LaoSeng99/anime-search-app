@@ -93,7 +93,7 @@ const AnimeDetailPage = () => {
 
           {/* Title & Actions */}
           <div className=" grow pb-6 space-y-4">
-            <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
+            <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-4">
               <div className="flex flex-col gap-6">
                 <h1 className="text-4xl md:text-5xl font-extrabold tracking-tight mb-2">
                   {anime.title}
@@ -121,8 +121,19 @@ const AnimeDetailPage = () => {
                     href={getYoutubeVideoUrl(anime.trailer.embed_url)}
                     target="_blank"
                     rel="noreferrer"
-                    className="bg-white text-black px-6 py-2.5 rounded-lg font-bold flex items-center gap-2 hover:bg-gray-200 transition-all active:scale-95">
-                    <Youtube color="#FF0000"></Youtube> Watch Trailer
+                    className="flex items-center gap-3 px-5 py-2.5 rounded-xl whitespace-nowrap
+                             bg-black/40 backdrop-blur-md border border-white/10 text-white
+                             hover:bg-black/60 hover:border-white/40 shadow-2xl  shadow-white/10
+                               transition-all duration-300 active:scale-95 group">
+                    <Youtube
+                      size={20}
+                      className="shrink-0 transition-transform duration-300 group-hover:scale-110"
+                      color="#FF0000"
+                    />
+
+                    <span className="font-bold tracking-wide">
+                      Watch Trailer
+                    </span>
                   </a>
                 )}
               </div>
@@ -132,7 +143,7 @@ const AnimeDetailPage = () => {
 
         <div
           aria-label="Anime detail section"
-          className="relative z-20 px-6 md:px-16 pt-4 bg-[#0a0a0a] rounded-b-xl">
+          className="relative z-20 px-6 md:px-16 pt-4 bg-[#0a0a0a] rounded-b-xl pb-8">
           <NavTabSection />
           {/* 4. Details & Description Grid */}
           <Outlet context={{ anime, isLoading }} />
@@ -155,19 +166,20 @@ const NavTabSection = () => {
       icon: <GitBranch size={18} />,
     },
     {
+      id: 'staff',
+      label: 'Staff',
+      icon: <UserRoundPen size={18} />,
+    },
+    {
       id: 'characters',
       label: 'Characters',
       icon: <Users size={18} />,
     },
+
     {
       id: 'episodes',
       label: 'Episodes',
       icon: <PlayCircle size={18} />,
-    },
-    {
-      id: 'staff',
-      label: 'Staff',
-      icon: <UserRoundPen size={18} />,
     },
   ];
   const navigate = useNavigate();
