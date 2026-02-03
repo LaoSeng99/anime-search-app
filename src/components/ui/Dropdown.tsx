@@ -48,7 +48,7 @@ const Dropdown = ({
             exit={{ opacity: 0, scale: 0.96 }}
             transition={{ duration: 0.2 }}
             className={`
-              absolute z-50 rounded-xl bg-[#0f1117] border border-white/10 shadow-2xl
+              absolute z-50 rounded-xl bg-[#090909] border border-white/10 shadow-2xl
               ${className}
               ${position.isUp ? 'bottom-full mb-3 origin-bottom' : 'top-full origin-top'}
               ${position.isRight ? 'right-0' : 'left-0'}

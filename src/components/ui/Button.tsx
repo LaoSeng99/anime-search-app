@@ -60,7 +60,7 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
                   : 'primary';
 
     const baseStyles = cn(
-      'relative inline-flex items-center justify-center font-bold tracking-tight cursor-pointer',
+      'relative inline-flex items-center justify-center font-bold tracking-tight cursor-pointer overflow-hidden',
       'rounded-xl transition-all duration-200',
       'outline-none focus-visible:ring-2 focus-visible:ring-zinc-400 focus-visible:ring-offset-2 focus-visible:ring-offset-zinc-950', // Dark mode focus ring
       'disabled:opacity-50 disabled:pointer-events-none disabled:cursor-not-allowed',
