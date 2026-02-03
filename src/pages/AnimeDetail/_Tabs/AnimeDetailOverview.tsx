@@ -92,7 +92,7 @@ const AnimeDetailOverview = () => {
             </h2>
             <div className="text-gray-300 leading-relaxed text-lg space-y-6">
               {anime.synopsis ? (
-                cleanSynopsis(anime.synopsis)
+                cleanSynopsis(anime.synopsis)!
                   .split('\n')
                   .map((para, i) => <p key={i}>{para}</p>)
               ) : (
