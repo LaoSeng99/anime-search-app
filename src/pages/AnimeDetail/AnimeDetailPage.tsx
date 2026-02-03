@@ -132,7 +132,7 @@ const AnimeDetailPage = () => {
 
         <div
           aria-label="Anime detail section"
-          className="relative z-20 px-6 md:px-16 pt-4 bg-[#0a0a0a] rounded-b-xl">
+          className="relative z-20 px-6 md:px-16 pt-4 bg-[#0a0a0a] rounded-b-xl pb-8">
           <NavTabSection />
           {/* 4. Details & Description Grid */}
           <Outlet context={{ anime, isLoading }} />
@@ -155,19 +155,20 @@ const NavTabSection = () => {
       icon: <GitBranch size={18} />,
     },
     {
+      id: 'staff',
+      label: 'Staff',
+      icon: <UserRoundPen size={18} />,
+    },
+    {
       id: 'characters',
       label: 'Characters',
       icon: <Users size={18} />,
     },
+
     {
       id: 'episodes',
       label: 'Episodes',
       icon: <PlayCircle size={18} />,
-    },
-    {
-      id: 'staff',
-      label: 'Staff',
-      icon: <UserRoundPen size={18} />,
     },
   ];
   const navigate = useNavigate();

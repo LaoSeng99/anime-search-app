@@ -99,14 +99,14 @@ const AnimeDetailStaff = () => {
     return <StaffSkeleton />;
   }
 
-  if (!staff || staff.length === 0) {
+  if (!staffLoading && (!staff || staff.length === 0)) {
     return <EmptyState />;
   }
 
   const displayItems = renderList.slice(0, displayCount);
 
   return (
-    <section>
+    <>
       <motion.div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6 items-start">
         {displayItems.map((item, idx) => {
           const currentBatchIndex = idx % ITEMS_PER_BATCH;
@@ -122,7 +122,7 @@ const AnimeDetailStaff = () => {
                 animate={{ opacity: 1 }}
                 className="col-span-full mt-8 mb-2">
                 <div className="flex items-center gap-4">
-                  <h3 className="text-lg font-bold text-white whitespace-nowrap drop-shadow-[0_0_8px_rgba(255,255,255,0.8)]">
+                  <h3 className="text-lg font-bold text-white whitespace-nowrap drop-shadow-[0_0_3px_rgba(255,255,255,0.3)]">
                     {item.label}
                   </h3>
                   <div className="h-px w-full bg-white/10" />
@@ -165,7 +165,6 @@ const AnimeDetailStaff = () => {
           );
         })}
       </motion.div>
-
       {/* for trigger load */}
       {displayCount < renderList.length && (
         <div
@@ -176,7 +175,7 @@ const AnimeDetailStaff = () => {
           )}
         </div>
       )}
-    </section>
+    </>
   );
 };
 

@@ -27,39 +27,39 @@ const AnimeDetailRelations = () => {
   }
 
   return (
-    <div className="mt-4 lg:mt-16 pb-24">
-      <h2 className="sr-only">Related Content</h2>
+    <>
+      <div className="mt-4">
+        <motion.div
+          variants={containerVariants}
+          initial="hidden"
+          animate="visible"
+          className="flex flex-col gap-10">
+          {anime.relations.map((rel, index) => (
+            <section
+              key={`${rel.relation}-${index}`}
+              aria-labelledby={`relation-type-${index}`}
+              className="group">
+              {/* Relation Type Header */}
+              <div className="flex items-center gap-4 mb-5">
+                <h3
+                  id={`relation-type-${index}`}
+                  className="text-[11px] md:text-xs font-black uppercase tracking-[0.2em] text-white/90 bg-white/10 px-2.5 py-1 rounded-sm">
+                  {rel.relation}
+                </h3>
+                <div className="h-px flex-1 bg-white/10 group-hover:bg-white/20 transition-colors" />
+              </div>
 
-      <motion.div
-        variants={containerVariants}
-        initial="hidden"
-        animate="visible"
-        className="flex flex-col gap-10">
-        {anime.relations.map((rel, index) => (
-          <section
-            key={`${rel.relation}-${index}`}
-            aria-labelledby={`relation-type-${index}`}
-            className="group">
-            {/* Relation Type Header */}
-            <div className="flex items-center gap-4 mb-5">
-              <h3
-                id={`relation-type-${index}`}
-                className="text-[11px] md:text-xs font-black uppercase tracking-[0.2em] text-white/90 bg-white/10 px-2.5 py-1 rounded-sm">
-                {rel.relation}
-              </h3>
-              <div className="h-px flex-1 bg-white/10 group-hover:bg-white/20 transition-colors" />
-            </div>
-
-            {/* Entry Grid */}
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-              {rel.entry.map((item) => (
-                <RelationCard key={item.mal_id} item={item} />
-              ))}
-            </div>
-          </section>
-        ))}
-      </motion.div>
-    </div>
+              {/* Entry Grid */}
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                {rel.entry.map((item) => (
+                  <RelationCard key={item.mal_id} item={item} />
+                ))}
+              </div>
+            </section>
+          ))}
+        </motion.div>
+      </div>
+    </>
   );
 };
 

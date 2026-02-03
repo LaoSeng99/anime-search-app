@@ -54,18 +54,16 @@ const AnimeDetailCharacters = () => {
     return characters.slice(start, end);
   }, [urlRequest.page, characters]);
 
-  if (!characters || characters.length === 0) {
+  if (!characterLoading && (!characters || characters.length === 0)) {
     return <EmptyState />;
   }
 
   return (
-    <section>
-      <div className="flex flex-col mt-6 lg:flex-row lg:mt-0 items-center justify-between mb-8">
-        <div>
-          <h2 className="text-2xl font-bold text-white tracking-tight">
-            Character List
-          </h2>
-        </div>
+    <>
+      <div className="flex flex-col mt-6 lg:flex-row lg:mt-0 items-center justify-between ">
+        <h2 className="text-2xl font-bold text-white tracking-tight">
+          Character List
+        </h2>
         <PaginationGroup
           itemLength={characters?.length || 0}
           currentPage={urlRequest.page ?? 1}
@@ -77,7 +75,7 @@ const AnimeDetailCharacters = () => {
         variants={containerVariants}
         initial="hidden"
         animate="visible"
-        className="mt-8 lg:mt-12 pb-24 grid grid-cols-1 lg:grid-cols-2  xl:grid-cols-3 gap-4 lg:gap-6">
+        className=" pb-24 grid grid-cols-1 lg:grid-cols-2  xl:grid-cols-3 gap-4 lg:gap-6">
         {characterLoading ? (
           <CharacterSkeleton />
         ) : (
@@ -151,7 +149,7 @@ const AnimeDetailCharacters = () => {
           ))
         )}
       </motion.div>
-    </section>
+    </>
   );
 };
 

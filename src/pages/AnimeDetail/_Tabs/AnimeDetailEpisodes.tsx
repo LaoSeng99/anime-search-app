@@ -42,17 +42,16 @@ const AnimeDetailEpisodes: React.FC = () => {
   const episodes = data?.data;
   const pagination = data?.pagination;
 
-  if (!episodes || episodes.length === 0) {
+  if (!isLoading && (!episodes || episodes.length === 0)) {
     return <EmptyState />;
   }
 
   return (
-    <section className="pb-24">
-      <div className="flex flex-col mt-6 lg:flex-row lg:mt-0 items-center justify-between mb-8">
+    <>
+      <div className="flex flex-col mt-6 lg:flex-row lg:mt-0 items-center justify-between">
         <h2 className="text-2xl font-bold text-white tracking-tight">
-          Episode Videos
+          Episode List
         </h2>
-
         <PaginationGroup
           totalPage={pagination?.last_visible_page}
           currentPage={urlRequest.page ?? 1}
@@ -128,7 +127,7 @@ const AnimeDetailEpisodes: React.FC = () => {
           ))
         )}
       </motion.div>
-    </section>
+    </>
   );
 };
 
