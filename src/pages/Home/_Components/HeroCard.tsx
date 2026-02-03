@@ -67,7 +67,7 @@ const HeroCard = () => {
           'relative z-20 mt-auto px-6 py-8 gap-4 flex flex-col justify-end',
           'bg-black/20 backdrop-blur-sm rounded-t-3xl border-t border-white/10',
           // Tablet (md)
-          'md:h-full md:justify-center md:px-16 md:gap-6 md:bg-transparent md:backdrop-blur-0 md:border-none',
+          'md:h-full md:justify-center md:px-16 md:gap-6 md:bg-transparent md:backdrop-blur-[0px] md:border-none',
           // Desktop (lg)
           'lg:max-w-3xl',
         )}>
