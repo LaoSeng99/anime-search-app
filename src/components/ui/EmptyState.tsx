@@ -7,9 +7,9 @@ interface EmptyStateProps {
 
 const EmptyState = ({ icon: Icon, message }: EmptyStateProps) => {
   return (
-    <div className="mt-12 p-12 bg-white/2 rounded-3xl border border-dashed border-white/10 flex flex-col items-center justify-center gap-3">
+    <div className="mt-12 p-12 bg-[#0F0F0F] rounded-3xl border border-dashed border-white/10 flex flex-col items-center justify-center gap-3">
       <Icon className="w-8 h-8 text-white/20" />
-      <p className="text-zinc-500 text-sm md:text-base font-medium">
+      <p className="text-zinc-500 text-sm md:text-base font-medium break-all text-center">
         {message}
       </p>
     </div>

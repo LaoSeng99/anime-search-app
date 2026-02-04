@@ -58,7 +58,6 @@ const PaginationGroup = ({
 
   return (
     <div className="flex flex-col items-center gap-4 py-6 w-full">
-      {/* 容器：移动端 justify-between (拉开), 大屏 center (居中) */}
       <div className="flex items-center justify-between w-full md:justify-center gap-2">
         {/* --- Left Controls --- */}
         <div className="flex items-center gap-1">
