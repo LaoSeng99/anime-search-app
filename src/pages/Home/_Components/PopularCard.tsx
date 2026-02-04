@@ -34,7 +34,7 @@ const PopularContent = ({ isVisible }: { isVisible: boolean }) => {
   //For infinite load trigger
   const { ref, inView } = useInView({
     threshold: 0,
-    rootMargin: '50px',
+    rootMargin: '10px',
   });
 
   useEffect(() => {
@@ -66,7 +66,7 @@ const PopularContent = ({ isVisible }: { isVisible: boolean }) => {
             'grid-cols-1 xs:grid-cols-2 lg:grid-cols-4 xl:grid-cols-5 2xl:grid-cols-6',
           ])}>
           {/* Error */}
-          {isError ? (
+          {isError && (
             <div className="absolute h-full inset-0 z-30 flex items-center justify-center bg-black/70 backdrop-blur-[2px] rounded-lg ">
               <ErrorState
                 className="my-12"
@@ -74,18 +74,18 @@ const PopularContent = ({ isVisible }: { isVisible: boolean }) => {
                 onRetry={() => refetch()}
               />
             </div>
-          ) : //Render Cards
-          isLoading || isFetchingNextPage ? (
-            skeletonNodes
-          ) : (
+          )}
+          {/* Render Cards */}
+          {!isError &&
             allAnime.map((anime) => (
               <div
                 key={anime.mal_id}
                 className="relative w-full flex items-center justify-center">
                 <AnimePosterCard className="w-full" anime={anime} />
               </div>
-            ))
-          )}
+            ))}
+          {/* Skeleton */}
+          {(isLoading || isFetchingNextPage) && skeletonNodes}
         </div>
 
         {/* Infinity Scroll Sensor & View More Logic */}
