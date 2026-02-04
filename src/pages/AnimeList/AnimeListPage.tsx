@@ -15,10 +15,15 @@ const AnimeListPage = () => {
 
   return (
     <AnimeListUIProvider>
-      <div className="relative w-full overflow-hidden">
+      <div className="relative w-full ">
         <BackgroundSection
           currentImageUrl={currentBackgroundUrl}></BackgroundSection>
-        <div className="absolute inset-0 z-10 backdrop-blur-sm bg-black/10" />
+        <div
+          className={cn([
+            'inset-0 z-10 backdrop-blur-sm bg-black/10',
+            'hidden md:absolute',
+          ])}
+        />
 
         <section
           className={cn([
