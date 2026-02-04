@@ -10,7 +10,7 @@ import { cn } from '../../../utils/ui.util';
 import AnimeListSidebar from './AnimeListSidebar';
 import AnimeListToolbar from './AnimeListToolbar';
 import { useAnimeListUI } from '../../../hooks/useAnimeListUI';
-import { Search } from 'lucide-react';
+import { Search, SearchX } from 'lucide-react';
 import EmptyState from '../../../components/ui/EmptyState';
 import ErrorState from '../../../components/ui/ErrorState';
 
@@ -26,7 +26,7 @@ const AnimeListSection = ({
 
   const [debouncedRequest] = useDebounce(urlRequest, 500);
 
-  const { animeList, pagination, isLoading, isFetching, isError } =
+  const { animeList, pagination, refetch, isLoading, isFetching, isError } =
     useAnimeSearch({
       req: debouncedRequest,
     });
@@ -58,7 +58,7 @@ const AnimeListSection = ({
 
   return (
     <div
-      className="flex justify-between w-full bg-black/80 pb-0 min-h-150 scroll-mt-18"
+      className="flex justify-between w-full bg-black/90 pb-0 min-h-150 scroll-mt-18"
       ref={topRef}>
       <AnimeListSidebar />
 
@@ -85,7 +85,13 @@ const AnimeListSection = ({
         )}
         {/* Grid */}
         {isError ? (
-          <ErrorState />
+          <ErrorState
+            showHomeButton
+            icon={<SearchX />}
+            title="Failed to retrieve anime data"
+            message="Retry or Back to home"
+            onRetry={refetch}
+          />
         ) : (
           !isLoading &&
           !showSkeleton &&
