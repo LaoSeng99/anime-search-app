@@ -14,7 +14,9 @@
 
 A modern anime discovery web application designed for a seamless user experience.
 
-> Powered by the Jikan API (V4): The most popular open-source REST API for MyAnimeList. It provides high-quality, real-time access to a massive database of anime, manga, and characters without the need for authentication.
+> **Live Demo**: https://anime-search-app-five.vercel.app
+
+Powered by the [Jikan API (V4)](https://docs.api.jikan.moe): The most popular open-source REST API for MyAnimeList. It provides high-quality, real-time access to a massive database of anime, manga, and characters without the need for authentication.
 
 ---
 
