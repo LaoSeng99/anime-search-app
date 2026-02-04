@@ -36,7 +36,7 @@ const AnimeListSection = ({
   const showSkeleton = isLoading || isDataUpdating;
 
   useEffect(() => {
-    const url = animeList[0]?.images?.webp?.image_url ?? '';
+    const url = animeList[0]?.images?.webp?.large_image_url ?? '';
     onChange(url);
   }, [animeList, onChange]);
 
