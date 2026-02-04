@@ -5,7 +5,7 @@ const Footer = () => {
     {
       href: 'https://github.com/LaoSeng99',
       src: '/github.svg',
-      alt: 'github',
+      alt: 'github repositories',
       shadowColor: 'group-hover:drop-shadow-[0_6px_10px_rgba(255,255,255,0.8)]',
       className: 'w-8 invert-[0.5] group-hover:invert-100 shrink-0',
     },
@@ -40,6 +40,17 @@ const Footer = () => {
             className={item.className}></SocialLink>
         ))}
       </div>
+
+      {/* Open Source Section */}
+      <p className="text-[10px] md:text-[11px] text-zinc-500 tracking-wider uppercase">
+        Code is{' '}
+        <a
+          href="https://github.com/LaoSeng99/anime-search-app"
+          target="_blank"
+          className="text-zinc-300 hover:text-white transition-colors border-b border-zinc-700 hover:border-white">
+          Open Source
+        </a>
+      </p>
       {/* Copyright Section */}
       <p
         className="font-sans text-[0.7rem] md:text-[0.85rem] text-gray-400 tracking-widest uppercase transition-all duration-700 
