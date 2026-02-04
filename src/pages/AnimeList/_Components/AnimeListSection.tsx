@@ -86,6 +86,7 @@ const AnimeListSection = ({
         {/* Grid */}
         {isError ? (
           <ErrorState
+            className="mt-12"
             showHomeButton
             icon={<SearchX />}
             title="Failed to retrieve anime data"

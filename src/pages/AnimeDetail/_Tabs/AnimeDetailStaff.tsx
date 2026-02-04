@@ -187,10 +187,6 @@ const AnimeDetailStaff = () => {
 
 const StaffSkeleton = () => (
   <section className=" animate-pulse">
-    <header className="flex flex-col mt-6 lg:flex-row lg:mt-0 items-center justify-between mb-8">
-      <div className="h-8 w-48 bg-zinc-800 rounded-md" />
-    </header>
-
     <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6 items-start">
       {[1, 2].map((group) => (
         <React.Fragment key={group}>

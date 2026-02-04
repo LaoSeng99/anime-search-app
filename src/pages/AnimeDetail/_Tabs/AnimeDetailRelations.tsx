@@ -23,7 +23,7 @@ const AnimeDetailRelations = () => {
 
   if (isLoading) return <RelationSkeleton />;
 
-  if (!anime.relations || anime.relations.length === 0) {
+  if (anime.relations.length === 0) {
     return <EmptyState message="No related content available." icon={Layers} />;
   }
 

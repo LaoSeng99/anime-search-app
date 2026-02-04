@@ -58,6 +58,7 @@ const AnimeDetailPage = () => {
   if (error || !anime) {
     return (
       <ErrorState
+        className="min-h-screen bg-black/60"
         icon={<SearchX />}
         showHomeButton
         title="Failed to retrieve anime data"

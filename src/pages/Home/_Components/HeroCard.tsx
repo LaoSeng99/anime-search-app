@@ -32,7 +32,11 @@ const HeroCard = () => {
 
   if (isError || !anime) {
     return (
-      <ErrorState title="Unable to load spotlight" onRetry={handleRefetch} />
+      <ErrorState
+        className="min-h-screen"
+        title="Unable to load spotlight"
+        onRetry={handleRefetch}
+      />
     );
   }
 

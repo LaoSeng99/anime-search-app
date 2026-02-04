@@ -1,7 +1,7 @@
 import { useOutletContext } from 'react-router';
 import type { Anime } from '../../../types/anime';
 import { motion } from 'framer-motion';
-import { User, ChevronRight, Mic2, Users } from 'lucide-react';
+import { User, ChevronRight, Mic2, Users, SearchX } from 'lucide-react';
 import { useQuery } from '@tanstack/react-query';
 import MotionImage from '../../../components/ui/MotionImage';
 import { getAnimeCharacters } from '../../../services/animeService';
@@ -9,6 +9,7 @@ import PaginationGroup from '../../../components/ui/PaginationGroup';
 import { useMemo } from 'react';
 import { useUrlQueryState } from '../../../hooks/useUrlQueryState';
 import EmptyState from '../../../components/ui/EmptyState';
+import ErrorState from '../../../components/ui/ErrorState';
 
 const containerVariants = {
   hidden: { opacity: 0 },
@@ -32,8 +33,8 @@ const AnimeDetailCharacters = () => {
 
   const {
     data: characters,
-    error,
     isLoading: characterLoading,
+    isError,
   } = useQuery({
     queryKey: ['anime', anime.mal_id, 'characters'],
     queryFn: async () => {
@@ -58,6 +59,16 @@ const AnimeDetailCharacters = () => {
   if (!characterLoading && (!characters || characters.length === 0)) {
     return (
       <EmptyState message="No characters found for this anime." icon={Users} />
+    );
+  }
+
+  if (isError) {
+    return (
+      <ErrorState
+        className="mt-12"
+        message="No characters found for this anime."
+        icon={<SearchX />}
+      />
     );
   }
 

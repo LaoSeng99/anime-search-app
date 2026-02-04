@@ -10,7 +10,7 @@ export const usePopularCardLogic = ({ isVisible }: { isVisible: boolean }) => {
   const {
     data,
     isLoading,
-    error,
+    isError,
     fetchNextPage,
     hasNextPage,
     isFetchingNextPage,
@@ -51,7 +51,7 @@ export const usePopularCardLogic = ({ isVisible }: { isVisible: boolean }) => {
     ITEMS_PER_PAGE,
     allAnime,
     isLoading,
-    error,
+    isError,
     fetchNextPage,
     hasNextPage,
     isFetchingNextPage,
