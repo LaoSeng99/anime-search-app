@@ -55,13 +55,17 @@ const AnimeDetailEpisodes: React.FC = () => {
   return (
     <>
       <div className="flex flex-col mt-6 lg:flex-row lg:mt-0 items-center justify-between">
-        <h2 className="text-2xl font-bold text-white tracking-tight">
+        <h2 className="flex-1 text-2xl font-bold text-white tracking-tight">
           Episode List
         </h2>
-        <PaginationGroup
-          totalPage={pagination?.last_visible_page}
-          currentPage={urlRequest.page ?? 1}
-          isLoading={isLoading}></PaginationGroup>
+        <div className="flex-1">
+          <PaginationGroup
+            showFirstLastPageNumber
+            totalPage={pagination?.last_visible_page}
+            currentPage={urlRequest.page ?? 1}
+            siblingCount={2}
+            isLoading={isLoading}></PaginationGroup>
+        </div>
       </div>
       <motion.div
         key={`${urlRequest.page}-${isLoading}`}

@@ -15,6 +15,8 @@ interface PaginationGroupProps {
   perPage?: number; // use with item length
   currentPage: number;
   isLoading: boolean;
+  siblingCount?: number;
+  showFirstLastPageNumber?: boolean;
   onChangePage?: (page: number) => void;
 }
 
@@ -23,7 +25,9 @@ const PaginationGroup = ({
   itemLength = 0,
   perPage = 6,
   totalPage: providedTotalPage,
+  showFirstLastPageNumber = false,
   isLoading = false,
+  siblingCount = 1,
   onChangePage,
 }: PaginationGroupProps) => {
   if (!currentPage || currentPage < 0) currentPage = 1;
@@ -35,7 +39,7 @@ const PaginationGroup = ({
     {
       totalPage,
       currentPage,
-      siblingCount: 1,
+      siblingCount: siblingCount,
     },
   );
 
@@ -62,14 +66,16 @@ const PaginationGroup = ({
         {/* --- Left Controls --- */}
         <div className="flex items-center gap-1">
           {/* First: hide on mobile */}
-          <Button
-            outline
-            size="icon"
-            icon={<ChevronsLeft />}
-            className="hidden sm:flex"
-            disabled={isFirst || isLoading}
-            onClick={() => handlePageChange(1)}
-            title="First Page"></Button>
+          {!showFirstLastPageNumber && (
+            <Button
+              outline
+              size="icon"
+              icon={<ChevronsLeft />}
+              className="hidden sm:flex"
+              disabled={isFirst || isLoading}
+              onClick={() => handlePageChange(1)}
+              title="First Page"></Button>
+          )}
 
           {/* Previous: */}
           <Button
@@ -89,9 +95,22 @@ const PaginationGroup = ({
         {/* --- Middle: Desktop Layout (Buttons) --- */}
         <div className="hidden md:flex gap-1">
           {showLeftDots && (
-            <Button outline disabled>
-              ...
-            </Button>
+            <>
+              {' '}
+              {showFirstLastPageNumber && (
+                <Button
+                  outline
+                  className="hidden sm:flex"
+                  disabled={isFirst || isLoading}
+                  onClick={() => handlePageChange(1)}
+                  title="First Page">
+                  {1}
+                </Button>
+              )}
+              <Button outline disabled>
+                ...
+              </Button>
+            </>
           )}
 
           {pages.map((page) => {
@@ -126,9 +145,21 @@ const PaginationGroup = ({
           })}
 
           {showRightDots && (
-            <Button outline disabled>
-              ...
-            </Button>
+            <>
+              <Button outline disabled>
+                ...
+              </Button>
+              {showFirstLastPageNumber && (
+                <Button
+                  outline
+                  className="hidden sm:flex"
+                  disabled={isLast || isLoading}
+                  onClick={() => handlePageChange(totalPage)}
+                  title="Last Page">
+                  {totalPage}
+                </Button>
+              )}
+            </>
           )}
         </div>
 
@@ -141,16 +172,17 @@ const PaginationGroup = ({
             icon={<ChevronRight />}
             disabled={isLast || isLoading}
             onClick={() => handlePageChange(currentPage + 1)}></Button>
-
           {/* Last:hide on mobile */}
-          <Button
-            outline
-            size="icon"
-            icon={<ChevronsRight />}
-            className="hidden sm:flex"
-            disabled={isLast || isLoading}
-            onClick={() => handlePageChange(totalPage)}
-            title="Last Page"></Button>
+          {!showFirstLastPageNumber && (
+            <Button
+              outline
+              size="icon"
+              icon={<ChevronsRight />}
+              className="hidden sm:flex"
+              disabled={isLast || isLoading}
+              onClick={() => handlePageChange(totalPage)}
+              title="Last Page"></Button>
+          )}{' '}
         </div>
       </div>
 

@@ -75,14 +75,18 @@ const AnimeDetailCharacters = () => {
   return (
     <>
       <div className="flex flex-col mt-6 lg:flex-row lg:mt-0 items-center justify-between ">
-        <h2 className="text-2xl font-bold text-white tracking-tight">
+        <h2 className="flex-1 text-2xl font-bold text-white tracking-tight">
           Character List
         </h2>
-        <PaginationGroup
-          itemLength={characters?.length || 0}
-          currentPage={urlRequest.page ?? 1}
-          perPage={PER_PAGE}
-          isLoading={isLoading}></PaginationGroup>
+        <div className="flex-1">
+          <PaginationGroup
+            showFirstLastPageNumber
+            itemLength={characters?.length || 0}
+            currentPage={urlRequest.page ?? 1}
+            perPage={PER_PAGE}
+            siblingCount={2}
+            isLoading={isLoading}></PaginationGroup>
+        </div>
       </div>
       <motion.div
         key={`${urlRequest.page}-${characterLoading}`}
