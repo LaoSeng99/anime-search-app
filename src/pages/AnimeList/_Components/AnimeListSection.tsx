@@ -10,8 +10,9 @@ import { cn } from '../../../utils/ui.util';
 import AnimeListSidebar from './AnimeListSidebar';
 import AnimeListToolbar from './AnimeListToolbar';
 import { useAnimeListUI } from '../../../hooks/useAnimeListUI';
-import { Search } from 'lucide-react';
+import { Search, SearchX } from 'lucide-react';
 import EmptyState from '../../../components/ui/EmptyState';
+import ErrorState from '../../../components/ui/ErrorState';
 
 const AnimeListSection = ({
   onChange,
@@ -20,14 +21,15 @@ const AnimeListSection = ({
 }) => {
   const topRef = useRef<HTMLDivElement>(null);
 
-  const { urlRequest, activeFilters } = useUrlQueryState();
+  const { urlRequest, activeFilters, setSingleParam } = useUrlQueryState();
   const { isMobileFilterOpen } = useAnimeListUI();
 
   const [debouncedRequest] = useDebounce(urlRequest, 500);
 
-  const { animeList, pagination, isLoading, isFetching } = useAnimeSearch({
-    req: debouncedRequest,
-  });
+  const { animeList, pagination, refetch, isLoading, isFetching, isError } =
+    useAnimeSearch({
+      req: debouncedRequest,
+    });
 
   const isDataUpdating =
     urlRequest.page !== debouncedRequest.page || isFetching;
@@ -37,6 +39,14 @@ const AnimeListSection = ({
     const url = animeList[0]?.images?.webp?.image_url ?? '';
     onChange(url);
   }, [animeList, onChange]);
+
+  useEffect(() => {
+    if (!urlRequest.page || !pagination?.last_visible_page) return;
+
+    if (urlRequest.page > pagination?.last_visible_page) {
+      setSingleParam('page', pagination?.last_visible_page);
+    }
+  }, [pagination?.last_visible_page, setSingleParam, urlRequest.page]);
 
   const skeletonNodes = [...Array(12)].map((_, i) => (
     <div
@@ -48,7 +58,7 @@ const AnimeListSection = ({
 
   return (
     <div
-      className="flex justify-between w-full bg-black/80 pb-0 min-h-150 scroll-mt-18"
+      className="flex justify-between w-full bg-black/90 pb-0 min-h-150 scroll-mt-18"
       ref={topRef}>
       <AnimeListSidebar />
 
@@ -74,31 +84,45 @@ const AnimeListSection = ({
           </div>
         )}
         {/* Grid */}
+        {isError ? (
+          <ErrorState
+            className="mt-12"
+            showHomeButton
+            icon={<SearchX />}
+            title="Failed to retrieve anime data"
+            message="Retry or Back to home"
+            onRetry={refetch}
+          />
+        ) : (
+          !isLoading &&
+          !showSkeleton &&
+          animeList.length === 0 && (
+            <EmptyState message="No anime found." icon={Search} />
+          )
+        )}
+
         <div className="flex-1 mt-6 flex items-center justify-center lg:justify-start">
           <div
             className={cn([
               'grid grid-cols-1 gap-4 md:gap-6 w-full ',
               'grid-cols-1 xs:grid-cols-2 lg:grid-cols-4 xl:grid-cols-5 2xl:grid-cols-6',
             ])}>
-            {showSkeleton
+            {!isError && showSkeleton
               ? // show skeleton first
                 skeletonNodes
-              : animeList.length > 0 // show data
-                ? animeList.map((anime, index) => (
-                    <div
-                      key={`${anime.mal_id}-${index}`}
-                      className="relative w-full flex items-center justify-center ">
-                      <AnimePosterCard className="w-full" anime={anime} />
-                    </div>
-                  ))
-                : !isLoading && (
-                    <EmptyState message="No anime found." icon={Search} />
-                  )}
+              : animeList.length > 0 &&
+                animeList.map((anime, index) => (
+                  <div
+                    key={`${anime.mal_id}-${index}`}
+                    className="relative w-full flex items-center justify-center ">
+                    <AnimePosterCard className="w-full" anime={anime} />
+                  </div>
+                ))}
           </div>
         </div>
         <div className="mt-12 mb-8">
           <PaginationGroup
-            itemLength={pagination?.items?.total ?? 0}
+            totalPage={pagination?.last_visible_page}
             currentPage={urlRequest.page || 1}
             perPage={urlRequest.limit || 12}
             isLoading={isLoading || isFetching}

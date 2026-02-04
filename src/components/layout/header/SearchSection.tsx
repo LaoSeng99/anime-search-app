@@ -61,6 +61,11 @@ const SearchSection = ({ isExpanded, setIsExpanded }: SearchSectionProps) => {
     }
   };
 
+  const handleViewItem = (id: string | number) => {
+    setIsResultsVisible(false);
+    navigate(`/anime/${id}`);
+  };
+
   useClickOutside(containerRef, () => {
     setIsResultsVisible(false);
   });
@@ -113,6 +118,7 @@ const SearchSection = ({ isExpanded, setIsExpanded }: SearchSectionProps) => {
           isLoading={isLoading}
           isVisible={isResultsVisible}
           onSeeMore={handleSeeMore}
+          onViewItem={handleViewItem}
           searchQuery={searchQuery}
         />
       </div>

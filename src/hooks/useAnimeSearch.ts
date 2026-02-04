@@ -20,6 +20,6 @@ export const useAnimeSearch = ({ req }: { req: GetAnimeSearchRequest }) => {
     isLoading,
     isError,
     isFetching,
-    refresh: refetch,
+    refetch: refetch,
   };
 };

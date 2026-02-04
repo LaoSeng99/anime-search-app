@@ -1,7 +1,7 @@
 import { useOutletContext } from 'react-router';
 import type { Anime } from '../../../types/anime';
 import { motion } from 'framer-motion';
-import { User, ChevronRight, Mic2, Users } from 'lucide-react';
+import { User, ChevronRight, Mic2, Users, SearchX } from 'lucide-react';
 import { useQuery } from '@tanstack/react-query';
 import MotionImage from '../../../components/ui/MotionImage';
 import { getAnimeCharacters } from '../../../services/animeService';
@@ -9,6 +9,7 @@ import PaginationGroup from '../../../components/ui/PaginationGroup';
 import { useMemo } from 'react';
 import { useUrlQueryState } from '../../../hooks/useUrlQueryState';
 import EmptyState from '../../../components/ui/EmptyState';
+import ErrorState from '../../../components/ui/ErrorState';
 
 const containerVariants = {
   hidden: { opacity: 0 },
@@ -32,8 +33,8 @@ const AnimeDetailCharacters = () => {
 
   const {
     data: characters,
-    error,
     isLoading: characterLoading,
+    isError,
   } = useQuery({
     queryKey: ['anime', anime.mal_id, 'characters'],
     queryFn: async () => {
@@ -61,17 +62,31 @@ const AnimeDetailCharacters = () => {
     );
   }
 
+  if (isError) {
+    return (
+      <ErrorState
+        className="mt-12"
+        message="No characters found for this anime."
+        icon={<SearchX />}
+      />
+    );
+  }
+
   return (
     <>
       <div className="flex flex-col mt-6 lg:flex-row lg:mt-0 items-center justify-between ">
-        <h2 className="text-2xl font-bold text-white tracking-tight">
+        <h2 className="flex-1 text-2xl font-bold text-white tracking-tight">
           Character List
         </h2>
-        <PaginationGroup
-          itemLength={characters?.length || 0}
-          currentPage={urlRequest.page ?? 1}
-          perPage={PER_PAGE}
-          isLoading={isLoading}></PaginationGroup>
+        <div className="flex-1">
+          <PaginationGroup
+            showFirstLastPageNumber
+            itemLength={characters?.length || 0}
+            currentPage={urlRequest.page ?? 1}
+            perPage={PER_PAGE}
+            siblingCount={2}
+            isLoading={isLoading}></PaginationGroup>
+        </div>
       </div>
       <motion.div
         key={`${urlRequest.page}-${characterLoading}`}

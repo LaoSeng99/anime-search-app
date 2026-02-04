@@ -23,7 +23,7 @@ const PopularContent = ({ isVisible }: { isVisible: boolean }) => {
   const {
     allAnime,
     isLoading,
-    error,
+    isError,
     fetchNextPage,
     hasNextPage,
     isFetchingNextPage,
@@ -48,12 +48,17 @@ const PopularContent = ({ isVisible }: { isVisible: boolean }) => {
   ));
 
   return (
-    <div className="text-white overflow-hidden">
+    <div className={cn([' text-white overflow-hidden'])}>
       <h2 className="text-2xl font-medium text-white px-8 md:px-16 pb-4">
         Most Popular
       </h2>
 
-      <div className="px-8 md:px-16">
+      <div
+        className={cn([
+          'px-8 md:px-16',
+          // for display error sate
+          isError ? 'relative py-40' : '',
+        ])}>
         {/* Grid */}
         <div
           className={cn([
@@ -61,27 +66,26 @@ const PopularContent = ({ isVisible }: { isVisible: boolean }) => {
             'grid-cols-1 xs:grid-cols-2 lg:grid-cols-4 xl:grid-cols-5 2xl:grid-cols-6',
           ])}>
           {/* Error */}
-          {error && (
+          {isError ? (
             <div className="absolute h-full inset-0 z-30 flex items-center justify-center bg-black/70 backdrop-blur-[2px] rounded-lg ">
               <ErrorState
+                className="my-12"
                 title="Unable to load popular show"
                 onRetry={() => refetch()}
               />
             </div>
+          ) : //Render Cards
+          isLoading || isFetchingNextPage ? (
+            skeletonNodes
+          ) : (
+            allAnime.map((anime) => (
+              <div
+                key={anime.mal_id}
+                className="relative w-full flex items-center justify-center">
+                <AnimePosterCard className="w-full" anime={anime} />
+              </div>
+            ))
           )}
-          {/* Render Cards */}
-          {(isLoading || isFetchingNextPage) && !error
-            ? skeletonNodes
-            : allAnime.map((anime) => (
-                <div className="relative w-full flex items-center justify-center">
-                  <AnimePosterCard
-                    key={anime.mal_id}
-                    className="w-full"
-                    anime={anime}
-                  />
-                </div>
-              ))}
-          {}
         </div>
 
         {/* Infinity Scroll Sensor & View More Logic */}
@@ -96,7 +100,7 @@ const PopularContent = ({ isVisible }: { isVisible: boolean }) => {
           ) : (
             !isFetchingNextPage &&
             hasNextPage &&
-            !error && <div ref={ref} className="h-4 w-full opacity-0" />
+            !isError && <div ref={ref} className="h-4 w-full opacity-0" />
           )}
         </div>
       </div>

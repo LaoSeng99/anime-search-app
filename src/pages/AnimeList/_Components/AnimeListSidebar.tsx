@@ -38,11 +38,11 @@ const AnimeListSidebar = () => {
       {/* Sidebar */}
       <aside
         className={cn(
-          // --- Mobile Base Styles (默认) ---
+          // --- Mobile Base Styles---
           'fixed inset-y-0 right-0 z-50 w-[85%] max-w-sm flex flex-col',
           'bg-zinc-950 border-l border-white/10 shadow-2xl pt-18',
           'transition-transform duration-300 ease-in-out',
-          // Mobile 动画逻辑：when open x=0，remove from screen when close
+          // Mobile animation：when open x=0，remove from screen when close
           isMobileFilterOpen ? 'translate-x-0' : 'translate-x-full',
 
           // --- Desktop Styles ---

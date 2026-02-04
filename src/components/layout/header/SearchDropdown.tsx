@@ -8,6 +8,7 @@ interface SearchDropdownProps {
   isLoading: boolean;
   isVisible: boolean;
   onSeeMore: () => void;
+  onViewItem: (id: string | number) => void;
   searchQuery: string;
 }
 
@@ -16,6 +17,7 @@ export const SearchDropdown = ({
   isLoading,
   isVisible,
   onSeeMore,
+  onViewItem,
   searchQuery,
 }: SearchDropdownProps) => {
   return (
@@ -31,7 +33,11 @@ export const SearchDropdown = ({
                        border border-white/10 rounded-2xl overflow-hidden z-50 shadow-2xl">
           <div className="p-2 flex flex-col gap-1">
             {animeList.slice(0, 6).map((anime) => (
-              <SearchDropdownItem key={anime.mal_id} anime={anime} />
+              <SearchDropdownItem
+                onClick={onViewItem}
+                key={anime.mal_id}
+                anime={anime}
+              />
             ))}
 
             {/* Navigate to anime list and apply filter */}

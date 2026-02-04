@@ -32,10 +32,10 @@ const ErrorState = ({
   return (
     <section
       className={cn([
-        'w-full min-h-screen flex items-center justify-center bg-[#0a0a0a] px-6',
+        'w-full flex items-center justify-center px-6',
         className,
       ])}>
-      <div className="max-w-md w-full p-12 bg-white/5 rounded-3xl border border-dashed border-white/10 flex flex-col items-center justify-center gap-6 text-center animate-in fade-in zoom-in duration-300">
+      <div className="max-w-md w-full p-12 bg-[#0a0a0a] rounded-3xl border border-dashed border-white/10 flex flex-col items-center justify-center gap-6 text-center animate-in fade-in zoom-in duration-300">
         <div className="p-4 bg-white/5 rounded-full">{icon}</div>
         <div className="space-y-2">
           <h2 className="text-xl font-bold text-white/90">{title}</h2>

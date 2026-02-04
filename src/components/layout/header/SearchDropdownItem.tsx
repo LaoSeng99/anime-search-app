@@ -2,9 +2,17 @@ import type { Anime } from '../../../types/anime';
 import { cleanSynopsis } from '../../../utils/labelHelper';
 import MotionImage from '../../ui/MotionImage';
 
-const SearchDropdownItem = ({ anime }: { anime: Anime }) => {
+const SearchDropdownItem = ({
+  anime,
+  onClick,
+}: {
+  anime: Anime;
+  onClick: (id: string | number) => void;
+}) => {
   return (
-    <div className="flex items-start gap-4 p-3 hover:bg-white/10 rounded-xl cursor-pointer transition-colors group">
+    <div
+      className="flex items-start gap-4 p-3 hover:bg-white/10 rounded-xl cursor-pointer transition-colors group"
+      onClick={() => onClick(anime.mal_id)}>
       <MotionImage
         src={anime.images.webp.small_image_url}
         alt={anime.title}

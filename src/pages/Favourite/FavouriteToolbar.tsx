@@ -54,7 +54,7 @@ const FavouriteToolbar = ({
           danger
           onClick={onRemoveAllFavourite}
           disabled={totalItems === 0}>
-          Remove all favourites
+          Remove all
         </Button>
       </div>
 
