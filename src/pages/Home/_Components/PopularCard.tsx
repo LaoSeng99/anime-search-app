@@ -79,12 +79,10 @@ const PopularContent = ({ isVisible }: { isVisible: boolean }) => {
             skeletonNodes
           ) : (
             allAnime.map((anime) => (
-              <div className="relative w-full flex items-center justify-center">
-                <AnimePosterCard
-                  key={anime.mal_id}
-                  className="w-full"
-                  anime={anime}
-                />
+              <div
+                key={anime.mal_id}
+                className="relative w-full flex items-center justify-center">
+                <AnimePosterCard className="w-full" anime={anime} />
               </div>
             ))
           )}
